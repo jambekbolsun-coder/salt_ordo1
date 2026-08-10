@@ -16,10 +16,9 @@ import AdminLogin from './pages/admin/AdminLogin'
 import Dashboard from './pages/admin/Dashboard'
 import Products from './pages/admin/Products'
 import ProductForm from './pages/admin/ProductForm'
-import Orders from './pages/admin/Orders'
-import Customers from './pages/admin/Customers'
 import Staff from './pages/admin/Staff'
 import Categories from './pages/admin/Categories'
+import Chatbot from './pages/admin/Chatbot'
 import Settings from './pages/admin/Settings'
 
 export default function App() {
@@ -38,17 +37,14 @@ export default function App() {
       <Route path="/admin" element={<ProtectedAdmin/>}>
         <Route element={<AdminLayout/>}>
           <Route index element={<Dashboard/>}/>
-          <Route element={<RequireAdminRole roles={['owner','admin','content']}/>}>
+          <Route element={<RequireAdminRole roles={['owner','admin','content']}/> }>
             <Route path="products" element={<Products/>}/>
             <Route path="products/new" element={<ProductForm/>}/>
             <Route path="products/:id" element={<ProductForm/>}/>
             <Route path="categories" element={<Categories/>}/>
+            <Route path="chatbot" element={<Chatbot/>}/>
           </Route>
-          <Route element={<RequireAdminRole roles={['owner','admin','manager']}/>}>
-            <Route path="orders" element={<Orders/>}/>
-            <Route path="customers" element={<Customers/>}/>
-          </Route>
-          <Route element={<RequireAdminRole roles={['owner','admin']}/>}>
+          <Route element={<RequireAdminRole roles={['owner','admin']}/> }>
             <Route path="staff" element={<Staff/>}/>
             <Route path="settings" element={<Settings/>}/>
           </Route>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Check, Heart, Instagram, Languages, Menu, MessageCircle, Search, ShoppingBag, X } from 'lucide-react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import Logo from './Logo'
 import { useCart } from '../state/CartContext'
 import { useFavorites } from '../state/FavoritesContext'
@@ -18,18 +18,13 @@ export default function Header() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [activeSection,setActiveSection] = useState('home')
   const { count, pulse: cartPulse } = useCart()
   const { ids, pulse: favoritePulse } = useFavorites()
   const { lang, setLang, t } = useLanguage()
   const { settings } = useSiteSettings()
   const langRef = useRef(null)
-
-  const links = [
-    ['/', t.nav.home, true],
-    ['/catalog', t.nav.catalog],
-    ['/#custom-order', t.nav.custom],
-    ['/#delivery', t.nav.delivery],
-  ]
+  const location = useLocation()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 18)
@@ -37,6 +32,30 @@ export default function Header() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  useEffect(() => {
+    if (location.pathname !== '/') { setActiveSection(''); return }
+    let ticking = false
+    const update = () => {
+      ticking = false
+      const marker = window.scrollY + 180
+      const custom = document.getElementById('custom-order')
+      const delivery = document.getElementById('delivery')
+      if (delivery && marker >= delivery.offsetTop) setActiveSection('delivery')
+      else if (custom && marker >= custom.offsetTop) setActiveSection('custom')
+      else setActiveSection('home')
+    }
+    const onScroll = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update) }
+    }
+    update()
+    window.addEventListener('scroll',onScroll,{ passive:true })
+    window.addEventListener('hashchange',update)
+    return () => {
+      window.removeEventListener('scroll',onScroll)
+      window.removeEventListener('hashchange',update)
+    }
+  }, [location.pathname])
 
   useEffect(() => {
     if (!open) return
@@ -81,10 +100,10 @@ export default function Header() {
         <div className="container site-header__inner">
           <Logo />
           <nav className="desktop-nav" aria-label="Primary navigation">
-            {links.map(([to, label, end]) => to.includes('#')
-              ? <a key={to} href={to}>{label}</a>
-              : <NavLink key={to} to={to} end={Boolean(end)}>{label}</NavLink>
-            )}
+            <Link className={location.pathname === '/' && activeSection === 'home' ? 'active' : ''} to="/">{t.nav.home}</Link>
+            <NavLink to="/catalog">{t.nav.catalog}</NavLink>
+            <a className={location.pathname === '/' && activeSection === 'custom' ? 'active' : ''} href="/#custom-order">{t.nav.custom}</a>
+            <a className={location.pathname === '/' && activeSection === 'delivery' ? 'active' : ''} href="/#delivery">{t.nav.delivery}</a>
           </nav>
 
           <div className="header-actions">
@@ -128,10 +147,10 @@ export default function Header() {
           <strong>{t.hero.cardTitle}</strong>
         </div>
         <nav className="mobile-drawer__nav">
-          {links.map(([to,label]) => to.includes('#')
-            ? <a key={to} href={to} onClick={() => setOpen(false)}>{label}</a>
-            : <Link key={to} to={to} onClick={() => setOpen(false)}>{label}</Link>
-          )}
+          <Link to="/" onClick={()=>setOpen(false)}>{t.nav.home}</Link>
+          <Link to="/catalog" onClick={()=>setOpen(false)}>{t.nav.catalog}</Link>
+          <a href="/#custom-order" onClick={()=>setOpen(false)}>{t.nav.custom}</a>
+          <a href="/#delivery" onClick={()=>setOpen(false)}>{t.nav.delivery}</a>
         </nav>
         <div className="mobile-drawer__language">
           {languageOptions.map(([code,,label]) => (

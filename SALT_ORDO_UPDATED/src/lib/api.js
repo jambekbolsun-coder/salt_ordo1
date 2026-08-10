@@ -80,28 +80,6 @@ export async function createOrder(payload) {
   return Array.isArray(data) ? data[0] : data
 }
 
-export async function listOrders() {
-  if (!supabaseConfigured) return []
-  const { data, error } = await supabase
-    .from('orders')
-    .select('*, order_items(id,quantity,unit_price,line_total,product_name,product_id)')
-    .order('created_at', { ascending: false })
-    .limit(300)
-  if (error) throw error
-  return data || []
-}
-
-export async function updateOrder(id, patch) {
-  if (!supabaseConfigured) throw new Error('Supabase не подключён.')
-  const { data, error } = await supabase.from('orders').update(patch).eq('id', id).select().single()
-  if (error) throw error
-  return data
-}
-
-export async function updateOrderStatus(id, status) {
-  return updateOrder(id, { status })
-}
-
 export async function saveProduct(product) {
   if (!supabaseConfigured) throw new Error('Supabase не подключён.')
   const numberOrNull = (value) => value === '' || value == null ? null : Number(value)
@@ -192,13 +170,6 @@ export async function updateProductImageOrder(images) {
   if (failed?.error) throw failed.error
 }
 
-export async function listCustomers() {
-  if (!supabaseConfigured) return []
-  const { data, error } = await supabase.from('customers').select('*').order('last_order_at', { ascending: false, nullsFirst: false }).order('created_at', { ascending: false })
-  if (error) throw error
-  return data || []
-}
-
 export async function listStaff() {
   if (!supabaseConfigured) return []
   const { data, error } = await supabase.from('staff').select('*').order('created_at')
@@ -264,3 +235,61 @@ export async function saveSiteSettings(settings) {
   if (error) throw error
   return data
 }
+
+export async function getChatbotSettings() {
+  if (!supabaseConfigured) return {}
+  const { data, error } = await supabase.from('chatbot_settings').select('*').eq('id', true).maybeSingle()
+  if (error) throw error
+  return data || {}
+}
+
+export async function saveChatbotSettings(settings) {
+  if (!supabaseConfigured) throw new Error('Supabase не подключён.')
+  const payload = { ...settings, id: true, updated_at: new Date().toISOString() }
+  const { data, error } = await supabase.from('chatbot_settings').update(payload).eq('id', true).select().single()
+  if (error) throw error
+  return data
+}
+
+export async function listChatbotFaqs({ admin = false } = {}) {
+  if (!supabaseConfigured) return []
+  let query = supabase.from('chatbot_faqs').select('*').order('sort_order').order('created_at')
+  if (!admin) query = query.eq('is_active', true)
+  const { data, error } = await query
+  if (error) throw error
+  return data || []
+}
+
+export async function saveChatbotFaq(faq) {
+  if (!supabaseConfigured) throw new Error('Supabase не подключён.')
+  const keywordArray = Array.isArray(faq.keywords)
+    ? faq.keywords.map((value)=>String(value).trim()).filter(Boolean)
+    : String(faq.keywords || '').split(',').map((value)=>value.trim()).filter(Boolean)
+  const payload = {
+    question_ru: String(faq.question_ru || '').trim(),
+    question_kg: String(faq.question_kg || '').trim() || null,
+    question_en: String(faq.question_en || '').trim() || null,
+    answer_ru: String(faq.answer_ru || '').trim(),
+    answer_kg: String(faq.answer_kg || '').trim() || null,
+    answer_en: String(faq.answer_en || '').trim() || null,
+    keywords: keywordArray,
+    is_active: faq.is_active !== false,
+    sort_order: Number(faq.sort_order || 0),
+    updated_at: new Date().toISOString(),
+  }
+  if (faq.id) {
+    const { data, error } = await supabase.from('chatbot_faqs').update(payload).eq('id', faq.id).select().single()
+    if (error) throw error
+    return data
+  }
+  const { data, error } = await supabase.from('chatbot_faqs').insert(payload).select().single()
+  if (error) throw error
+  return data
+}
+
+export async function deleteChatbotFaq(id) {
+  if (!supabaseConfigured) throw new Error('Supabase не подключён.')
+  const { error } = await supabase.from('chatbot_faqs').delete().eq('id', id)
+  if (error) throw error
+}
+

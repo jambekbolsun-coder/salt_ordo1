@@ -11,7 +11,7 @@ export default function Staff() {
   const canManage = ['owner','admin'].includes(role)
   const [staff,setStaff] = useState([])
   const [q,setQ] = useState('')
-  const [form,setForm] = useState({ fullName:'',email:'',password:'',role:'manager' })
+  const [form,setForm] = useState({ fullName:'',email:'',password:'',role:'content' })
   const [busy,setBusy] = useState(false)
   const [error,setError] = useState('')
   const [success,setSuccess] = useState('')
@@ -25,7 +25,7 @@ export default function Staff() {
     try {
       await createStaffAccount(form)
       setSuccess('Сотрудник создан. Передайте ему email и пароль лично.')
-      setForm({ fullName:'',email:'',password:'',role:'manager' })
+      setForm({ fullName:'',email:'',password:'',role:'content' })
       await load()
     } catch (err) { setError(err.message) }
     finally { setBusy(false) }
@@ -43,7 +43,7 @@ export default function Staff() {
         <label><span>Имя</span><input value={form.fullName} onChange={(e)=>setForm({ ...form,fullName:e.target.value })} required placeholder="Имя и фамилия"/></label>
         <label><span>Email</span><input type="email" value={form.email} onChange={(e)=>setForm({ ...form,email:e.target.value })} required placeholder="manager@example.com"/></label>
         <label><span>Пароль</span><div className="input-with-icon"><KeyRound/><input type="password" minLength="8" value={form.password} onChange={(e)=>setForm({ ...form,password:e.target.value })} required autoComplete="new-password"/></div></label>
-        <label><span>Роль</span><select value={form.role} onChange={(e)=>setForm({ ...form,role:e.target.value })}>{role === 'owner' && <option value="admin">Администратор</option>}<option value="manager">Менеджер</option><option value="content">Контент-менеджер</option></select></label>
+        <label><span>Роль</span><select value={form.role} onChange={(e)=>setForm({ ...form,role:e.target.value })}>{role === 'owner' && <option value="admin">Администратор</option>}<option value="content">Контент-менеджер</option></select></label>
         <button className="btn btn--primary" disabled={busy}><Plus/>{busy ? 'Создаём…' : 'Создать сотрудника'}</button>
       </form>
       {success && <div className="notice notice--success">{success}</div>}

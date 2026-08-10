@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import {
-  Boxes, ChevronLeft, ClipboardList, Gauge, LogOut, Menu, PackagePlus,
-  Settings, ShoppingBag, Tags, Users, UserRound, X
+  Bot, Boxes, ChevronLeft, Gauge, LogOut, Menu, PackagePlus,
+  Settings, ShoppingBag, Tags, UserRound, X
 } from 'lucide-react'
 import Logo from './Logo'
 import { useAuth } from '../state/AuthContext'
@@ -12,8 +12,7 @@ const nav = [
   ['/admin/products', 'Товары', ShoppingBag, ['owner','admin','content']],
   ['/admin/products/new', 'Добавить товар', PackagePlus, ['owner','admin','content']],
   ['/admin/categories', 'Категории', Tags, ['owner','admin','content']],
-  ['/admin/orders', 'Заказы', ClipboardList, ['owner','admin','manager']],
-  ['/admin/customers', 'Клиенты', Users, ['owner','admin','manager']],
+  ['/admin/chatbot', 'Чат-бот', Bot, ['owner','admin','content']],
   ['/admin/staff', 'Сотрудники', UserRound, ['owner','admin']],
   ['/admin/settings', 'Настройки', Settings, ['owner','admin']],
 ]
@@ -70,7 +69,7 @@ export default function AdminLayout() {
         <header className="admin-topbar">
           <button className="icon-btn admin-menu" onClick={() => setOpen(true)} aria-label="Открыть меню"><Menu/></button>
           <button className="icon-btn admin-collapse" onClick={() => setCollapsed((x)=>!x)} title="Свернуть меню"><ChevronLeft/></button>
-          <div className="admin-topbar__title"><Boxes size={19}/><span>Система продаж</span></div>
+          <div className="admin-topbar__title"><Boxes size={19}/><span>Каталог и контент</span></div>
           <a className="btn btn--small btn--soft" href="/" target="_blank" rel="noreferrer">Открыть сайт</a>
         </header>
         <main className="admin-main"><Outlet/></main>
