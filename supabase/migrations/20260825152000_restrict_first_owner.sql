@@ -1,4 +1,4 @@
--- One-time, race-safe owner bootstrap for a fresh installation.
+-- Prevent a public first-owner race on a freshly deployed storefront.
 create or replace function public.bootstrap_first_owner(p_full_name text)
 returns public.staff
 language plpgsql
