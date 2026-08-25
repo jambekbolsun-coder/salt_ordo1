@@ -66,7 +66,7 @@ export async function listCategories({ admin = false } = {}) {
 }
 
 export async function createOrder(payload) {
-  if (!supabaseConfigured) throw new Error('Supabase не подключён. Добавьте VITE_SUPABASE_URL и VITE_SUPABASE_PUBLISHABLE_KEY.')
+  if (!supabaseConfigured) throw new Error('Supabase не подключён. Добавьте VITE_SALT_SUPABASE_URL и VITE_SALT_SUPABASE_PUBLISHABLE_KEY.')
   const { data, error } = await supabase.rpc('create_public_order', {
     p_customer_name: payload.customerName,
     p_phone: payload.phone,
