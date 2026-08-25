@@ -2,18 +2,19 @@ import { useMemo, useState } from 'react'
 import { CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../state/CartContext'
-import { createOrder } from '../lib/api'
+import { createLead, createOrder } from '../lib/api'
 import { money } from '../lib/format'
 import { useLanguage } from '../state/LanguageContext'
 import { useSiteSettings } from '../state/SiteSettingsContext'
 import { localizedField } from '../lib/productText'
 import { whatsappUrl } from '../lib/whatsapp'
+import { getTrackingIds, track } from '../lib/analytics'
 
 export default function Checkout() {
   const { items, total, clear } = useCart()
   const { lang, t } = useLanguage()
   const { settings } = useSiteSettings()
-  const [form, setForm] = useState({ customerName:'', phone:'', city:'', deliveryMethod:'manager', note:'' })
+  const [form, setForm] = useState({ customerName:'', phone:'', email:'', city:'', deliveryMethod:'manager', note:'' })
   const [sending, setSending] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState('')
@@ -37,10 +38,19 @@ export default function Checkout() {
     setError('')
     try {
       const order = await createOrder({ ...form, items, language: lang })
+      await createLead({
+        source:'checkout',
+        customerName:form.customerName,
+        phone:form.phone,
+        email:form.email,
+        message:`${form.note || ''} · Заявка ${order.order_number}`.trim(),
+        ...getTrackingIds(),
+      })
       const link = whatsappUrl(settings.whatsapp, buildMessage(order.order_number))
       setWhatsappLink(link)
       setResult(order)
       clear()
+      track('whatsapp_click', { metadata:{ source:'checkout', orderNumber:order.order_number } })
       if (whatsappWindow) {
         whatsappWindow.opener = null
         whatsappWindow.location.replace(link)
@@ -79,6 +89,7 @@ export default function Checkout() {
             <div className="form-grid">
               <label><span>{t.checkout.name} *</span><input name="customerName" value={form.customerName} onChange={change} required autoComplete="name"/></label>
               <label><span>{t.checkout.phone} *</span><input name="phone" value={form.phone} onChange={change} required inputMode="tel" autoComplete="tel" placeholder="+996 ..."/></label>
+              <label><span>Email</span><input name="email" type="email" value={form.email} onChange={change} autoComplete="email" placeholder="name@example.com"/></label>
               <label><span>{t.checkout.city}</span><input name="city" value={form.city} onChange={change}/></label>
               <label><span>{t.checkout.delivery}</span><select name="deliveryMethod" value={form.deliveryMethod} onChange={change}><option value="manager">{t.checkout.manager}</option><option value="delivery">{t.checkout.courier}</option><option value="pickup">{t.checkout.pickup}</option></select></label>
               <label className="form-span-2"><span>{t.checkout.note}</span><textarea name="note" value={form.note} onChange={change} rows="4" placeholder={t.checkout.notePlaceholder}/></label>

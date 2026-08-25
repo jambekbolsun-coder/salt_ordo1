@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { createContext, useContext, useMemo, useRef, useState } from 'react'
 
 const CartContext = createContext(null)
 const STORAGE_KEY = 'salt-ordo-cart-v1'

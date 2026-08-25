@@ -14,7 +14,7 @@ export default function Logo({ compact = false }) {
   const brand = settings?.brand_name || 'Salt Ordo'
   return (
     <Link className={`brand ${compact ? 'brand--compact' : ''}`} to="/" aria-label={brand}>
-      <img src="/salt-ordo-logo.png" alt="" />
+      <span className="brand__mark" aria-hidden="true"><b>SALT</b><em>ORDO</em></span>
       {!compact && (
         <span className="brand__text">
           <strong>{brand}</strong>

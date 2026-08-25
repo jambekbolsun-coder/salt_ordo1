@@ -71,7 +71,7 @@ create table public.products (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint products_price_required check (status <> 'published' or price_on_request or sale_price is not null),
-  constraint products_old_price_check check (old_price is null or sale_price is null or old_price >= sale_price),
+  constraint products_old_vs_sale_price_check check (old_price is null or sale_price is null or old_price >= sale_price),
   constraint products_promo_dates_check check (promo_end_at is null or promo_start_at is null or promo_end_at >= promo_start_at)
 );
 

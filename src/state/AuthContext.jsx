@@ -53,7 +53,7 @@ export function AuthProvider({ children }) {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error
 
-    const { data: staffData, error: staffError } = await supabase
+    let { data: staffData, error: staffError } = await supabase
       .from('staff')
       .select('*')
       .eq('user_id', data.user.id)
@@ -62,13 +62,34 @@ export function AuthProvider({ children }) {
 
     if (staffError) throw staffError
     if (!staffData) {
-      await supabase.auth.signOut()
-      throw new Error('У этого аккаунта нет доступа к административной системе.')
+      const { data: bootstrapData, error: bootstrapError } = await supabase.rpc('bootstrap_first_owner', { p_full_name:'Владелец Salt Ordo' })
+      if (!bootstrapError && bootstrapData) {
+        staffData = bootstrapData
+      } else {
+        await supabase.auth.signOut()
+        throw new Error('У этого аккаунта нет доступа к административной системе.')
+      }
     }
 
     setSession(data.session)
     setStaff(staffData)
     return { user: data.user, staff: staffData }
+  }
+
+  const signupFirstOwner = async (email, password, fullName) => {
+    if (!supabaseConfigured) throw new Error('Supabase пока не подключён к проекту.')
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: fullName } },
+    })
+    if (error) throw error
+    if (!data.session) return { confirmationRequired:true }
+    const { data: staffData, error: staffError } = await supabase.rpc('bootstrap_first_owner', { p_full_name:fullName })
+    if (staffError) throw staffError
+    setSession(data.session)
+    setStaff(staffData)
+    return { confirmationRequired:false, staff:staffData }
   }
 
   const logout = async () => {
@@ -85,6 +106,7 @@ export function AuthProvider({ children }) {
     isStaff: Boolean(staff?.is_active),
     loading,
     login,
+    signupFirstOwner,
     logout,
     supabaseConfigured,
   }), [session, staff, loading])

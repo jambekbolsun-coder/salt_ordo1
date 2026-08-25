@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowRight, Bot, FolderTree, PackageCheck, ShoppingBag } from 'lucide-react'
+import { ArrowRight, BarChart3, Bot, ClipboardList, FolderTree, PackageCheck, ShoppingBag } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { listCategories, listChatbotFaqs, listProducts, listStaff } from '../../lib/api'
+import { getAnalyticsData, listCategories, listChatbotFaqs, listLeads, listProducts, listStaff } from '../../lib/api'
 import { money } from '../../lib/format'
 import AdminPageHeader from '../../components/AdminPageHeader'
 import { useAuth } from '../../state/AuthContext'
@@ -10,7 +10,8 @@ export default function Dashboard() {
   const { role } = useAuth()
   const catalogAccess = ['owner','admin','content'].includes(role)
   const teamAccess = ['owner','admin'].includes(role)
-  const [data, setData] = useState({ products:[], categories:[], faqs:[], staff:[] })
+  const crmAccess = ['owner','admin','manager'].includes(role)
+  const [data, setData] = useState({ products:[], categories:[], faqs:[], staff:[], leads:[], analytics:{events:[],quizzes:[],leads:[]} })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -21,13 +22,15 @@ export default function Dashboard() {
       catalogAccess ? listCategories({ admin:true }) : Promise.resolve([]),
       catalogAccess ? listChatbotFaqs({ admin:true }) : Promise.resolve([]),
       teamAccess ? listStaff() : Promise.resolve([]),
+      crmAccess ? listLeads() : Promise.resolve([]),
+      crmAccess ? getAnalyticsData() : Promise.resolve({ events:[], quizzes:[], leads:[] }),
     ]
     Promise.all(jobs)
-      .then(([products,categories,faqs,staff]) => active && setData({ products,categories,faqs,staff }))
+      .then(([products,categories,faqs,staff,leads,analytics]) => active && setData({ products,categories,faqs,staff,leads,analytics }))
       .catch((err) => active && setError(err.message))
       .finally(() => active && setLoading(false))
     return () => { active = false }
-  }, [catalogAccess, teamAccess])
+  }, [catalogAccess, teamAccess, crmAccess])
 
   const metrics = useMemo(() => {
     const items = []
@@ -38,13 +41,17 @@ export default function Dashboard() {
       items.push(['Ответы чат-бота', data.faqs.filter((item)=>item.is_active).length, Bot, '/admin/chatbot'])
     }
     if (teamAccess) items.push(['Сотрудники', data.staff.filter((item)=>item.is_active).length, PackageCheck, '/admin/staff'])
+    if (crmAccess) {
+      items.push(['Новые заявки', data.leads.filter((item)=>item.status === 'new').length, ClipboardList, '/admin/leads'])
+      items.push(['Посетители', new Set(data.analytics.events.filter((item)=>item.event_type === 'page_view').map((item)=>item.visitor_id)).size, BarChart3, '/admin/analytics'])
+    }
     return items
-  }, [data, catalogAccess, teamAccess])
+  }, [data, catalogAccess, teamAccess, crmAccess])
 
   return <>
     <AdminPageHeader eyebrow="Salt Ordo · Dashboard" title="Управление сайтом" text="Здесь только то, что действительно нужно для каталога, контента и команды." actions={catalogAccess ? <Link className="btn btn--primary" to="/admin/products/new">Добавить товар</Link> : null}/>
     {error && <div className="notice notice--error">{error}</div>}
-    {!catalogAccess && !teamAccess && <div className="notice">Для этой роли сейчас нет отдельных разделов управления.</div>}
+    {!catalogAccess && !teamAccess && !crmAccess && <div className="notice">Для этой роли сейчас нет отдельных разделов управления.</div>}
     <div className="admin-stat-grid admin-stat-grid--compact">{metrics.map(([label,value,Icon,to]) => <Link className="admin-stat" to={to} key={label}><span className="admin-stat__icon"><Icon/></span><span><small>{label}</small><strong>{loading ? '—' : value}</strong></span><ArrowRight className="admin-stat__arrow"/></Link>)}</div>
     {catalogAccess && <div className="admin-two-col admin-two-col--catalog">
       <section className="admin-panel">

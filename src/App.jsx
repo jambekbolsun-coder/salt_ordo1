@@ -1,29 +1,34 @@
+import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import PublicLayout from './components/PublicLayout'
 import ProtectedAdmin from './components/ProtectedAdmin'
 import AdminLayout from './components/AdminLayout'
 import RequireAdminRole from './components/RequireAdminRole'
 
-import Home from './pages/Home'
-import Catalog from './pages/Catalog'
-import Product from './pages/Product'
-import Favorites from './pages/Favorites'
-import Cart from './pages/Cart'
-import Checkout from './pages/Checkout'
-import NotFound from './pages/NotFound'
+const Home = lazy(() => import('./pages/Home'))
+const Catalog = lazy(() => import('./pages/Catalog'))
+const Product = lazy(() => import('./pages/Product'))
+const Favorites = lazy(() => import('./pages/Favorites'))
+const Cart = lazy(() => import('./pages/Cart'))
+const Checkout = lazy(() => import('./pages/Checkout'))
+const NotFound = lazy(() => import('./pages/NotFound'))
 
-import AdminLogin from './pages/admin/AdminLogin'
-import Dashboard from './pages/admin/Dashboard'
-import Products from './pages/admin/Products'
-import ProductForm from './pages/admin/ProductForm'
-import Staff from './pages/admin/Staff'
-import Categories from './pages/admin/Categories'
-import Chatbot from './pages/admin/Chatbot'
-import Settings from './pages/admin/Settings'
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
+const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
+const Products = lazy(() => import('./pages/admin/Products'))
+const ProductForm = lazy(() => import('./pages/admin/ProductForm'))
+const Staff = lazy(() => import('./pages/admin/Staff'))
+const Categories = lazy(() => import('./pages/admin/Categories'))
+const Chatbot = lazy(() => import('./pages/admin/Chatbot'))
+const Settings = lazy(() => import('./pages/admin/Settings'))
+const Leads = lazy(() => import('./pages/admin/Leads'))
+const Analytics = lazy(() => import('./pages/admin/Analytics'))
+const Profile = lazy(() => import('./pages/admin/Profile'))
 
 export default function App() {
   return (
-    <Routes>
+    <Suspense fallback={<div className="screen-loader"><img src="/salt-ordo-logo.png" alt=""/><span>Загружаем Salt Ordo…</span></div>}>
+      <Routes>
       <Route element={<PublicLayout/>}>
         <Route path="/" element={<Home/>}/>
         <Route path="/catalog" element={<Catalog/>}/>
@@ -48,10 +53,16 @@ export default function App() {
             <Route path="staff" element={<Staff/>}/>
             <Route path="settings" element={<Settings/>}/>
           </Route>
+          <Route element={<RequireAdminRole roles={['owner','admin','manager']}/> }>
+            <Route path="leads" element={<Leads/>}/>
+            <Route path="analytics" element={<Analytics/>}/>
+          </Route>
+          <Route path="profile" element={<Profile/>}/>
         </Route>
       </Route>
 
       <Route path="*" element={<NotFound/>}/>
-    </Routes>
+      </Routes>
+    </Suspense>
   )
 }

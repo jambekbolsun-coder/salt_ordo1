@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Check, Heart, Instagram, Languages, Menu, MessageCircle, Search, ShoppingBag, X } from 'lucide-react'
+import { Check, Heart, Instagram, Languages, Menu, MessageCircle, Palette, Search, ShoppingBag, X } from 'lucide-react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import Logo from './Logo'
 import { useCart } from '../state/CartContext'
@@ -19,12 +19,20 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [activeSection,setActiveSection] = useState('home')
+  const [theme, setTheme] = useState(() => {
+    try { return window.localStorage.getItem('salt-ordo-theme') || 'pink' } catch { return 'pink' }
+  })
   const { count, pulse: cartPulse } = useCart()
   const { ids, pulse: favoritePulse } = useFavorites()
   const { lang, setLang, t } = useLanguage()
   const { settings } = useSiteSettings()
   const langRef = useRef(null)
   const location = useLocation()
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    try { window.localStorage.setItem('salt-ordo-theme', theme) } catch { return undefined }
+  }, [theme])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 18)
@@ -39,10 +47,10 @@ export default function Header() {
     const update = () => {
       ticking = false
       const marker = window.scrollY + 180
-      const custom = document.getElementById('custom-order')
-      const delivery = document.getElementById('delivery')
-      if (delivery && marker >= delivery.offsetTop) setActiveSection('delivery')
-      else if (custom && marker >= custom.offsetTop) setActiveSection('custom')
+      const about = document.getElementById('about')
+      const contacts = document.getElementById('contacts')
+      if (contacts && marker >= contacts.offsetTop) setActiveSection('contacts')
+      else if (about && marker >= about.offsetTop) setActiveSection('about')
       else setActiveSection('home')
     }
     const onScroll = () => {
@@ -102,11 +110,19 @@ export default function Header() {
           <nav className="desktop-nav" aria-label="Primary navigation">
             <Link className={location.pathname === '/' && activeSection === 'home' ? 'active' : ''} to="/">{t.nav.home}</Link>
             <NavLink to="/catalog">{t.nav.catalog}</NavLink>
-            <a className={location.pathname === '/' && activeSection === 'custom' ? 'active' : ''} href="/#custom-order">{t.nav.custom}</a>
-            <a className={location.pathname === '/' && activeSection === 'delivery' ? 'active' : ''} href="/#delivery">{t.nav.delivery}</a>
+            <a className={location.pathname === '/' && activeSection === 'about' ? 'active' : ''} href="/#about">{t.nav.about}</a>
+            <a className={location.pathname === '/' && activeSection === 'contacts' ? 'active' : ''} href="/#contacts">{t.nav.contacts}</a>
           </nav>
 
           <div className="header-actions">
+            <label className="theme-select" title="Цвет сайта">
+              <Palette size={17}/>
+              <select value={theme} onChange={(event) => setTheme(event.target.value)} aria-label="Цветовая тема">
+                <option value="pink">Pink</option>
+                <option value="red">Red</option>
+                <option value="blue">Blue</option>
+              </select>
+            </label>
             <div className="language-menu" ref={langRef}>
               <button className={`language-trigger ${langOpen ? 'is-open' : ''}`} type="button" onClick={() => setLangOpen((v) => !v)} aria-expanded={langOpen} aria-haspopup="menu" aria-label="Change language">
                 <Languages size={18}/>
@@ -149,8 +165,8 @@ export default function Header() {
         <nav className="mobile-drawer__nav">
           <Link to="/" onClick={()=>setOpen(false)}>{t.nav.home}</Link>
           <Link to="/catalog" onClick={()=>setOpen(false)}>{t.nav.catalog}</Link>
-          <a href="/#custom-order" onClick={()=>setOpen(false)}>{t.nav.custom}</a>
-          <a href="/#delivery" onClick={()=>setOpen(false)}>{t.nav.delivery}</a>
+          <a href="/#about" onClick={()=>setOpen(false)}>{t.nav.about}</a>
+          <a href="/#contacts" onClick={()=>setOpen(false)}>{t.nav.contacts}</a>
         </nav>
         <div className="mobile-drawer__language">
           {languageOptions.map(([code,,label]) => (

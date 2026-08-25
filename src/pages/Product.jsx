@@ -10,7 +10,8 @@ import { useFavorites } from '../state/FavoritesContext'
 import { useLanguage } from '../state/LanguageContext'
 import { useSiteSettings } from '../state/SiteSettingsContext'
 import { categoryName, isPromotionActive, localizedField } from '../lib/productText'
-import { whatsappUrl } from '../lib/whatsapp'
+import LeadCapture from '../components/LeadCapture'
+import { track } from '../lib/analytics'
 
 export default function Product() {
   const { slug } = useParams()
@@ -20,6 +21,7 @@ export default function Product() {
   const [activeImage, setActiveImage] = useState(0)
   const [added, setAdded] = useState(false)
   const [loadError, setLoadError] = useState('')
+  const [leadOpen, setLeadOpen] = useState(false)
   const { add } = useCart()
   const { has, toggle } = useFavorites()
   const { lang, t } = useLanguage()
@@ -35,13 +37,18 @@ export default function Product() {
       .catch((error) => { if (active) { setProduct(null); setLoadError(error.message || t.common.error) } })
       .finally(() => active && setLoading(false))
     return () => { active = false }
-  }, [slug])
+  }, [slug, t.common.error])
 
   useEffect(() => {
     if (!added) return undefined
     const timer = window.setTimeout(() => setAdded(false), 1100)
     return () => window.clearTimeout(timer)
   }, [added])
+
+  useEffect(() => {
+    if (!product?.id) return
+    track('product_view', { productId: product.id, categorySlug: product.category?.slug || null })
+  }, [product?.id, product?.category?.slug])
 
   if (loading) return <div className="screen-loader"><img src="/salt-ordo-logo.png" alt=""/><span>{t.common.loading}</span></div>
   if (!product) return <section className="section page-section"><div className="container"><EmptyState title={t.catalog.emptyTitle} text={loadError || t.catalog.emptyText}/></div></section>
@@ -115,7 +122,7 @@ export default function Product() {
               <button className={`btn btn--primary ${added ? 'is-success' : ''}`} type="button" onClick={addToCart}>{added ? <Check size={18}/> : <ShoppingBag size={18}/>} {added ? (t.catalog.added || t.product.add) : t.product.add}</button>
               <button className={`icon-btn favorite-large ${has(product.id)?'is-active':''}`} type="button" onClick={()=>toggle(product.id)} aria-label={t.catalog.favorite}><Heart fill={has(product.id)?'currentColor':'none'}/></button>
             </div>
-            <a className="btn btn--ghost btn--block" href={whatsappUrl(settings.whatsapp, message)} target="_blank" rel="noreferrer"><MessageCircle size={18}/>{t.product.whatsapp}</a>
+            <button className="btn btn--ghost btn--block" type="button" onClick={() => setLeadOpen(true)}><MessageCircle size={18}/>{t.product.whatsapp}</button>
 
             <div className="detail-trust">
               <span><Check/>{t.custom.point2}</span>
@@ -133,12 +140,16 @@ export default function Product() {
             <div className="product-contact-card__delivery"><Truck/><span>{settings[`delivery_note_${lang}`] || t.delivery.title}</span></div>
           </div>
           <div className="product-contact-card__actions">
-            <a className="btn btn--primary" href={whatsappUrl(settings.whatsapp, message)} target="_blank" rel="noreferrer"><MessageCircle/>{t.product.contactWhatsapp || t.product.whatsapp}</a>
+            <button className="btn btn--primary" type="button" onClick={() => setLeadOpen(true)}><MessageCircle/>{t.product.contactWhatsapp || t.product.whatsapp}</button>
             <a className="btn btn--ghost" href={phoneHref}><Phone/>{t.product.contactCall || settings.whatsapp}</a>
             <a className="btn btn--ghost" href={settings.instagram} target="_blank" rel="noreferrer"><Instagram/>{t.product.contactInstagram || 'Instagram'}</a>
           </div>
         </section>
       </div>
+      {leadOpen && <div className="lead-modal" role="dialog" aria-modal="true">
+        <button className="lead-modal__backdrop" type="button" onClick={() => setLeadOpen(false)} aria-label="Close"/>
+        <LeadCapture source="product" product={product} message={message} onClose={() => setLeadOpen(false)}/>
+      </div>}
     </section>
   )
 }

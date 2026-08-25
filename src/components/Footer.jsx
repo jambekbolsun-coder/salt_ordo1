@@ -4,6 +4,7 @@ import Logo from './Logo'
 import { useLanguage } from '../state/LanguageContext'
 import { useSiteSettings } from '../state/SiteSettingsContext'
 import { whatsappUrl } from '../lib/whatsapp'
+import LeadCapture from './LeadCapture'
 
 export default function Footer() {
   const { lang, t } = useLanguage()
@@ -12,7 +13,7 @@ export default function Footer() {
   const delivery = settings[`delivery_note_${lang}`] || t.delivery.title
 
   return (
-    <footer className="site-footer">
+    <footer className="site-footer" id="contacts">
       <div className="container">
         <div className="footer-shell">
           <div className="footer-top">
@@ -24,6 +25,7 @@ export default function Footer() {
               <div><strong>{t.cta.title}</strong><small>{t.cta.text}</small></div>
               <a className="btn btn--primary" href={whatsappUrl(settings.whatsapp, t.common.customWhatsappText)} target="_blank" rel="noreferrer"><MessageCircle size={18}/>{t.cta.button}</a>
             </div>
+            <LeadCapture compact source="contact" message={t.common.whatsappText}/>
           </div>
 
           <div className="footer-row">
@@ -31,8 +33,8 @@ export default function Footer() {
               <span>{t.footer.navigation}</span>
               <Link to="/">{t.nav.home}</Link>
               <Link to="/catalog">{t.nav.catalog}</Link>
-              <a href="/#custom-order">{t.nav.custom}</a>
-              <a href="/#delivery">{t.nav.delivery}</a>
+              <a href="/#about">{t.nav.about}</a>
+              <a href="/#contacts">{t.nav.contacts}</a>
             </nav>
 
             <div className="footer-contact">

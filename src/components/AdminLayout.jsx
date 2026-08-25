@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import {
-  Bot, Boxes, ChevronLeft, Gauge, LogOut, Menu, PackagePlus,
+  BarChart3, Bot, Boxes, ChevronLeft, ClipboardList, Gauge, LogOut, Menu, PackagePlus,
   Settings, ShoppingBag, Tags, UserRound, X
 } from 'lucide-react'
 import Logo from './Logo'
@@ -9,12 +9,15 @@ import { useAuth } from '../state/AuthContext'
 
 const nav = [
   ['/admin', 'Обзор', Gauge, ['owner','admin','manager','content'], true],
+  ['/admin/leads', 'Заявки', ClipboardList, ['owner','admin','manager']],
+  ['/admin/analytics', 'Аналитика', BarChart3, ['owner','admin','manager']],
   ['/admin/products', 'Товары', ShoppingBag, ['owner','admin','content']],
   ['/admin/products/new', 'Добавить товар', PackagePlus, ['owner','admin','content']],
   ['/admin/categories', 'Категории', Tags, ['owner','admin','content']],
   ['/admin/chatbot', 'Чат-бот', Bot, ['owner','admin','content']],
   ['/admin/staff', 'Сотрудники', UserRound, ['owner','admin']],
   ['/admin/settings', 'Настройки', Settings, ['owner','admin']],
+  ['/admin/profile', 'Профиль', UserRound, ['owner','admin','manager','content']],
 ]
 
 export default function AdminLayout() {

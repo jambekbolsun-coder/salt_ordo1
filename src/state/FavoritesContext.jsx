@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, useContext, useRef, useState } from 'react'
 
 const FavoritesContext = createContext(null)
 const STORAGE_KEY = 'salt-ordo-favorites-v1'

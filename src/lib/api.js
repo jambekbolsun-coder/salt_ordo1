@@ -293,3 +293,118 @@ export async function deleteChatbotFaq(id) {
   if (error) throw error
 }
 
+export async function startQuiz({ visitorId, sessionId, language }) {
+  if (!supabaseConfigured) return crypto.randomUUID()
+  const { data, error } = await supabase.rpc('start_public_quiz', {
+    p_visitor_id: visitorId,
+    p_session_id: sessionId,
+    p_language: language || 'ru',
+  })
+  if (error) throw error
+  return data
+}
+
+export async function saveQuizAnswer({ quizSessionId, visitorId, sessionId, questionKey, answer }) {
+  if (!supabaseConfigured) return
+  const { error } = await supabase.rpc('save_public_quiz_answer', {
+    p_quiz_session_id: quizSessionId,
+    p_visitor_id: visitorId,
+    p_session_id: sessionId,
+    p_question_key: questionKey,
+    p_answer: answer,
+  })
+  if (error) throw error
+}
+
+export async function completeQuiz({ quizSessionId, visitorId, sessionId, categorySlugs }) {
+  if (!supabaseConfigured) return
+  const { error } = await supabase.rpc('complete_public_quiz', {
+    p_quiz_session_id: quizSessionId,
+    p_visitor_id: visitorId,
+    p_session_id: sessionId,
+    p_category_slugs: categorySlugs || [],
+  })
+  if (error) throw error
+}
+
+export async function dismissQuiz({ quizSessionId, visitorId, sessionId }) {
+  if (!supabaseConfigured || !quizSessionId) return
+  const { error } = await supabase.rpc('dismiss_public_quiz', {
+    p_quiz_session_id: quizSessionId,
+    p_visitor_id: visitorId,
+    p_session_id: sessionId,
+  })
+  if (error) throw error
+}
+
+export async function trackPublicEvent({
+  visitorId, sessionId, eventType, path = null, productId = null,
+  categorySlug = null, metadata = {},
+}) {
+  if (!supabaseConfigured) return
+  const { error } = await supabase.rpc('track_public_event', {
+    p_visitor_id: visitorId,
+    p_session_id: sessionId,
+    p_event_type: eventType,
+    p_path: path,
+    p_product_id: productId,
+    p_category_slug: categorySlug,
+    p_metadata: metadata,
+  })
+  if (error) throw error
+}
+
+export async function createLead({
+  source = 'contact', customerName, phone, email = null, message = null,
+  productId = null, quizSessionId = null, visitorId = null, sessionId = null,
+}) {
+  if (!supabaseConfigured) throw new Error('Supabase не подключён.')
+  const { data, error } = await supabase.rpc('create_public_lead', {
+    p_source: source,
+    p_customer_name: customerName,
+    p_phone: phone,
+    p_email: email || null,
+    p_message: message || null,
+    p_product_id: productId || null,
+    p_quiz_session_id: quizSessionId || null,
+    p_visitor_id: visitorId || null,
+    p_session_id: sessionId || null,
+  })
+  if (error) throw error
+  return data
+}
+
+export async function listLeads() {
+  if (!supabaseConfigured) return []
+  const { data, error } = await supabase
+    .from('leads')
+    .select('*, products(slug, name_ru)')
+    .order('created_at', { ascending: false })
+    .limit(1000)
+  if (error) throw error
+  return data || []
+}
+
+export async function updateLead(id, patch) {
+  if (!supabaseConfigured) throw new Error('Supabase не подключён.')
+  const { data, error } = await supabase.from('leads').update(patch).eq('id', id).select().single()
+  if (error) throw error
+  return data
+}
+
+export async function getAnalyticsData() {
+  if (!supabaseConfigured) return { events: [], quizzes: [], leads: [] }
+  const since = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString()
+  const [eventsResult, quizzesResult, leadsResult] = await Promise.all([
+    supabase.from('analytics_events').select('event_type, visitor_id, product_id, category_slug, metadata, created_at, products(name_ru, slug)').gte('created_at', since).order('created_at', { ascending: false }).limit(5000),
+    supabase.from('quiz_sessions').select('*').gte('created_at', since).order('created_at', { ascending: false }).limit(2000),
+    supabase.from('leads').select('id, source, status, created_at').gte('created_at', since).order('created_at', { ascending: false }).limit(2000),
+  ])
+  const failed = [eventsResult, quizzesResult, leadsResult].find((result) => result.error)
+  if (failed?.error) throw failed.error
+  return {
+    events: eventsResult.data || [],
+    quizzes: quizzesResult.data || [],
+    leads: leadsResult.data || [],
+  }
+}

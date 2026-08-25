@@ -11,6 +11,7 @@ import { useLanguage } from '../state/LanguageContext'
 import { useSiteSettings } from '../state/SiteSettingsContext'
 import { categoryName } from '../lib/productText'
 import { whatsappUrl } from '../lib/whatsapp'
+import HeroSlider from '../components/HeroSlider'
 
 const categoryIcons = [Layers3, PackageCheck, Box, Palette, Scissors, Sparkles]
 const whyIcons = [PackageCheck, Palette, Scissors, MessageCircle]
@@ -32,45 +33,14 @@ export default function Home() {
       })
       .catch((err) => active && setError(err.message || t.common.error))
     return () => { active = false }
-  }, [])
+  }, [t.common.error])
 
   const featured = products.filter((p) => p.is_featured || p.is_new || p.is_on_sale).slice(0, 4)
   const visibleProducts = featured.length ? featured : products.slice(0, 4)
 
   return (
     <>
-      <section className="hero section">
-        <div className="container hero__grid">
-          <div className="hero__content">
-            <span className="eyebrow">{t.hero.eyebrow}</span>
-            <h1>{t.hero.title}</h1>
-            <p>{t.hero.text}</p>
-            <div className="hero__actions">
-              <Link className="btn btn--primary" to="/catalog">{t.hero.catalog}<ArrowRight size={18}/></Link>
-              <a className="btn btn--ghost" href={whatsappUrl(settings.whatsapp, t.common.whatsappText)} target="_blank" rel="noreferrer"><MessageCircle size={18}/>{t.hero.consult}</a>
-            </div>
-            <div className="hero__trust">
-              <span><Scissors size={17}/>{t.hero.trust1}</span>
-              <span><Truck size={17}/>{t.hero.trust2}</span>
-              <span><Palette size={17}/>{t.hero.trust3}</span>
-            </div>
-          </div>
-
-          <div className="hero-art" aria-hidden="true">
-            <div className="hero-art__orb hero-art__orb--pink"/>
-            <div className="hero-art__orb hero-art__orb--blue"/>
-            <div className="hero-art__card hero-art__card--main">
-              <div className="hero-art__logo"><img src="/salt-ordo-logo.png" alt=""/></div>
-              <div className="hero-art__lines"><span/><span/><span/></div>
-              <strong>{t.hero.cardTitle}</strong>
-              <small>{t.hero.cardText}</small>
-            </div>
-            <div className="hero-art__card hero-art__card--small rose"><span>Salt Ordo</span><strong>{t.hero.chip1}</strong></div>
-            <div className="hero-art__card hero-art__card--small blue"><span>Custom</span><strong>{t.hero.chip2}</strong></div>
-            <Ornament className="hero-art__ornament"/>
-          </div>
-        </div>
-      </section>
+      <HeroSlider/>
 
       <section className="section categories-section" id="categories">
         <div className="container">
@@ -142,7 +112,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section why-section">
+      <section className="section why-section" id="about">
         <div className="container why-grid">
           <div className="why-intro">
             <span className="eyebrow">{t.why.eyebrow}</span>

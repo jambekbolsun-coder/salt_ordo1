@@ -6,6 +6,7 @@ import ProductCard from '../components/ProductCard'
 import EmptyState from '../components/EmptyState'
 import { useLanguage } from '../state/LanguageContext'
 import { categoryName, isPromotionActive, localizedField } from '../lib/productText'
+import { track } from '../lib/analytics'
 
 export default function Catalog() {
   const [params, setParams] = useSearchParams()
@@ -33,7 +34,7 @@ export default function Catalog() {
       .catch((err) => active && setError(err.message || t.common.error))
       .finally(() => active && setLoading(false))
     return () => { active = false }
-  }, [])
+  }, [t.common.error])
 
   useEffect(() => {
     if (!mobileFilters) return
@@ -46,6 +47,16 @@ export default function Catalog() {
       window.removeEventListener('keydown', onKey)
     }
   }, [mobileFilters])
+
+  useEffect(() => {
+    if (category) track('category_view', { categorySlug:category })
+  }, [category])
+
+  useEffect(() => {
+    if (!q.trim()) return
+    const timer = window.setTimeout(() => track('search', { metadata:{ query:q.trim().slice(0,120) } }), 700)
+    return () => window.clearTimeout(timer)
+  }, [q])
 
   const set = (key, value) => {
     const next = new URLSearchParams(params)

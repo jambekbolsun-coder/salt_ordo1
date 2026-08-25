@@ -1,7 +1,7 @@
 export const translations = {
   ru: {
     langLabel: 'Русский',
-    nav: { home: 'Главная', catalog: 'Каталог', custom: 'На заказ', delivery: 'Доставка' },
+    nav: { home: 'Главная', catalog: 'Каталог', custom: 'На заказ', delivery: 'Доставка', about: 'О нас', contacts: 'Контакты' },
     hero: {
       eyebrow: 'Salt Ordo · текстиль для особенных моментов',
       title: 'Текстиль, который делает дом по-настоящему вашим',
@@ -71,7 +71,7 @@ export const translations = {
   },
   kg: {
     langLabel: 'Кыргызча',
-    nav: { home: 'Башкы бет', catalog: 'Каталог', custom: 'Буюртма менен', delivery: 'Жеткирүү' },
+    nav: { home: 'Башкы бет', catalog: 'Каталог', custom: 'Буюртма менен', delivery: 'Жеткирүү', about: 'Биз жөнүндө', contacts: 'Байланыш' },
     hero: {
       eyebrow: 'Salt Ordo · өзгөчө учурлар үчүн текстиль',
       title: 'Үйүңүзгө жылуулук берип, өзгөчөлүк кошкон текстиль',
@@ -109,7 +109,7 @@ export const translations = {
   },
   en: {
     langLabel: 'English',
-    nav: { home: 'Home', catalog: 'Catalog', custom: 'Custom order', delivery: 'Delivery' },
+    nav: { home: 'Home', catalog: 'Catalog', custom: 'Custom order', delivery: 'Delivery', about: 'About', contacts: 'Contacts' },
     hero: { eyebrow: 'Salt Ordo · textiles for meaningful moments', title: 'Textiles that make a home feel truly yours', text: 'Toshok sets, dowry sets, chests, pillows and home textiles — choose a ready-made piece or have a set made around your preferred colors, size and style.', catalog: 'View catalog', consult: 'Build my set', trust1: 'Made to order', trust2: 'Delivery across Kyrgyzstan', trust3: 'Help with colors and combinations', cardTitle: 'Build a set in one harmonious palette', cardText: 'Color · fabric · stitching · size · details', chip1: 'Ready-made pieces', chip2: 'Any style made to order' },
     category: { eyebrow: 'Categories', title: 'Find what you need faster', empty: 'We are updating the categories. Ask our manager if you need a specific option.', open: 'Open category', all: 'Full catalog' },
     featured: { eyebrow: 'Salt Ordo catalog', title: 'New, popular and discounted items', text: 'Price, availability and order terms are always shown on each product page.', all: 'Go to catalog', emptyTitle: 'The catalog is empty for now', emptyText: 'We are updating the assortment. Message us and we will help find or make the right option.' },
