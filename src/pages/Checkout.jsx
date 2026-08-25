@@ -21,7 +21,10 @@ export default function Checkout() {
   const [whatsappLink, setWhatsappLink] = useState('')
 
   const hasRequest = useMemo(() => items.some((item) => item.price_on_request || item.sale_price == null), [items])
-  const change = (event) => setForm({ ...form, [event.target.name]: event.target.value })
+  const change = (event) => {
+    const { name, value } = event.target
+    setForm((current) => ({ ...current, [name]: value }))
+  }
 
   const buildMessage = (orderNumber) => {
     const lines = items.map((item,index) => `${index + 1}. ${localizedField(item, 'name', lang)} — ${item.quantity}`).join('\n')

@@ -42,6 +42,7 @@ export default function HeroSlider() {
 
   const change = (direction) => setActive((value) => (value + direction + slides.length) % slides.length)
   const pointerDown = (event) => {
+    if (event.target.closest('button, a')) return
     dragStart.current = event.clientX
     event.currentTarget.setPointerCapture?.(event.pointerId)
   }
