@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, HelpCircle, Sparkles, X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { completeQuiz, dismissQuiz, saveQuizAnswer, startQuiz } from '../lib/api'
@@ -90,7 +90,6 @@ export default function QuizOverlay() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [confirmClose, setConfirmClose] = useState(false)
-  const [dismissed, setDismissed] = useState(() => Boolean(safeGet(DISMISSED_KEY)))
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState({})
   const [quizSessionId, setQuizSessionId] = useState(null)
@@ -100,12 +99,7 @@ export default function QuizOverlay() {
   const items = questions[lang] || questions.ru
   const current = items[step]
   const tracking = useMemo(() => getTrackingIds(), [])
-
-  useEffect(() => {
-    if (safeGet(COMPLETED_KEY) || safeGet(DISMISSED_KEY)) return
-    const timer = window.setTimeout(() => setOpen(true), 650)
-    return () => window.clearTimeout(timer)
-  }, [])
+  const cardRef = useRef(null)
 
   useEffect(() => {
     if (!open || quizSessionId) return
@@ -117,14 +111,43 @@ export default function QuizOverlay() {
   useEffect(() => {
     if (!open) return
     const previous = document.body.style.overflow
+    const previousPadding = document.body.style.paddingRight
+    const previousFocus = document.activeElement
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth
     document.body.style.overflow = 'hidden'
-    const onKey = (event) => event.key === 'Escape' && setConfirmClose(true)
+    if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`
+    const onKey = (event) => {
+      if (event.key === 'Escape') {
+        setConfirmClose(true)
+        return
+      }
+      if (event.key !== 'Tab' || !cardRef.current) return
+      const focusable = [...cardRef.current.querySelectorAll('button:not([disabled]), a[href], input:not([disabled])')]
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
     window.addEventListener('keydown', onKey)
+    requestAnimationFrame(() => cardRef.current?.querySelector('button')?.focus())
     return () => {
       document.body.style.overflow = previous
+      document.body.style.paddingRight = previousPadding
       window.removeEventListener('keydown', onKey)
+      previousFocus?.focus?.({ preventScroll:true })
     }
   }, [open])
+
+  useEffect(() => {
+    if (!open || !confirmClose) return
+    requestAnimationFrame(() => cardRef.current?.querySelector('.quiz-confirm .btn')?.focus())
+  }, [confirmClose, open])
 
   const choose = async (value) => {
     setAnswers((state) => ({ ...state, [current[0]]: value }))
@@ -156,7 +179,6 @@ export default function QuizOverlay() {
       safeSet(COMPLETED_KEY, '1')
       try { window.localStorage.removeItem(DISMISSED_KEY) } catch { /* private browsing */ }
       setOpen(false)
-      setDismissed(false)
       navigate(categories[0] ? `/catalog?category=${categories[0]}&quiz=1` : '/catalog?quiz=1')
     } catch (err) {
       setError(err.message || 'Не удалось завершить подбор.')
@@ -168,15 +190,14 @@ export default function QuizOverlay() {
   const closeAnyway = () => {
     if (quizSessionId) dismissQuiz({ ...tracking, quizSessionId }).catch(() => {})
     safeSet(DISMISSED_KEY, '1')
-    setDismissed(true)
     setConfirmClose(false)
     setOpen(false)
   }
 
   if (!open) {
-    if (!dismissed || safeGet(COMPLETED_KEY)) return null
+    if (safeGet(COMPLETED_KEY)) return null
     return (
-      <button className="quiz-bubble" type="button" onClick={() => setOpen(true)}>
+      <button className="quiz-bubble" type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-controls="selection-quiz">
         <span><HelpCircle/></span>
         <strong>{text.bubble}</strong>
       </button>
@@ -184,9 +205,9 @@ export default function QuizOverlay() {
   }
 
   return (
-    <div className="quiz-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-title">
+    <div id="selection-quiz" className="quiz-overlay" role="dialog" aria-modal="true" aria-labelledby="quiz-title" aria-describedby={step === 0 ? 'quiz-description' : undefined}>
       <button className="quiz-overlay__backdrop" type="button" onClick={() => setConfirmClose(true)} aria-label="Close"/>
-      <section className="quiz-card">
+      <section ref={cardRef} className="quiz-card" tabIndex="-1">
         <button className="quiz-close" type="button" onClick={() => setConfirmClose(true)} aria-label="Close"><X/></button>
         <div className="quiz-card__brand"><span><Sparkles/></span><strong>SALT <em>ORDO</em></strong></div>
 
@@ -203,7 +224,7 @@ export default function QuizOverlay() {
             <div className="quiz-intro">
               <span className="eyebrow">{text.eyebrow}</span>
               <h1 id="quiz-title">{step === 0 ? text.title : current[1]}</h1>
-              {step === 0 && <p>{text.text}</p>}
+              {step === 0 && <p id="quiz-description">{text.text}</p>}
             </div>
             <div className="quiz-progress" aria-label={`${text.step} ${step + 1} / ${items.length}`}>
               <span style={{ width: `${((step + 1) / items.length) * 100}%` }}/>

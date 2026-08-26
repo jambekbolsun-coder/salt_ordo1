@@ -16,8 +16,9 @@ export default function PublicLayout() {
 
   return (
     <div className="public-app">
+      <a className="skip-link" href="#main-content">Перейти к содержанию</a>
       <Header />
-      <main><Outlet/></main>
+      <main id="main-content"><Outlet/></main>
       <Footer />
       <FloatingAssist />
       <QuizOverlay />

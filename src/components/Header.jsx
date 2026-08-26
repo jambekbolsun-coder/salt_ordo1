@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { Check, Heart, Instagram, Languages, Menu, MessageCircle, Palette, Search, ShoppingBag, X } from 'lucide-react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Check, Heart, Instagram, Languages, Menu, MessageCircle, Search, ShoppingBag, X } from 'lucide-react'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import Logo from './Logo'
 import { useCart } from '../state/CartContext'
 import { useFavorites } from '../state/FavoritesContext'
@@ -14,10 +14,17 @@ const languageOptions = [
   ['en', 'EN', 'English'],
 ]
 
+const themeOptions = [
+  ['pink', 'Розовая тема'],
+  ['red', 'Красная тема'],
+  ['blue', 'Синяя тема'],
+]
+
 export default function Header() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [query, setQuery] = useState('')
   const [activeSection,setActiveSection] = useState('home')
   const [theme, setTheme] = useState(() => {
     try { return window.localStorage.getItem('salt-ordo-theme') || 'pink' } catch { return 'pink' }
@@ -27,7 +34,9 @@ export default function Header() {
   const { lang, setLang, t } = useLanguage()
   const { settings } = useSiteSettings()
   const langRef = useRef(null)
+  const drawerRef = useRef(null)
   const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
@@ -68,17 +77,41 @@ export default function Header() {
   useEffect(() => {
     if (!open) return
     const top = window.scrollY
-    const onKey = (e) => e.key === 'Escape' && setOpen(false)
+    const previousFocus = document.activeElement
+    const previousPadding = document.body.style.paddingRight
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth
+    const onKey = (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false)
+        return
+      }
+      if (event.key !== 'Tab' || !drawerRef.current) return
+      const focusable = [...drawerRef.current.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])')]
+      if (!focusable.length) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
     document.body.style.position = 'fixed'
     document.body.style.top = `-${top}px`
     document.body.style.width = '100%'
+    if (scrollbar > 0) document.body.style.paddingRight = `${scrollbar}px`
     window.addEventListener('keydown', onKey)
+    requestAnimationFrame(() => drawerRef.current?.querySelector('button')?.focus())
     return () => {
       window.removeEventListener('keydown', onKey)
       document.body.style.position = ''
       document.body.style.top = ''
       document.body.style.width = ''
+      document.body.style.paddingRight = previousPadding
       window.scrollTo(0, top)
+      previousFocus?.focus?.({ preventScroll: true })
     }
   }, [open])
 
@@ -102,6 +135,13 @@ export default function Header() {
 
   const currentLanguage = languageOptions.find(([code]) => code === lang) || languageOptions[0]
 
+  const submitSearch = (event) => {
+    event.preventDefault()
+    const value = query.trim()
+    navigate(value ? `/catalog?q=${encodeURIComponent(value)}` : '/catalog')
+    setOpen(false)
+  }
+
   return (
     <>
       <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
@@ -114,22 +154,25 @@ export default function Header() {
             <a className={location.pathname === '/' && activeSection === 'contacts' ? 'active' : ''} href="/#contacts">{t.nav.contacts}</a>
           </nav>
 
+          <form className="header-search-form" role="search" onSubmit={submitSearch}>
+            <Search aria-hidden="true"/>
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t.catalog.search} aria-label={t.catalog.search}/>
+            <button type="submit" aria-label={t.catalog.search}><Search aria-hidden="true"/></button>
+          </form>
+
           <div className="header-actions">
-            <label className="theme-select" title="Цвет сайта">
-              <Palette size={17}/>
-              <select value={theme} onChange={(event) => setTheme(event.target.value)} aria-label="Цветовая тема">
-                <option value="pink">Pink</option>
-                <option value="red">Red</option>
-                <option value="blue">Blue</option>
-              </select>
-            </label>
+            <div className="theme-swatches" role="group" aria-label="Цветовая тема">
+              {themeOptions.map(([value, label]) => (
+                <button key={value} className={`theme-swatch theme-swatch--${value}`} type="button" onClick={() => setTheme(value)} aria-label={label} aria-pressed={theme === value}/>
+              ))}
+            </div>
             <div className="language-menu" ref={langRef}>
-              <button className={`language-trigger ${langOpen ? 'is-open' : ''}`} type="button" onClick={() => setLangOpen((v) => !v)} aria-expanded={langOpen} aria-haspopup="menu" aria-label="Change language">
+              <button className={`language-trigger ${langOpen ? 'is-open' : ''}`} type="button" onClick={() => setLangOpen((v) => !v)} aria-expanded={langOpen} aria-controls="language-popover" aria-haspopup="menu" aria-label="Change language">
                 <Languages size={18}/>
                 <span className="language-trigger__code">{currentLanguage[1]}</span>
                 <span className="language-trigger__name">{currentLanguage[2]}</span>
               </button>
-              <div className={`language-popover ${langOpen ? 'is-open' : ''}`} role="menu">
+              <div id="language-popover" className={`language-popover ${langOpen ? 'is-open' : ''}`} role="menu">
                 <div className="language-popover__title">Language · Тил · Язык</div>
                 {languageOptions.map(([code, short, label]) => (
                   <button key={code} type="button" role="menuitem" className={lang === code ? 'is-active' : ''} onClick={() => chooseLang(code)}>
@@ -140,7 +183,7 @@ export default function Header() {
                 ))}
               </div>
             </div>
-            <Link to="/catalog" className="icon-btn header-search" aria-label={t.nav.catalog}><Search size={20}/></Link>
+            <Link to="/catalog" className="icon-btn header-search-button" aria-label={t.catalog.search}><Search size={20}/></Link>
             <Link to="/favorites" className={`icon-btn badge-wrap header-favorite ${favoritePulse ? 'is-pulsing' : ''}`} aria-label={t.favorites.title}>
               <Heart size={20}/>{ids.length > 0 && <span className="mini-badge">{ids.length}</span>}
             </Link>
@@ -153,7 +196,7 @@ export default function Header() {
       </header>
 
       <div className={`drawer-backdrop ${open ? 'is-open' : ''}`} onClick={() => setOpen(false)}/>
-      <aside className={`mobile-drawer ${open ? 'is-open' : ''}`} aria-hidden={!open}>
+      <aside ref={drawerRef} className={`mobile-drawer ${open ? 'is-open' : ''}`} role="dialog" aria-modal="true" aria-label="Навигация" aria-hidden={!open}>
         <div className="mobile-drawer__top">
           <Logo compact/>
           <button className="icon-btn" type="button" onClick={() => setOpen(false)} aria-label="Close"><X/></button>
@@ -162,6 +205,11 @@ export default function Header() {
           <span>Salt Ordo</span>
           <strong>{t.hero.cardTitle}</strong>
         </div>
+        <form className="mobile-drawer__search" role="search" onSubmit={submitSearch}>
+          <Search aria-hidden="true"/>
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t.catalog.search} aria-label={t.catalog.search}/>
+          <button type="submit" aria-label={t.catalog.search}><Search aria-hidden="true"/></button>
+        </form>
         <nav className="mobile-drawer__nav">
           <Link to="/" onClick={()=>setOpen(false)}>{t.nav.home}</Link>
           <Link to="/catalog" onClick={()=>setOpen(false)}>{t.nav.catalog}</Link>
@@ -171,6 +219,13 @@ export default function Header() {
         <div className="mobile-drawer__language">
           {languageOptions.map(([code,,label]) => (
             <button key={code} type="button" className={lang === code ? 'is-active' : ''} onClick={() => chooseLang(code)}>{label}</button>
+          ))}
+        </div>
+        <div className="mobile-drawer__themes" role="group" aria-label="Цветовая тема">
+          {themeOptions.map(([value, label]) => (
+            <button key={value} type="button" className={theme === value ? 'is-active' : ''} onClick={() => setTheme(value)}>
+              <i className={`theme-swatch theme-swatch--${value}`} aria-hidden="true"/>{label}
+            </button>
           ))}
         </div>
         <div className="mobile-drawer__bottom">

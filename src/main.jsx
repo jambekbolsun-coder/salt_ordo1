@@ -7,7 +7,9 @@ import { SiteSettingsProvider } from './state/SiteSettingsContext'
 import { CartProvider } from './state/CartContext'
 import { FavoritesProvider } from './state/FavoritesContext'
 import { AuthProvider } from './state/AuthContext'
+import '@fontsource-variable/geist'
 import './styles.css'
+import './storefront.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

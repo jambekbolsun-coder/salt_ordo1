@@ -113,13 +113,13 @@ export default function FloatingAssist() {
         <MessageCircle/>
         <span>{t.chatbot.whatsapp}</span>
       </a>
-      {config.enabled !== false && <button className={`floating-action floating-action--bot ${open ? 'is-active' : ''}`} type="button" onClick={()=>setOpen((value)=>!value)} aria-expanded={open} aria-label={botTitle}>
+      {config.enabled !== false && <button className={`floating-action floating-action--bot ${open ? 'is-active' : ''}`} type="button" onClick={()=>setOpen((value)=>!value)} aria-expanded={open} aria-controls="salt-ordo-assistant" aria-label={botTitle}>
         <Bot/>
         <span>{t.chatbot.open}</span>
       </button>}
     </div>
 
-    {config.enabled !== false && <section ref={panelRef} className={`chatbot-panel ${open ? 'is-open' : ''}`} aria-hidden={!open}>
+    {config.enabled !== false && <section id="salt-ordo-assistant" ref={panelRef} className={`chatbot-panel ${open ? 'is-open' : ''}`} role="dialog" aria-modal="false" aria-label={botTitle} aria-hidden={!open}>
       <header className="chatbot-panel__head">
         <div className="chatbot-panel__identity"><span><Sparkles/></span><div><strong>{botTitle}</strong><small>{t.chatbot.subtitle}</small></div></div>
         <button className="icon-btn" type="button" onClick={()=>setOpen(false)} aria-label={t.chatbot.close}><X/></button>
