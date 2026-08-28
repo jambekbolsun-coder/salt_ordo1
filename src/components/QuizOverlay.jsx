@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowLeft, ArrowRight, Check, HelpCircle, Sparkles, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Box, Check, Clock, DollarSign, HelpCircle, Layers3, Package, Palette, Ruler, Sparkles, X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { completeQuiz, dismissQuiz, saveQuizAnswer, startQuiz } from '../lib/api'
 import { getTrackingIds } from '../lib/analytics'
@@ -11,8 +11,8 @@ const DISMISSED_KEY = 'salt-ordo-quiz-dismissed'
 const copy = {
   ru: {
     eyebrow: 'Персональный подбор',
-    title: 'Найдём именно то, что вам нужно',
-    text: 'Пять коротких вопросов — и мы сразу покажем подходящую часть каталога.',
+    title: 'Что вы хотите подобрать?',
+    text: 'Ответьте на 5 вопросов — мы покажем подходящие варианты.',
     step: 'Вопрос',
     back: 'Назад',
     next: 'Дальше',
@@ -53,23 +53,48 @@ const copy = {
   },
 }
 
+const optionIcons = {
+  sep: Layers3,
+  tradition: Sparkles,
+  custom: Ruler,
+  other: Palette,
+  'jer-toshok': Layers3,
+  jastyk: Package,
+  sandyk: Box,
+  all: Sparkles,
+  week: Clock,
+  'two-weeks': Clock,
+  month: Clock,
+  later: Clock,
+  traditional: Sparkles,
+  modern: Palette,
+  light: Palette,
+  dark: Palette,
+  own: Ruler,
+  'under-20': DollarSign,
+  '20-50': DollarSign,
+  '50-100': DollarSign,
+  '100-plus': DollarSign,
+  discuss: HelpCircle,
+}
+
 const questions = {
   ru: [
-    ['purpose', 'Для чего вы выбираете изделия?', [['sep','Кызга сеп'],['tradition','Для традиции или события'],['custom','Индивидуальный заказ'],['daily','Для дома на каждый день'],['other','Другое']]],
+    ['purpose', 'Для чего вы выбираете изделия?', [['sep','Кызга сеп'],['tradition','Для традиции или события'],['custom','Индивидуальный заказ'],['other','Другое']]],
     ['item', 'Что вас интересует больше всего?', [['sep','Полный сеп-комплект'],['jer-toshok','Жер төшөк'],['jastyk','Подушки / жастык'],['sandyk','Сандык'],['all','Хочу посмотреть всё']]],
     ['deadline', 'Когда заказ должен быть готов?', [['week','До 7 дней'],['two-weeks','До 2 недель'],['month','В течение месяца'],['later','Срок пока не важен']]],
     ['style', 'Какой стиль вам ближе?', [['traditional','Национальный и традиционный'],['modern','Современный минимализм'],['light','Светлый и нежный'],['dark','Глубокие тёмные оттенки'],['own','Есть свой пример']]],
     ['budget', 'Как удобнее обсудить бюджет?', [['under-20','До 20 000 сом'],['20-50','20 000–50 000 сом'],['50-100','50 000–100 000 сом'],['100-plus','От 100 000 сом'],['discuss','Подобрать после консультации']]],
   ],
   kg: [
-    ['purpose', 'Буюмдарды эмне үчүн тандап жатасыз?', [['sep','Кызга сеп'],['tradition','Салт же иш-чара үчүн'],['custom','Жеке буйрутма'],['daily','Үй үчүн күн сайын'],['other','Башка']]],
+    ['purpose', 'Буюмдарды эмне үчүн тандап жатасыз?', [['sep','Кызга сеп'],['tradition','Салт же иш-чара үчүн'],['custom','Жеке буйрутма'],['other','Башка']]],
     ['item', 'Сизди көбүрөөк эмне кызыктырат?', [['sep','Толук сеп комплекти'],['jer-toshok','Жер төшөк'],['jastyk','Жаздык'],['sandyk','Сандык'],['all','Баарын көргүм келет']]],
     ['deadline', 'Буйрутма качан даяр болушу керек?', [['week','7 күнгө чейин'],['two-weeks','2 жумага чейин'],['month','Бир айдын ичинде'],['later','Мөөнөт маанилүү эмес']]],
     ['style', 'Кайсы стиль жакын?', [['traditional','Улуттук жана салттуу'],['modern','Заманбап минимализм'],['light','Ачык жана назик'],['dark','Кочкул түстөр'],['own','Өзүмдүн үлгүм бар']]],
     ['budget', 'Бюджетти кантип талкуулайбыз?', [['under-20','20 000 сомго чейин'],['20-50','20 000–50 000 сом'],['50-100','50 000–100 000 сом'],['100-plus','100 000 сомдон жогору'],['discuss','Кеңештен кийин тандайбыз']]],
   ],
   en: [
-    ['purpose', 'What are you choosing the items for?', [['sep','Bridal dowry'],['tradition','A tradition or event'],['custom','A custom order'],['daily','Everyday home use'],['other','Other']]],
+    ['purpose', 'What are you choosing the items for?', [['sep','Bridal dowry'],['tradition','A tradition or event'],['custom','A custom order'],['other','Other']]],
     ['item', 'What interests you most?', [['sep','Complete dowry set'],['jer-toshok','Floor bedding'],['jastyk','Pillows'],['sandyk','Chest'],['all','Show me everything']]],
     ['deadline', 'When should the order be ready?', [['week','Within 7 days'],['two-weeks','Within 2 weeks'],['month','Within a month'],['later','Timing is flexible']]],
     ['style', 'Which style feels right?', [['traditional','National and traditional'],['modern','Modern minimalism'],['light','Light and delicate'],['dark','Deep dark shades'],['own','I have a reference']]],
@@ -90,6 +115,7 @@ export default function QuizOverlay() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [confirmClose, setConfirmClose] = useState(false)
+  const [dismissed, setDismissed] = useState(() => Boolean(safeGet(DISMISSED_KEY)))
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState({})
   const [quizSessionId, setQuizSessionId] = useState(null)
@@ -102,10 +128,16 @@ export default function QuizOverlay() {
   const cardRef = useRef(null)
 
   useEffect(() => {
+    if (safeGet(COMPLETED_KEY) || safeGet(DISMISSED_KEY)) return
+    const timer = window.setTimeout(() => setOpen(true), 650)
+    return () => window.clearTimeout(timer)
+  }, [])
+
+  useEffect(() => {
     if (!open || quizSessionId) return
     startQuiz({ ...tracking, language: lang })
       .then(setQuizSessionId)
-      .catch(() => setError('Не удалось сохранить ответы. Можно продолжить подбор.'))
+      .catch(() => {})
   }, [open, quizSessionId, tracking, lang])
 
   useEffect(() => {
@@ -179,6 +211,7 @@ export default function QuizOverlay() {
       safeSet(COMPLETED_KEY, '1')
       try { window.localStorage.removeItem(DISMISSED_KEY) } catch { /* private browsing */ }
       setOpen(false)
+      setDismissed(false)
       navigate(categories[0] ? `/catalog?category=${categories[0]}&quiz=1` : '/catalog?quiz=1')
     } catch (err) {
       setError(err.message || 'Не удалось завершить подбор.')
@@ -190,12 +223,13 @@ export default function QuizOverlay() {
   const closeAnyway = () => {
     if (quizSessionId) dismissQuiz({ ...tracking, quizSessionId }).catch(() => {})
     safeSet(DISMISSED_KEY, '1')
+    setDismissed(true)
     setConfirmClose(false)
     setOpen(false)
   }
 
   if (!open) {
-    if (safeGet(COMPLETED_KEY)) return null
+    if (!dismissed || safeGet(COMPLETED_KEY)) return null
     return (
       <button className="quiz-bubble" type="button" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-controls="selection-quiz">
         <span><HelpCircle/></span>
@@ -221,22 +255,25 @@ export default function QuizOverlay() {
           </div>
         ) : (
           <>
+            <div className="quiz-step-label">{text.step} {step + 1} / {items.length}</div>
             <div className="quiz-intro">
-              <span className="eyebrow">{text.eyebrow}</span>
               <h1 id="quiz-title">{step === 0 ? text.title : current[1]}</h1>
               {step === 0 && <p id="quiz-description">{text.text}</p>}
             </div>
             <div className="quiz-progress" aria-label={`${text.step} ${step + 1} / ${items.length}`}>
               <span style={{ width: `${((step + 1) / items.length) * 100}%` }}/>
             </div>
-            <div className="quiz-step-label">{text.step} {step + 1} / {items.length}</div>
-            {step === 0 && <h2 className="quiz-question">{current[1]}</h2>}
             <div className="quiz-options">
-              {current[2].map(([value, label]) => (
-                <button key={value} type="button" className={answers[current[0]] === value ? 'is-active' : ''} onClick={() => choose(value)}>
-                  <span>{label}</span><i>{answers[current[0]] === value && <Check/>}</i>
-                </button>
-              ))}
+              {current[2].map(([value, label]) => {
+                const OptionIcon = optionIcons[value] || Sparkles
+                return (
+                  <button key={value} type="button" className={answers[current[0]] === value ? 'is-active' : ''} onClick={() => choose(value)}>
+                    <span className="quiz-option__icon"><OptionIcon/></span>
+                    <span className="quiz-option__label">{label}</span>
+                    <i>{answers[current[0]] === value && <Check/>}</i>
+                  </button>
+                )
+              })}
             </div>
             {error && <div className="notice notice--error">{error}</div>}
             <div className="quiz-actions">

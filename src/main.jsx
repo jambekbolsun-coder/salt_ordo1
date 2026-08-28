@@ -10,6 +10,7 @@ import { AuthProvider } from './state/AuthContext'
 import '@fontsource-variable/geist'
 import './styles.css'
 import './storefront.css'
+import './approved-design.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

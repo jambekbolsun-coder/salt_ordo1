@@ -161,11 +161,6 @@ export default function Header() {
           </form>
 
           <div className="header-actions">
-            <div className="theme-swatches" role="group" aria-label="Цветовая тема">
-              {themeOptions.map(([value, label]) => (
-                <button key={value} className={`theme-swatch theme-swatch--${value}`} type="button" onClick={() => setTheme(value)} aria-label={label} aria-pressed={theme === value}/>
-              ))}
-            </div>
             <div className="language-menu" ref={langRef}>
               <button className={`language-trigger ${langOpen ? 'is-open' : ''}`} type="button" onClick={() => setLangOpen((v) => !v)} aria-expanded={langOpen} aria-controls="language-popover" aria-haspopup="menu" aria-label="Change language">
                 <Languages size={18}/>
@@ -183,6 +178,11 @@ export default function Header() {
                 ))}
               </div>
             </div>
+            <div className="theme-swatches" role="group" aria-label="Цветовая тема">
+              {themeOptions.map(([value, label]) => (
+                <button key={value} className={`theme-swatch theme-swatch--${value}`} type="button" onClick={() => setTheme(value)} aria-label={label} aria-pressed={theme === value}/>
+              ))}
+            </div>
             <Link to="/catalog" className="icon-btn header-search-button" aria-label={t.catalog.search}><Search size={20}/></Link>
             <Link to="/favorites" className={`icon-btn badge-wrap header-favorite ${favoritePulse ? 'is-pulsing' : ''}`} aria-label={t.favorites.title}>
               <Heart size={20}/>{ids.length > 0 && <span className="mini-badge">{ids.length}</span>}
@@ -190,6 +190,9 @@ export default function Header() {
             <Link to="/cart" className={`icon-btn badge-wrap header-cart ${cartPulse ? 'is-pulsing' : ''}`} aria-label={t.cart.title}>
               <ShoppingBag size={20}/>{count > 0 && <span className="mini-badge">{count}</span>}
             </Link>
+            <a className="header-whatsapp" href={whatsappUrl(settings.whatsapp, t.common.whatsappText)} target="_blank" rel="noreferrer" aria-label="WhatsApp">
+              <MessageCircle size={25}/>
+            </a>
             <button className="icon-btn menu-btn" type="button" onClick={() => setOpen(true)} aria-label="Menu"><Menu size={21}/></button>
           </div>
         </div>

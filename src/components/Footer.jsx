@@ -17,7 +17,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer-shell">
           <div className="footer-top">
-            <div className="footer-brand">
+            <div className="footer-brand" id="about">
               <Logo/>
               <p>{t.footer.text}</p>
             </div>

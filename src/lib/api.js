@@ -1,5 +1,9 @@
 import { supabase, supabaseConfigured } from './supabase'
 
+const createId = () => typeof globalThis.crypto?.randomUUID === 'function'
+  ? globalThis.crypto.randomUUID()
+  : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
+
 const normalizeProduct = (row) => {
   if (!row) return row
   const images = row.images || row.product_images || []
@@ -140,7 +144,7 @@ export async function saveProductImages(productId, files, startOrder = 0) {
   for (let i = 0; i < files.length; i++) {
     const file = files[i]
     const ext = (file.name.split('.').pop() || 'jpg').toLowerCase()
-    const path = `${productId}/${crypto.randomUUID()}.${ext}`
+    const path = `${productId}/${createId()}.${ext}`
     const { error: uploadError } = await supabase.storage.from('product-images').upload(path, file, { cacheControl: '31536000', upsert: false })
     if (uploadError) throw uploadError
     const { data: urlData } = supabase.storage.from('product-images').getPublicUrl(path)
@@ -294,7 +298,7 @@ export async function deleteChatbotFaq(id) {
 }
 
 export async function startQuiz({ visitorId, sessionId, language }) {
-  if (!supabaseConfigured) return crypto.randomUUID()
+  if (!supabaseConfigured) return createId()
   const { data, error } = await supabase.rpc('start_public_quiz', {
     p_visitor_id: visitorId,
     p_session_id: sessionId,

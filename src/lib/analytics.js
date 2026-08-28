@@ -3,15 +3,20 @@ import { trackPublicEvent } from './api'
 const VISITOR_KEY = 'salt-ordo-visitor-id'
 const SESSION_KEY = 'salt-ordo-session-id'
 
+function createTrackingId() {
+  if (typeof globalThis.crypto?.randomUUID === 'function') return globalThis.crypto.randomUUID()
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
+}
+
 function readOrCreate(storage, key) {
   try {
     const existing = storage.getItem(key)
     if (existing) return existing
-    const value = crypto.randomUUID()
+    const value = createTrackingId()
     storage.setItem(key, value)
     return value
   } catch {
-    return crypto.randomUUID()
+    return createTrackingId()
   }
 }
 
