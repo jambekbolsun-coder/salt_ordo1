@@ -3,7 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
 import MobileBottomNav from './MobileBottomNav'
-import FloatingAssist from './FloatingAssist'
 import QuizOverlay from './QuizOverlay'
 import { track } from '../lib/analytics'
 
@@ -20,7 +19,6 @@ export default function PublicLayout() {
       <Header />
       <main id="main-content"><Outlet/></main>
       <Footer />
-      <FloatingAssist />
       <QuizOverlay />
       <MobileBottomNav />
     </div>

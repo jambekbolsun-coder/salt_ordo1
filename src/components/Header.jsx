@@ -15,8 +15,8 @@ const languageOptions = [
 ]
 
 const themeOptions = [
-  ['pink', 'Розовая тема'],
   ['red', 'Красная тема'],
+  ['pink', 'Розовая тема'],
   ['blue', 'Синяя тема'],
 ]
 
@@ -58,8 +58,10 @@ export default function Header() {
       const marker = window.scrollY + 180
       const about = document.getElementById('about')
       const contacts = document.getElementById('contacts')
-      if (contacts && marker >= contacts.offsetTop) setActiveSection('contacts')
-      else if (about && marker >= about.offsetTop) setActiveSection('about')
+      const contactsTop = contacts ? contacts.getBoundingClientRect().top + window.scrollY : Infinity
+      const aboutTop = about ? about.getBoundingClientRect().top + window.scrollY : Infinity
+      if (window.location.hash === '#about' && marker >= aboutTop) setActiveSection('about')
+      else if (contacts && marker >= contactsTop) setActiveSection('contacts')
       else setActiveSection('home')
     }
     const onScroll = () => {
