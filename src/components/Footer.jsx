@@ -13,11 +13,11 @@ export default function Footer() {
   const delivery = settings[`delivery_note_${lang}`] || t.delivery.title
 
   return (
-    <footer className="site-footer" id="contacts">
+    <footer className="site-footer">
       <div className="container">
         <div className="footer-shell">
           <div className="footer-top">
-            <div className="footer-brand" id="about">
+            <div className="footer-brand">
               <Logo/>
               <p>{t.footer.text}</p>
             </div>
@@ -33,8 +33,7 @@ export default function Footer() {
               <span>{t.footer.navigation}</span>
               <Link to="/">{t.nav.home}</Link>
               <Link to="/catalog">{t.nav.catalog}</Link>
-              <a href="/#about">{t.nav.about}</a>
-              <a href="/#contacts">{t.nav.contacts}</a>
+              <Link to="/contacts">{t.nav.contacts}</Link>
             </nav>
 
             <div className="footer-contact">

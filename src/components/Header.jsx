@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Check, Heart, Instagram, Languages, Menu, MessageCircle, Search, ShoppingBag, X } from 'lucide-react'
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import Logo from './Logo'
 import { useCart } from '../state/CartContext'
 import { useFavorites } from '../state/FavoritesContext'
@@ -25,7 +25,6 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
   const [query, setQuery] = useState('')
-  const [activeSection,setActiveSection] = useState('home')
   const [theme, setTheme] = useState(() => {
     try { return window.localStorage.getItem('salt-ordo-theme') || 'pink' } catch { return 'pink' }
   })
@@ -35,7 +34,6 @@ export default function Header() {
   const { settings } = useSiteSettings()
   const langRef = useRef(null)
   const drawerRef = useRef(null)
-  const location = useLocation()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -49,32 +47,6 @@ export default function Header() {
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
-
-  useEffect(() => {
-    if (location.pathname !== '/') { setActiveSection(''); return }
-    let ticking = false
-    const update = () => {
-      ticking = false
-      const marker = window.scrollY + 180
-      const about = document.getElementById('about')
-      const contacts = document.getElementById('contacts')
-      const contactsTop = contacts ? contacts.getBoundingClientRect().top + window.scrollY : Infinity
-      const aboutTop = about ? about.getBoundingClientRect().top + window.scrollY : Infinity
-      if (window.location.hash === '#about' && marker >= aboutTop) setActiveSection('about')
-      else if (contacts && marker >= contactsTop) setActiveSection('contacts')
-      else setActiveSection('home')
-    }
-    const onScroll = () => {
-      if (!ticking) { ticking = true; requestAnimationFrame(update) }
-    }
-    update()
-    window.addEventListener('scroll',onScroll,{ passive:true })
-    window.addEventListener('hashchange',update)
-    return () => {
-      window.removeEventListener('scroll',onScroll)
-      window.removeEventListener('hashchange',update)
-    }
-  }, [location.pathname])
 
   useEffect(() => {
     if (!open) return
@@ -150,10 +122,9 @@ export default function Header() {
         <div className="container site-header__inner">
           <Logo />
           <nav className="desktop-nav" aria-label="Primary navigation">
-            <Link className={location.pathname === '/' && activeSection === 'home' ? 'active' : ''} to="/">{t.nav.home}</Link>
+            <NavLink end to="/">{t.nav.home}</NavLink>
             <NavLink to="/catalog">{t.nav.catalog}</NavLink>
-            <a className={location.pathname === '/' && activeSection === 'about' ? 'active' : ''} href="/#about">{t.nav.about}</a>
-            <a className={location.pathname === '/' && activeSection === 'contacts' ? 'active' : ''} href="/#contacts">{t.nav.contacts}</a>
+            <NavLink to="/contacts">{t.nav.contacts}</NavLink>
           </nav>
 
           <form className="header-search-form" role="search" onSubmit={submitSearch}>
@@ -218,8 +189,7 @@ export default function Header() {
         <nav className="mobile-drawer__nav">
           <Link to="/" onClick={()=>setOpen(false)}>{t.nav.home}</Link>
           <Link to="/catalog" onClick={()=>setOpen(false)}>{t.nav.catalog}</Link>
-          <a href="/#about" onClick={()=>setOpen(false)}>{t.nav.about}</a>
-          <a href="/#contacts" onClick={()=>setOpen(false)}>{t.nav.contacts}</a>
+          <Link to="/contacts" onClick={()=>setOpen(false)}>{t.nav.contacts}</Link>
         </nav>
         <div className="mobile-drawer__language">
           {languageOptions.map(([code,,label]) => (
