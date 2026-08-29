@@ -49,10 +49,10 @@ export default function AdminLogin() {
         <div className="admin-auth__story-inner">
           <Logo />
           <span className="admin-auth__kicker"><Sparkles size={16}/> Salt Ordo · управление</span>
-          <h1>Каталог, заказы и команда — в одном спокойном интерфейсе.</h1>
+          <h1>Каталог, заказы и аналитика — в одном спокойном интерфейсе.</h1>
           <p>Товары, единая цена, фотографии, характеристики и заявки доступны только владельцу сайта.</p>
           <div className="admin-auth__trust">
-            <span><ShieldCheck/> Доступ только сотрудникам</span>
+            <span><ShieldCheck/> Доступ только владельцу</span>
             <span><LockKeyhole/> Публичной регистрации нет</span>
           </div>
           <Ornament className="admin-auth__ornament"/>
