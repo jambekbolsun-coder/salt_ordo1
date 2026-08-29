@@ -18,7 +18,6 @@ const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
 const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
 const Products = lazy(() => import('./pages/admin/Products'))
 const ProductForm = lazy(() => import('./pages/admin/ProductForm'))
-const Staff = lazy(() => import('./pages/admin/Staff'))
 const Categories = lazy(() => import('./pages/admin/Categories'))
 const Chatbot = lazy(() => import('./pages/admin/Chatbot'))
 const Settings = lazy(() => import('./pages/admin/Settings'))
@@ -52,7 +51,6 @@ export default function App() {
             <Route path="chatbot" element={<Chatbot/>}/>
           </Route>
           <Route element={<RequireAdminRole roles={['owner','admin']}/> }>
-            <Route path="staff" element={<Staff/>}/>
             <Route path="settings" element={<Settings/>}/>
           </Route>
           <Route element={<RequireAdminRole roles={['owner','admin','manager']}/> }>

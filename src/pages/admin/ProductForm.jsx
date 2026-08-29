@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { ArrowLeft, ArrowRight, Check, ImagePlus, Percent, Save, Sparkles, Trash2, UploadCloud } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowLeft, ArrowRight, Check, ImagePlus, Save, Sparkles, Trash2, UploadCloud } from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
   deleteProductImage, getAdminProduct, listCategories, saveProduct,
@@ -107,23 +107,6 @@ export default function ProductForm() {
     return next
   })
 
-  const margin = useMemo(() => {
-    if (form.cost_price === '' || form.sale_price === '') return null
-    return Number(form.sale_price || 0) - Number(form.cost_price || 0)
-  }, [form.cost_price, form.sale_price])
-
-  const marginPct = useMemo(() => {
-    if (margin == null || !Number(form.sale_price)) return null
-    return Math.round((margin / Number(form.sale_price)) * 100)
-  }, [margin, form.sale_price])
-
-  const discount = useMemo(() => {
-    const oldPrice = Number(form.old_price || 0)
-    const salePrice = Number(form.sale_price || 0)
-    if (!form.is_on_sale || !oldPrice || !salePrice || salePrice >= oldPrice) return 0
-    return Math.round(((oldPrice - salePrice) / oldPrice) * 100)
-  }, [form.is_on_sale, form.old_price, form.sale_price])
-
   const removeImage = async (image) => {
     if (!window.confirm('Удалить эту фотографию?')) return
     try {
@@ -172,12 +155,7 @@ export default function ProductForm() {
   const validate = () => {
     if (!form.name_ru.trim()) return 'Укажите название товара на русском языке.'
     if (!form.slug.trim()) return 'Укажите slug товара.'
-    if (form.status === 'published' && !form.price_on_request && (form.sale_price === '' || Number(form.sale_price) < 0)) return 'Для публикации укажите цену продажи или включите «Цена по запросу».'
-    if (form.is_on_sale) {
-      if (!form.old_price || !form.sale_price) return 'Для акции укажите старую и текущую цену.'
-      if (Number(form.old_price) <= Number(form.sale_price)) return 'Старая цена должна быть выше цены продажи.'
-      if (form.promo_start_at && form.promo_end_at && new Date(form.promo_start_at) > new Date(form.promo_end_at)) return 'Дата окончания акции должна быть позже даты начала.'
-    }
+    if (form.sale_price === '' || Number(form.sale_price) < 0) return 'Укажите цену товара.'
     return ''
   }
 
@@ -189,7 +167,16 @@ export default function ProductForm() {
     setError('')
     setSuccess('')
     try {
-      const prepared = { ...form, slug:form.slug || slugify(form.name_ru) }
+      const prepared = {
+        ...form,
+        slug:form.slug || slugify(form.name_ru),
+        cost_price:null,
+        old_price:null,
+        price_on_request:false,
+        is_on_sale:false,
+        promo_label_ru:'', promo_label_kg:'', promo_label_en:'',
+        promo_start_at:null, promo_end_at:null,
+      }
       const saved = await saveProduct(prepared)
       if (files.length) await saveProductImages(saved.id, files, (form.images || []).length)
       setSuccess('Товар сохранён.')
@@ -210,7 +197,7 @@ export default function ProductForm() {
 
   return (
     <>
-      <AdminPageHeader eyebrow={edit ? 'Редактирование' : 'Новый товар'} title={edit ? form.name_ru || 'Товар' : 'Добавить товар'} text="Все данные каталога, цены, скидки и характеристики управляются отсюда." actions={<Link className="btn btn--ghost" to="/admin/products"><ArrowLeft size={18}/> Назад</Link>}/>
+      <AdminPageHeader eyebrow={edit ? 'Редактирование' : 'Новый товар'} title={edit ? form.name_ru || 'Товар' : 'Добавить товар'} text="Заполните карточку и укажите одну итоговую цену, которую увидит покупатель." actions={<Link className="btn btn--ghost" to="/admin/products"><ArrowLeft size={18}/> Назад</Link>}/>
 
       <form className="product-editor" onSubmit={submit}>
         <div className="product-editor__main">
@@ -226,27 +213,15 @@ export default function ProductForm() {
           </section>
 
           <section className="admin-panel form-section">
-            <div className="form-section__head"><div><span>02</span><h2>Цена, себестоимость и скидка</h2></div><small>Себестоимость скрыта от покупателя</small></div>
-            <div className="price-editor-grid">
-              <label><span>Себестоимость</span><div className="money-input"><input type="number" min="0" step="1" value={form.cost_price ?? ''} onChange={(e)=>change('cost_price',e.target.value)} placeholder="4500"/><b>сом</b></div><small>Только для команды</small></label>
-              <label><span>Цена продажи</span><div className="money-input"><input type="number" min="0" step="1" value={form.sale_price ?? ''} onChange={(e)=>change('sale_price',e.target.value)} placeholder="7000"/><b>сом</b></div></label>
-              <label><span>Старая цена</span><div className="money-input"><input type="number" min="0" step="1" value={form.old_price ?? ''} onChange={(e)=>change('old_price',e.target.value)} placeholder="8000"/><b>сом</b></div><small>Нужна для отображения скидки</small></label>
-              <div className={`margin-card ${margin != null && margin < 0 ? 'is-negative' : ''}`}><span>Маржа с единицы</span><strong>{margin == null ? '—' : money(margin)}</strong><small>{marginPct == null ? 'Заполните себестоимость и продажу' : `${marginPct}% от цены продажи`}</small></div>
-            </div>
-            <div className="toggle-grid toggle-grid--pricing">
-              <label className="toggle-row"><input type="checkbox" checked={form.price_on_request} onChange={(e)=>change('price_on_request',e.target.checked)}/><span><strong>Цена по запросу</strong><small>Клиент увидит «Уточнить стоимость».</small></span></label>
-              <label className="toggle-row"><input type="checkbox" checked={form.is_on_sale} onChange={(e)=>change('is_on_sale',e.target.checked)}/><span><strong>Акция / скидка</strong><small>Покажем старую цену и процент скидки.</small></span></label>
-            </div>
-            {form.is_on_sale && <div className="sale-editor">
-              <div className="sale-editor__badge"><Percent/><strong>{discount ? `-${discount}%` : 'Акция'}</strong><span>видит покупатель</span></div>
-              <div className="form-grid">
-                <label><span>Подпись RU</span><input value={form.promo_label_ru || ''} onChange={(e)=>change('promo_label_ru',e.target.value)} placeholder="Акция недели"/></label>
-                <label><span>Подпись KG</span><input value={form.promo_label_kg || ''} onChange={(e)=>change('promo_label_kg',e.target.value)} placeholder="Апта акциясы"/></label>
-                <label><span>Подпись EN</span><input value={form.promo_label_en || ''} onChange={(e)=>change('promo_label_en',e.target.value)} placeholder="Special offer"/></label>
-                <label><span>Начало</span><input type="datetime-local" value={form.promo_start_at ? String(form.promo_start_at).slice(0,16) : ''} onChange={(e)=>change('promo_start_at',e.target.value)}/></label>
-                <label><span>Окончание</span><input type="datetime-local" value={form.promo_end_at ? String(form.promo_end_at).slice(0,16) : ''} onChange={(e)=>change('promo_end_at',e.target.value)}/></label>
+            <div className="form-section__head"><div><span>02</span><h2>Цена товара</h2></div><small>Эту сумму увидит покупатель</small></div>
+            <label className="simple-price-field">
+              <span>Сумма</span>
+              <div className="simple-price-field__control">
+                <input type="number" min="0" step="1" value={form.sale_price ?? ''} onChange={(e)=>change('sale_price',e.target.value)} placeholder="Например, 7000" required/>
+                <b>сом</b>
               </div>
-            </div>}
+              <small>Без себестоимости, маржи и дополнительных цен.</small>
+            </label>
           </section>
 
           <section className="admin-panel form-section">
@@ -296,12 +271,12 @@ export default function ProductForm() {
             <div className="editor-checks">
               <span className={form.name_ru ? 'ok' : ''}><Check/> Название RU</span>
               <span className={form.slug ? 'ok' : ''}><Check/> URL</span>
-              <span className={form.sale_price || form.price_on_request ? 'ok' : ''}><Check/> Цена</span>
+              <span className={form.sale_price !== '' ? 'ok' : ''}><Check/> Цена</span>
               <span className={form.category_id ? 'ok' : ''}><Check/> Категория</span>
               <span className={form.seam_ru || form.seam ? 'ok' : ''}><Check/> Шов / отделка</span>
             </div>
-            <div className="editor-price-preview"><small>Покупатель увидит</small><strong>{form.price_on_request ? 'Уточнить стоимость' : form.sale_price ? money(form.sale_price) : 'Цена не указана'}</strong>{form.is_on_sale && discount > 0 && <span className="editor-discount">-{discount}%</span>}</div>
-            <div className="editor-private-note"><Sparkles/><span><strong>Себестоимость защищена.</strong><small>В публичный каталог она не передаётся.</small></span></div>
+            <div className="editor-price-preview"><small>Покупатель увидит</small><strong>{form.sale_price !== '' ? money(form.sale_price) : 'Цена не указана'}</strong></div>
+            <div className="editor-private-note"><Sparkles/><span><strong>Одна понятная цена.</strong><small>После сохранения она появится в каталоге.</small></span></div>
             {error && <div className="notice notice--error">{error}</div>}
             {success && <div className="notice notice--success">{success}</div>}
             <button className="btn btn--primary btn--block" disabled={saving}><Save size={18}/>{saving ? 'Сохраняем…' : 'Сохранить товар'}</button>

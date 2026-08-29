@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Check, Heart, Instagram, Languages, Menu, MessageCircle, Search, ShoppingBag, X } from 'lucide-react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import Logo from './Logo'
 import { useCart } from '../state/CartContext'
 import { useFavorites } from '../state/FavoritesContext'
@@ -35,6 +35,8 @@ export default function Header() {
   const langRef = useRef(null)
   const drawerRef = useRef(null)
   const navigate = useNavigate()
+  const location = useLocation()
+  const isHome = location.pathname === '/'
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
@@ -118,7 +120,7 @@ export default function Header() {
 
   return (
     <>
-      <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
+      <header className={`site-header ${isHome ? 'is-home' : 'is-inner'} ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container site-header__inner">
           <Logo />
           <nav className="desktop-nav" aria-label="Primary navigation">

@@ -891,3 +891,73 @@ section[id]{scroll-margin-top:96px}
 @media(max-width:640px){.category-create form{grid-template-columns:1fr}.category-create .btn{grid-column:auto}}
 .delivery-live-note{display:inline-flex;margin:4px 0 16px;padding:8px 12px;border-radius:999px;background:var(--blue-50);color:var(--ink);font-size:.8rem;font-weight:800;border:1px solid rgba(126,175,208,.18)}
 /* Public storefront refinements are isolated in storefront.css. */
+
+/* SIMPLE PRODUCT PRICING */
+.simple-price-field{
+  width:min(560px,100%);
+  display:grid;
+  gap:9px;
+  padding:22px;
+  border:1px solid rgba(212,126,153,.22);
+  border-radius:20px;
+  background:linear-gradient(135deg,#fff8fa,#fff 55%,#f3f9fc);
+  box-shadow:0 14px 34px rgba(76,49,58,.06)
+}
+.simple-price-field>span{font-size:.78rem;font-weight:850;color:var(--ink)}
+.simple-price-field>small{color:var(--muted);font-size:.72rem}
+.simple-price-field__control{min-height:64px;display:flex;align-items:center;overflow:hidden;border:1px solid var(--border-strong);border-radius:16px;background:#fff;box-shadow:0 7px 20px rgba(60,43,49,.05)}
+.simple-price-field__control:focus-within{border-color:var(--pink-500);box-shadow:0 0 0 4px var(--pink-50),0 10px 26px rgba(60,43,49,.07)}
+.simple-price-field__control input{min-width:0;flex:1;height:62px;padding:0 18px;border:0;outline:0;background:transparent;font-size:1.35rem;font-weight:820;color:var(--ink)}
+.simple-price-field__control b{align-self:stretch;display:flex;align-items:center;padding:0 18px;border-left:1px solid var(--border);color:var(--pink-600);font-size:.82rem}
+
+/* ADMIN CHATBOT */
+.chatbot-settings,.chatbot-create{margin-bottom:16px}
+.chatbot-settings{position:relative;overflow:hidden}
+.chatbot-settings::before{content:"";position:absolute;z-index:0;right:-90px;top:-120px;width:300px;height:300px;border-radius:50%;background:linear-gradient(135deg,var(--pink-50),var(--blue-50));filter:blur(8px);pointer-events:none}
+.chatbot-settings>*{position:relative;z-index:1}
+.switch-row{display:inline-flex!important;align-items:center;gap:9px;cursor:pointer;color:var(--ink);font-size:.76rem;font-weight:780}
+.switch-row input{width:40px;height:22px;appearance:none;border:0;border-radius:99px;background:#d9d3d7;position:relative;transition:.2s var(--ease);cursor:pointer}
+.switch-row input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(38,28,33,.2);transition:.2s var(--ease)}
+.switch-row input:checked{background:var(--pink-500)}
+.switch-row input:checked::after{transform:translateX(18px)}
+.switch-row--compact{padding:7px 9px;border:1px solid var(--border);border-radius:12px;background:#fff}
+.chatbot-language-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.chatbot-lang-block{display:grid;gap:12px;padding:16px;border:1px solid var(--border);border-radius:18px;background:rgba(255,255,255,.88);box-shadow:0 8px 24px rgba(47,38,43,.035)}
+.chatbot-lang-block__label{width:max-content;padding:7px 10px;border-radius:99px;background:linear-gradient(135deg,var(--pink-50),var(--blue-50));color:var(--pink-600);font-size:.68rem;font-weight:900;letter-spacing:.04em}
+.chatbot-lang-block label,.chatbot-faq-columns>div,.chatbot-faq-meta label{display:grid;gap:7px;min-width:0}
+.chatbot-lang-block label>span,.chatbot-faq-meta label>span{font-size:.7rem;font-weight:800;color:var(--ink-2)}
+.chatbot-lang-block input,.chatbot-lang-block textarea,.chatbot-faq-columns input,.chatbot-faq-columns textarea,.chatbot-faq-meta input{width:100%;min-height:46px;padding:11px 13px;border:1px solid var(--border);border-radius:13px;background:#fff;color:var(--ink);outline:0;resize:vertical}
+.chatbot-lang-block input:focus,.chatbot-lang-block textarea:focus,.chatbot-faq-columns input:focus,.chatbot-faq-columns textarea:focus,.chatbot-faq-meta input:focus{border-color:var(--pink-500);box-shadow:0 0 0 3px var(--pink-50)}
+.chatbot-save-row{display:flex;justify-content:flex-end;margin-top:16px}
+.chatbot-faq-form{display:grid;gap:16px}
+.chatbot-faq-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.chatbot-faq-columns>div{padding:15px;border:1px solid var(--border);border-radius:17px;background:#fbfafb}
+.chatbot-faq-columns>div>strong{width:34px;height:27px;display:grid;place-items:center;border-radius:8px;background:#fff;color:var(--pink-600);font-size:.68rem;box-shadow:var(--shadow-sm)}
+.chatbot-faq-meta{display:grid;grid-template-columns:minmax(240px,1fr) 120px auto auto;gap:10px;align-items:end}
+.chatbot-faq-meta label>small{color:var(--muted);font-size:.66rem}
+.chatbot-faq-meta .switch-row{min-height:46px;padding:0 12px;border:1px solid var(--border);border-radius:13px;background:#fff}
+.chatbot-faq-list{display:grid;gap:12px}
+.chatbot-faq-card{display:grid;gap:16px}
+.chatbot-faq-card__head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.chatbot-faq-card__head h3{margin:4px 0 0;font-size:1.08rem}
+.chatbot-faq-card__head .row-actions{align-items:center;flex-wrap:wrap}
+.chatbot-summary-card{background:linear-gradient(145deg,#fff,var(--pink-50))}
+.chatbot-summary-card>p{font-size:.82rem}
+.chatbot-summary-list{display:grid;gap:7px;margin-top:14px}
+.chatbot-summary-list>span{display:flex;align-items:center;gap:8px;padding:9px 10px;border:1px solid rgba(212,126,153,.14);border-radius:11px;background:rgba(255,255,255,.8);font-size:.75rem;font-weight:720}
+.chatbot-summary-list svg{color:var(--pink-600);flex:none}
+
+@media(max-width:1180px){
+  .chatbot-language-grid,.chatbot-faq-columns{grid-template-columns:1fr}
+  .chatbot-faq-meta{grid-template-columns:minmax(0,1fr) 120px auto}
+  .chatbot-faq-meta .switch-row{grid-column:1/-1;justify-self:start}
+}
+@media(max-width:640px){
+  .simple-price-field{padding:16px;border-radius:17px}
+  .simple-price-field__control{min-height:58px}.simple-price-field__control input{height:56px;font-size:1.15rem}
+  .chatbot-lang-block,.chatbot-faq-columns>div{padding:13px;border-radius:15px}
+  .chatbot-faq-meta{grid-template-columns:1fr}
+  .chatbot-faq-meta .switch-row{grid-column:auto}
+  .chatbot-faq-meta .btn,.chatbot-save-row .btn{width:100%}
+  .chatbot-faq-card__head{display:grid}.chatbot-faq-card__head .row-actions{justify-content:space-between}
+}

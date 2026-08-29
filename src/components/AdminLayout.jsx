@@ -15,7 +15,6 @@ const nav = [
   ['/admin/products/new', 'Добавить товар', PackagePlus, ['owner','admin','content']],
   ['/admin/categories', 'Категории', Tags, ['owner','admin','content']],
   ['/admin/chatbot', 'Чат-бот', Bot, ['owner','admin','content']],
-  ['/admin/staff', 'Сотрудники', UserRound, ['owner','admin']],
   ['/admin/settings', 'Настройки', Settings, ['owner','admin']],
   ['/admin/profile', 'Профиль', UserRound, ['owner','admin','manager','content']],
 ]
