@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, ImagePlus, Save, Sparkles, Trash2, UploadCloud } from 'lucide-react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import {
   deleteProductImage, getAdminProduct, listCategories, saveProduct,
   saveProductImages, updateProductImageOrder
@@ -15,7 +15,7 @@ const initial = {
   slug:'', category_id:'', sku:'',
   cost_price:'', sale_price:'', old_price:'', price_on_request:false,
   seam:'', material:'', seam_ru:'', seam_kg:'', seam_en:'', material_ru:'', material_kg:'', material_en:'', colors:[], sizes:[], stock_qty:0, production_days:'',
-  status:'draft', is_featured:false, is_new:false, is_set:false, sort_order:0,
+  status:'published', is_featured:false, is_new:false, is_set:false, sort_order:0,
   is_on_sale:false, promo_label_ru:'', promo_label_kg:'', promo_label_en:'', promo_start_at:'', promo_end_at:'',
   images:[],
 }
@@ -37,8 +37,7 @@ function TagsInput({ value = [], onChange, placeholder }) {
   </div>
 }
 
-function LocalizedTextFields({ form, change }) {
-  const [lang, setLang] = useState('ru')
+function LocalizedTextFields({ form, change, lang, setLang }) {
   const hints = {
     ru: 'Пишите естественно и продающе: не перечисляйте сухие характеристики, объясните пользу и настроение изделия.',
     kg: 'Орусчадан сөзмө-сөз которбой, кыргызча табигый жана түшүнүктүү мааниде жазыңыз.',
@@ -50,7 +49,7 @@ function LocalizedTextFields({ form, change }) {
     </div>
     <div className="translation-hint"><Sparkles size={16}/><span>{hints[lang]}</span></div>
     <div className="form-grid localized-editor">
-      <label className="form-span-2"><span>Название · {langLabels[lang]}</span><input value={form[`name_${lang}`] || ''} onChange={(e) => change(`name_${lang}`, e.target.value)} required={lang === 'ru'} placeholder={lang === 'ru' ? 'Например: Төшөк комплект «Нежный рассвет»' : lang === 'kg' ? 'Кардарга табигый угулган аталыш' : 'A natural customer-friendly product name'}/></label>
+      <label className="form-span-2"><span>Название · {langLabels[lang]}</span><input name={`name_${lang}`} value={form[`name_${lang}`] || ''} onChange={(e) => change(`name_${lang}`, e.target.value)} placeholder={lang === 'ru' ? 'Например: Төшөк комплект «Нежный рассвет»' : lang === 'kg' ? 'Кардарга табигый угулган аталыш' : 'A natural customer-friendly product name'}/></label>
       <label className="form-span-2"><span>Описание · {langLabels[lang]}</span><textarea rows="5" value={form[`description_${lang}`] || ''} onChange={(e) => change(`description_${lang}`, e.target.value)} placeholder={lang === 'ru' ? 'Что входит, чем удобен, какой стиль и для какого случая…' : lang === 'kg' ? 'Комплекттин өзгөчөлүгүн, пайдасын жана стилин түшүнүктүү сүрөттөңүз…' : 'Describe the set, its feel, use and style in natural English…'}/></label>
       <label><span>Шов / отделка · {langLabels[lang]}</span><input value={form[`seam_${lang}`] || ''} onChange={(e) => change(`seam_${lang}`, e.target.value)} placeholder={lang === 'ru' ? 'Декоративный машинный шов' : ''}/></label>
       <label><span>Материал · {langLabels[lang]}</span><input value={form[`material_${lang}`] || ''} onChange={(e) => change(`material_${lang}`, e.target.value)} placeholder={lang === 'ru' ? 'Хлопок, велюр, атлас…' : ''}/></label>
@@ -86,7 +85,19 @@ export default function ProductForm() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [editorLang, setEditorLang] = useState('ru')
+  const formRef = useRef(null)
   const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    const saveNotice = location.state?.saveNotice
+    const saveWarning = location.state?.saveWarning
+    if (!saveNotice && !saveWarning) return
+    setSuccess(saveNotice || '')
+    setError(saveWarning || '')
+    navigate(location.pathname, { replace:true, state:null })
+  }, [location.pathname, location.state, navigate])
 
   useEffect(() => {
     listCategories({ admin:true }).then(setCategories).catch(() => {})
@@ -153,23 +164,37 @@ export default function ProductForm() {
   }
 
   const validate = () => {
-    if (!form.name_ru.trim()) return 'Укажите название товара на русском языке.'
-    if (!form.slug.trim()) return 'Укажите slug товара.'
-    if (form.sale_price === '' || Number(form.sale_price) < 0) return 'Укажите цену товара.'
-    return ''
+    if (!String(form.name_ru || '').trim()) return { message:'Укажите название товара на русском языке.', field:'name_ru', lang:'ru' }
+    const price = Number(form.sale_price)
+    if (form.sale_price === '' || !Number.isFinite(price) || price < 0) return { message:'Укажите корректную цену товара.', field:'sale_price' }
+    return null
+  }
+
+  const focusInvalidField = ({ field, lang }) => {
+    if (lang) setEditorLang(lang)
+    window.setTimeout(() => {
+      const input = formRef.current?.elements?.namedItem(field)
+      input?.scrollIntoView?.({ behavior:'smooth', block:'center' })
+      input?.focus?.()
+    }, 0)
   }
 
   const submit = async (event) => {
     event.preventDefault()
     const validation = validate()
-    if (validation) return setError(validation)
+    if (validation) {
+      setSuccess('')
+      setError(validation.message)
+      focusInvalidField(validation)
+      return
+    }
     setSaving(true)
     setError('')
     setSuccess('')
     try {
       const prepared = {
         ...form,
-        slug:form.slug || slugify(form.name_ru),
+        slug:form.slug || slugify(form.name_ru) || `product-${Date.now().toString(36)}`,
         cost_price:null,
         old_price:null,
         price_on_request:false,
@@ -178,13 +203,24 @@ export default function ProductForm() {
         promo_start_at:null, promo_end_at:null,
       }
       const saved = await saveProduct(prepared)
-      if (files.length) await saveProductImages(saved.id, files, (form.images || []).length)
-      setSuccess('Товар сохранён.')
-      if (!edit) navigate(`/admin/products/${saved.id}`, { replace:true })
+      let saveWarning = ''
+      if (files.length) {
+        try {
+          await saveProductImages(saved.id, files, (form.images || []).length)
+        } catch (imageError) {
+          saveWarning = `Товар сохранён, но фотографии не загрузились: ${imageError.message || 'повторите загрузку.'}`
+        }
+      }
+      const saveNotice = saved.status === 'published'
+        ? 'Товар сохранён и уже отображается в каталоге.'
+        : 'Товар сохранён как черновик.'
+      setSuccess(saveNotice)
+      setError(saveWarning)
+      if (!edit) navigate(`/admin/products/${saved.id}`, { replace:true, state:{ saveNotice, saveWarning } })
       else {
         const refreshed = await getAdminProduct(saved.id)
         setForm({ ...initial, ...refreshed, seam_ru:refreshed.seam_ru || refreshed.seam || '', material_ru:refreshed.material_ru || refreshed.material || '', colors:refreshed.colors || [], sizes:refreshed.sizes || [], images:refreshed.images || [] })
-        setFiles([])
+        if (!saveWarning) setFiles([])
       }
     } catch (err) {
       setError(err.message || 'Не удалось сохранить товар.')
@@ -199,15 +235,17 @@ export default function ProductForm() {
     <>
       <AdminPageHeader eyebrow={edit ? 'Редактирование' : 'Новый товар'} title={edit ? form.name_ru || 'Товар' : 'Добавить товар'} text="Заполните карточку и укажите одну итоговую цену, которую увидит покупатель." actions={<Link className="btn btn--ghost" to="/admin/products"><ArrowLeft size={18}/> Назад</Link>}/>
 
-      <form className="product-editor" onSubmit={submit}>
+      {error && <div className="notice notice--error product-editor-notice" role="alert">{error}</div>}
+      {success && <div className="notice notice--success product-editor-notice" role="status">{success}</div>}
+
+      <form ref={formRef} className="product-editor" onSubmit={submit} noValidate>
         <div className="product-editor__main">
           <section className="admin-panel form-section">
             <div className="form-section__head"><div><span>01</span><h2>Название и описание</h2></div><small>Три языка клиентской стороны</small></div>
-            <LocalizedTextFields form={form} change={change}/>
+            <LocalizedTextFields form={form} change={change} lang={editorLang} setLang={setEditorLang}/>
             <div className="form-grid form-grid--after-tabs">
               <label><span>Категория</span><select value={form.category_id || ''} onChange={(e)=>change('category_id',e.target.value)}><option value="">Без категории</option>{categories.map((category) => <option key={category.id} value={category.id}>{category.name_ru}</option>)}</select></label>
               <label><span>Артикул</span><input value={form.sku || ''} onChange={(e)=>change('sku',e.target.value)} placeholder="SO-001"/></label>
-              <label><span>URL / slug *</span><input value={form.slug || ''} onChange={(e)=>change('slug',slugify(e.target.value))} required placeholder="toshok-nezhnyy-rassvet"/></label>
               <label><span>Статус</span><select value={form.status} onChange={(e)=>change('status',e.target.value)}><option value="draft">Черновик</option><option value="published">Опубликовано</option><option value="hidden">Скрыто</option></select></label>
             </div>
           </section>
@@ -217,7 +255,7 @@ export default function ProductForm() {
             <label className="simple-price-field">
               <span>Сумма</span>
               <div className="simple-price-field__control">
-                <input type="number" min="0" step="1" value={form.sale_price ?? ''} onChange={(e)=>change('sale_price',e.target.value)} placeholder="Например, 7000" required/>
+                <input name="sale_price" type="number" min="0" step="1" value={form.sale_price ?? ''} onChange={(e)=>change('sale_price',e.target.value)} placeholder="Например, 7000"/>
                 <b>сом</b>
               </div>
               <small>Без себестоимости, маржи и дополнительных цен.</small>
@@ -277,9 +315,7 @@ export default function ProductForm() {
             </div>
             <div className="editor-price-preview"><small>Покупатель увидит</small><strong>{form.sale_price !== '' ? money(form.sale_price) : 'Цена не указана'}</strong></div>
             <div className="editor-private-note"><Sparkles/><span><strong>Одна понятная цена.</strong><small>После сохранения она появится в каталоге.</small></span></div>
-            {error && <div className="notice notice--error">{error}</div>}
-            {success && <div className="notice notice--success">{success}</div>}
-            <button className="btn btn--primary btn--block" disabled={saving}><Save size={18}/>{saving ? 'Сохраняем…' : 'Сохранить товар'}</button>
+            <button type="submit" className="btn btn--primary btn--block" disabled={saving}><Save size={18}/>{saving ? 'Сохраняем…' : 'Сохранить товар'}</button>
             <Link className="btn btn--ghost btn--block" to="/admin/products">Отменить</Link>
           </section>
         </aside>

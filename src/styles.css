@@ -893,6 +893,8 @@ section[id]{scroll-margin-top:96px}
 /* Public storefront refinements are isolated in storefront.css. */
 
 /* SIMPLE PRODUCT PRICING */
+.product-editor-notice{margin:0 0 18px;scroll-margin-top:120px}
+
 .simple-price-field{
   width:min(560px,100%);
   display:grid;

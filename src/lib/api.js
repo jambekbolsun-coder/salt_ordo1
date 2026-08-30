@@ -127,9 +127,24 @@ export async function saveProduct(product) {
     promo_end_at: product.promo_end_at ? new Date(product.promo_end_at).toISOString() : null,
     sort_order: Number(product.sort_order || 0),
   }
-  const { data, error } = await supabase.rpc('admin_upsert_product', { p_payload: payload })
-  if (error) throw error
-  return Array.isArray(data) ? data[0] : data
+  const save = (nextPayload) => supabase.rpc('admin_upsert_product', { p_payload: nextPayload })
+  let { data, error } = await save(payload)
+
+  if (error?.code === '23505' && !product.id && /products_slug_key|slug/i.test(error.message || '')) {
+    const suffix = createId().replace(/[^a-z0-9]/gi, '').slice(-8).toLowerCase()
+    payload.slug = `${payload.slug}-${suffix}`
+    ;({ data, error } = await save(payload))
+  }
+
+  if (error) {
+    if (error.code === '23505' && /products_sku_key|sku/i.test(error.message || '')) throw new Error('Такой артикул уже используется. Оставьте поле пустым или укажите другой артикул.')
+    if (error.code === '42501' || /forbidden/i.test(error.message || '')) throw new Error('Сессия владельца истекла или недостаточно прав. Войдите в админку заново.')
+    throw new Error(error.message || 'Не удалось сохранить товар в Supabase.')
+  }
+
+  const saved = Array.isArray(data) ? data[0] : data
+  if (!saved?.id) throw new Error('Supabase не вернул сохранённый товар. Повторите попытку.')
+  return saved
 }
 
 export async function deleteProduct(id) {

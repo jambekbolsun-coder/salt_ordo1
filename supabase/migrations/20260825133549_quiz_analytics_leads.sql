@@ -311,7 +311,7 @@ insert into public.categories(slug, name_ru, name_kg, name_en, sort_order)
 values
   ('sep', 'Кызга сеп', 'Кызга сеп', 'Bridal dowry', 10),
   ('jer-toshok', 'Жер төшөк', 'Жер төшөк', 'Floor bedding', 20),
-  ('jastyk', 'Жастык', 'Жаздык', 'Pillows', 30),
+  ('jastyk', 'Жаздык', 'Жаздык', 'Pillows', 30),
   ('sandyk', 'Сандык', 'Сандык', 'Chests', 40),
   ('custom', 'Под заказ', 'Буйрутма менен', 'Custom order', 50)
 on conflict (slug) do update set
