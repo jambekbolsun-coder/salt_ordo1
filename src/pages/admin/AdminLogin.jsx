@@ -22,6 +22,7 @@ export default function AdminLogin() {
 
   const submit = async (event) => {
     event.preventDefault()
+    if (busy || authLoading) return
     setBusy(true)
     setError('')
     setNotice('')
@@ -86,8 +87,8 @@ export default function AdminLogin() {
             {error && <div className="notice notice--error">{error}</div>}
             {notice && <div className="notice notice--success">{notice}</div>}
             {!supabaseConfigured && <div className="notice notice--error">Supabase ещё не подключён к этой сборке.</div>}
-            <button className="btn btn--primary btn--block" disabled={busy || authLoading || !supabaseConfigured}>
-              <LogIn size={18}/>{busy || authLoading ? 'Проверяем…' : setup ? 'Создать владельца' : 'Войти'}
+            <button type="submit" className="btn btn--primary btn--block" disabled={busy || authLoading || !supabaseConfigured} aria-busy={busy}>
+              <LogIn size={18}/>{busy ? 'Проверяем…' : setup ? 'Создать владельца' : 'Войти'}
             </button>
           </form>
           <div className="admin-auth__links"><button type="button" className="text-link" onClick={()=>{setSetup(!setup);setError('');setNotice('')}}>{setup ? 'У меня уже есть доступ' : 'Первый запуск: создать владельца'}</button><Link to="/">Вернуться на сайт</Link></div>
