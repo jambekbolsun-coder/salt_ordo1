@@ -3,6 +3,31 @@ import { supabase, supabaseConfigured } from '../lib/supabase'
 
 const AuthContext = createContext(null)
 
+const AUTH_TIMEOUT_MS = 15000
+
+function withTimeout(operation, message) {
+  let timer
+  const timeout = new Promise((_, reject) => {
+    timer = window.setTimeout(() => reject(new Error(message)), AUTH_TIMEOUT_MS)
+  })
+
+  return Promise.race([Promise.resolve(operation), timeout])
+    .finally(() => window.clearTimeout(timer))
+}
+
+function readableAuthError(error) {
+  if (error?.code === 'email_not_confirmed') {
+    return new Error('Подтвердите email по ссылке из письма, затем войдите снова.')
+  }
+  if (error?.code === 'invalid_credentials') {
+    return new Error('Неверный email или пароль.')
+  }
+  if (error?.code === 'user_banned') {
+    return new Error('Этот аккаунт заблокирован. Обратитесь к владельцу сайта.')
+  }
+  return error instanceof Error ? error : new Error('Не удалось выполнить вход.')
+}
+
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null)
   const [staff, setStaff] = useState(null)
@@ -15,9 +40,27 @@ export function AuthProvider({ children }) {
     }
 
     let mounted = true
+    let hydrationId = 0
+    const scheduledHydrations = new Set()
+
+    const loadStaff = async (userId) => {
+      const { data, error } = await withTimeout(
+        supabase
+          .from('staff')
+          .select('*')
+          .eq('user_id', userId)
+          .eq('is_active', true)
+          .maybeSingle(),
+        'Проверка доступа заняла слишком много времени. Попробуйте ещё раз.',
+      )
+
+      if (error) throw error
+      return data || null
+    }
 
     const hydrate = async (nextSession) => {
       if (!mounted) return
+      const currentHydration = ++hydrationId
       setSession(nextSession)
 
       if (!nextSession?.user) {
@@ -26,23 +69,48 @@ export function AuthProvider({ children }) {
         return
       }
 
-      const { data, error } = await supabase
-        .from('staff')
-        .select('*')
-        .eq('user_id', nextSession.user.id)
-        .eq('is_active', true)
-        .maybeSingle()
-
-      if (!mounted) return
-      setStaff(error ? null : (data || null))
-      setLoading(false)
+      setLoading(true)
+      try {
+        const staffData = await loadStaff(nextSession.user.id)
+        if (mounted && currentHydration === hydrationId) setStaff(staffData)
+      } catch {
+        if (mounted && currentHydration === hydrationId) setStaff(null)
+      } finally {
+        if (mounted && currentHydration === hydrationId) setLoading(false)
+      }
     }
 
-    supabase.auth.getSession().then(({ data }) => hydrate(data.session))
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, nextSession) => hydrate(nextSession))
+    withTimeout(
+      supabase.auth.getSession(),
+      'Не удалось проверить текущую сессию. Обновите страницу.',
+    )
+      .then(({ data, error }) => {
+        if (error) throw error
+        return hydrate(data.session)
+      })
+      .catch(() => {
+        if (!mounted) return
+        setSession(null)
+        setStaff(null)
+        setLoading(false)
+      })
+
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      // Supabase can deadlock when another async Supabase request is awaited
+      // directly inside this callback. Schedule hydration after Auth releases
+      // its internal lock and never return the hydration promise.
+      const timer = window.setTimeout(() => {
+        scheduledHydrations.delete(timer)
+        if (mounted) void hydrate(nextSession)
+      }, 0)
+      scheduledHydrations.add(timer)
+    })
 
     return () => {
       mounted = false
+      hydrationId += 1
+      scheduledHydrations.forEach((timer) => window.clearTimeout(timer))
+      scheduledHydrations.clear()
       subscription.subscription.unsubscribe()
     }
   }, [])
@@ -50,19 +118,28 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     if (!supabaseConfigured) throw new Error('Supabase пока не подключён к проекту.')
 
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) throw error
+    const { data, error } = await withTimeout(
+      supabase.auth.signInWithPassword({ email, password }),
+      'Сервер долго не отвечает. Проверьте интернет и попробуйте ещё раз.',
+    )
+    if (error) throw readableAuthError(error)
 
-    let { data: staffData, error: staffError } = await supabase
-      .from('staff')
-      .select('*')
-      .eq('user_id', data.user.id)
-      .eq('is_active', true)
-      .maybeSingle()
+    let { data: staffData, error: staffError } = await withTimeout(
+      supabase
+        .from('staff')
+        .select('*')
+        .eq('user_id', data.user.id)
+        .eq('is_active', true)
+        .maybeSingle(),
+      'Не удалось проверить права доступа. Попробуйте ещё раз.',
+    )
 
     if (staffError) throw staffError
     if (!staffData) {
-      const { data: bootstrapData, error: bootstrapError } = await supabase.rpc('bootstrap_first_owner', { p_full_name:'Владелец Salt Ordo' })
+      const { data: bootstrapData, error: bootstrapError } = await withTimeout(
+        supabase.rpc('bootstrap_first_owner', { p_full_name:'Владелец Salt Ordo' }),
+        'Не удалось настроить доступ владельца. Попробуйте ещё раз.',
+      )
       if (!bootstrapError && bootstrapData) {
         staffData = bootstrapData
       } else {
@@ -73,6 +150,7 @@ export function AuthProvider({ children }) {
 
     setSession(data.session)
     setStaff(staffData)
+    setLoading(false)
     return { user: data.user, staff: staffData }
   }
 
@@ -93,9 +171,15 @@ export function AuthProvider({ children }) {
   }
 
   const logout = async () => {
-    if (supabaseConfigured) await supabase.auth.signOut()
-    setSession(null)
-    setStaff(null)
+    try {
+      if (supabaseConfigured) {
+        await withTimeout(supabase.auth.signOut(), 'Не удалось завершить сессию. Обновите страницу.')
+      }
+    } finally {
+      setSession(null)
+      setStaff(null)
+      setLoading(false)
+    }
   }
 
   const value = useMemo(() => ({
