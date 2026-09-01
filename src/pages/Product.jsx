@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, Heart, Instagram, MessageCircle, Minus, Phone, Plus, ShoppingBag, Truck } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, Heart, Instagram, Maximize2, MessageCircle, Minus, Phone, Plus, Share2, ShoppingBag, Truck } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { getProduct } from '../lib/api'
 import { money } from '../lib/format'
@@ -11,7 +11,27 @@ import { useLanguage } from '../state/LanguageContext'
 import { useSiteSettings } from '../state/SiteSettingsContext'
 import { categoryName, isPromotionActive, localizedField } from '../lib/productText'
 import LeadCapture from '../components/LeadCapture'
+import ProductLightbox from '../components/ProductLightbox'
 import { track } from '../lib/analytics'
+import { markProductViewed } from '../lib/productViewState'
+
+async function copyProductLink(url) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(url)
+    return
+  }
+
+  const field = document.createElement('textarea')
+  field.value = url
+  field.setAttribute('readonly', '')
+  field.style.position = 'fixed'
+  field.style.opacity = '0'
+  document.body.appendChild(field)
+  field.select()
+  const copied = document.execCommand('copy')
+  field.remove()
+  if (!copied) throw new Error('Copy failed')
+}
 
 export default function Product() {
   const { slug } = useParams()
@@ -22,6 +42,8 @@ export default function Product() {
   const [added, setAdded] = useState(false)
   const [loadError, setLoadError] = useState('')
   const [leadOpen, setLeadOpen] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [shareStatus, setShareStatus] = useState('')
   const { add } = useCart()
   const { has, toggle } = useFavorites()
   const { lang, t } = useLanguage()
@@ -47,8 +69,23 @@ export default function Product() {
 
   useEffect(() => {
     if (!product?.id) return
+    markProductViewed(product.id)
     track('product_view', { productId: product.id, categorySlug: product.category?.slug || null })
   }, [product?.id, product?.category?.slug])
+
+  useEffect(() => {
+    if (!shareStatus) return undefined
+    const timer = window.setTimeout(() => setShareStatus(''), 2600)
+    return () => window.clearTimeout(timer)
+  }, [shareStatus])
+
+  const imageCount = product?.images?.length || 0
+  const showImage = useCallback((direction) => {
+    if (imageCount < 2) return
+    setActiveImage((current) => (current + direction + imageCount) % imageCount)
+  }, [imageCount])
+
+  const closeLightbox = useCallback(() => setLightboxOpen(false), [])
 
   if (loading) return <div className="screen-loader"><img src="/salt-ordo-logo.png" alt=""/><span>{t.common.loading}</span></div>
   if (!product) return <section className="section page-section"><div className="container"><EmptyState title={t.catalog.emptyTitle} text={loadError || t.catalog.emptyText}/></div></section>
@@ -68,14 +105,40 @@ export default function Product() {
       ? `Hello! I like “${name}”. Could you please confirm the price, availability and order details?`
       : `Здравствуйте! Мне понравился товар «${name}». Подскажите, пожалуйста, по цене, наличию и условиям заказа.`
 
-  const showImage = (direction) => {
-    if (sortedImages.length < 2) return
-    setActiveImage((current) => (current + direction + sortedImages.length) % sortedImages.length)
-  }
-
   const addToCart = () => {
     add(product, qty)
     setAdded(true)
+  }
+
+  const shareProduct = async () => {
+    const url = `${window.location.origin}/product/${encodeURIComponent(product.slug)}`
+    const shareText = lang === 'kg'
+      ? `Salt Ordo: «${name}» товарын көрүңүз`
+      : lang === 'en'
+        ? `Take a look at “${name}” from Salt Ordo`
+        : `Посмотрите товар «${name}» от Salt Ordo`
+
+    try {
+      let channel = 'clipboard'
+      if (navigator.share) {
+        await navigator.share({ title: `${name} — Salt Ordo`, text: shareText, url })
+        channel = 'native'
+        setShareStatus(t.product.shared)
+      } else {
+        await copyProductLink(url)
+        setShareStatus(t.product.shareCopied)
+      }
+      await track('product_share', {
+        productId: product.id,
+        categorySlug: product.category?.slug || null,
+        metadata: {
+          channel,
+          qa: window.location.hostname === 'terminal.local',
+        },
+      })
+    } catch (error) {
+      if (error?.name !== 'AbortError') setShareStatus(t.product.shareError)
+    }
   }
 
   return (
@@ -86,9 +149,12 @@ export default function Product() {
           <div className="product-detail__gallery">
             <div className="product-detail__main">
               {currentImage?.public_url
-                ? <img className="product-detail__image" src={currentImage.public_url} alt={currentImage.alt_text || name}/>
+                ? <button className="product-detail__zoom-trigger" type="button" onClick={() => setLightboxOpen(true)} aria-label={t.product.openFullscreen}>
+                    <img className="product-detail__image" src={currentImage.public_url} alt={currentImage.alt_text || name}/>
+                  </button>
                 : <ProductVisual product={product}/>
               }
+              {currentImage?.public_url && <button className="gallery-expand" type="button" onClick={() => setLightboxOpen(true)} aria-label={t.product.openFullscreen}><Maximize2/></button>}
               {sortedImages.length > 1 && <>
                 <button className="gallery-arrow gallery-arrow--prev" type="button" onClick={() => showImage(-1)} aria-label={t.product.previousImage || 'Previous image'}><ChevronLeft/></button>
                 <button className="gallery-arrow gallery-arrow--next" type="button" onClick={() => showImage(1)} aria-label={t.product.nextImage || 'Next image'}><ChevronRight/></button>
@@ -114,14 +180,15 @@ export default function Product() {
               <div><span>{t.product.sizes}</span><strong>{(product.sizes || []).join(', ') || '—'}</strong></div>
               <div><span>{t.product.stock}</span><strong>{Number(product.stock_qty || 0) > 0 ? `${t.product.inStock}: ${product.stock_qty}` : t.product.madeToOrder}</strong></div>
               {product.production_days != null && <div><span>{t.product.production}</span><strong>{product.production_days} {t.product.days}</strong></div>}
-              {product.sku && <div><span>{t.product.sku}</span><strong>{product.sku}</strong></div>}
             </div>
 
             <div className="detail-actions">
               <div className="qty-control"><button type="button" onClick={()=>setQty(Math.max(1,qty-1))} aria-label="Minus"><Minus/></button><span>{qty}</span><button type="button" onClick={()=>setQty(Math.min(99,qty+1))} aria-label="Plus"><Plus/></button></div>
               <button className={`btn btn--primary ${added ? 'is-success' : ''}`} type="button" onClick={addToCart}>{added ? <Check size={18}/> : <ShoppingBag size={18}/>} {added ? (t.catalog.added || t.product.add) : t.product.add}</button>
               <button className={`icon-btn favorite-large ${has(product.id)?'is-active':''}`} type="button" onClick={()=>toggle(product.id)} aria-label={t.catalog.favorite}><Heart fill={has(product.id)?'currentColor':'none'}/></button>
+              <button className="icon-btn share-product-btn" type="button" onClick={shareProduct} aria-label={t.product.share} title={t.product.share}><Share2/></button>
             </div>
+            <div className={`product-share-feedback ${shareStatus ? 'is-visible' : ''}`} role="status" aria-live="polite">{shareStatus}</div>
             <button className="btn btn--ghost btn--block" type="button" onClick={() => setLeadOpen(true)}><MessageCircle size={18}/>{t.product.whatsapp}</button>
 
             <div className="detail-trust">
@@ -150,6 +217,19 @@ export default function Product() {
         <button className="lead-modal__backdrop" type="button" onClick={() => setLeadOpen(false)} aria-label="Close"/>
         <LeadCapture source="product" product={product} message={message} onClose={() => setLeadOpen(false)}/>
       </div>}
+      {lightboxOpen && currentImage?.public_url && <ProductLightbox
+        images={sortedImages}
+        activeIndex={activeImage}
+        name={name}
+        labels={{
+          gallery:t.product.gallery,
+          close:t.product.closeFullscreen,
+          previous:t.product.previousImage,
+          next:t.product.nextImage,
+        }}
+        onChange={showImage}
+        onClose={closeLightbox}
+      />}
     </section>
   )
 }

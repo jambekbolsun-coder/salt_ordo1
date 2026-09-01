@@ -12,7 +12,7 @@ import AdminPageHeader from '../../components/AdminPageHeader'
 const initial = {
   name_ru:'', name_kg:'', name_en:'',
   description_ru:'', description_kg:'', description_en:'',
-  slug:'', category_id:'', sku:'',
+  slug:'', category_id:'',
   cost_price:'', sale_price:'', old_price:'', price_on_request:false,
   seam:'', material:'', seam_ru:'', seam_kg:'', seam_en:'', material_ru:'', material_kg:'', material_en:'', colors:[], sizes:[], stock_qty:0, production_days:'',
   status:'published', is_featured:false, is_new:false, is_set:false, sort_order:0,
@@ -195,6 +195,7 @@ export default function ProductForm() {
       const prepared = {
         ...form,
         slug:form.slug || slugify(form.name_ru) || `product-${Date.now().toString(36)}`,
+        sku:null,
         cost_price:null,
         old_price:null,
         price_on_request:false,
@@ -245,7 +246,6 @@ export default function ProductForm() {
             <LocalizedTextFields form={form} change={change} lang={editorLang} setLang={setEditorLang}/>
             <div className="form-grid form-grid--after-tabs">
               <label><span>Категория</span><select value={form.category_id || ''} onChange={(e)=>change('category_id',e.target.value)}><option value="">Без категории</option>{categories.map((category) => <option key={category.id} value={category.id}>{category.name_ru}</option>)}</select></label>
-              <label><span>Артикул</span><input value={form.sku || ''} onChange={(e)=>change('sku',e.target.value)} placeholder="SO-001"/></label>
               <label><span>Статус</span><select value={form.status} onChange={(e)=>change('status',e.target.value)}><option value="draft">Черновик</option><option value="published">Опубликовано</option><option value="hidden">Скрыто</option></select></label>
             </div>
           </section>

@@ -6,6 +6,7 @@ import { money } from '../lib/format'
 import { useFavorites } from '../state/FavoritesContext'
 import { useLanguage } from '../state/LanguageContext'
 import { categoryName, discountPercent, isPromotionActive, localizedField, promoLabel } from '../lib/productText'
+import { hasViewedProduct } from '../lib/productViewState'
 
 export default function ProductCard({ product }) {
   const { has, toggle } = useFavorites()
@@ -18,6 +19,7 @@ export default function ProductCard({ product }) {
   const discount = promo ? discountPercent(product) : 0
   const label = promoLabel(product, lang) || (discount ? `-${discount}%` : t.catalog.saleBadge)
   const favorite = has(product.id)
+  const showNew = product.is_new && !hasViewedProduct(product.id)
 
   useEffect(() => {
     if (!favoriteFlash) return undefined
@@ -38,7 +40,7 @@ export default function ProductCard({ product }) {
         </Link>
         <div className="product-card__badges">
           {promo && <span className="product-badge product-badge--sale">{label}</span>}
-          {!promo && product.is_new && <span className="product-badge">NEW</span>}
+          {!promo && showNew && <span className="product-badge">NEW</span>}
         </div>
         <button className={`favorite-btn ${favorite ? 'is-active' : ''} ${favoriteFlash ? 'is-animating' : ''}`} onClick={toggleFavorite} aria-label={t.catalog.favorite}>
           <Heart size={19} fill={favorite ? 'currentColor' : 'none'}/>

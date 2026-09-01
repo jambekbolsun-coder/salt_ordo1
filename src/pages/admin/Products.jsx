@@ -16,7 +16,7 @@ export default function Products() {
   useEffect(() => { load() }, [])
 
   const filtered = useMemo(() => products.filter((product) => {
-    const hit = !q || `${product.name_ru || ''} ${product.name_kg || ''} ${product.name_en || ''} ${product.sku || ''} ${product.seam || ''}`.toLowerCase().includes(q.toLowerCase())
+    const hit = !q || `${product.name_ru || ''} ${product.name_kg || ''} ${product.name_en || ''} ${product.seam || ''}`.toLowerCase().includes(q.toLowerCase())
     return hit && (status === 'all' || product.status === status)
   }), [products,q,status])
 
@@ -39,7 +39,6 @@ export default function Products() {
         name_en:product.name_en ? `${product.name_en} — copy` : '',
         slug:`${product.slug}-copy-${Date.now().toString().slice(-5)}`,
         status:'draft',
-        sku:'',
         images:[],
       }
       await saveProduct(copy)
@@ -51,7 +50,7 @@ export default function Products() {
   return <>
     <AdminPageHeader eyebrow="Каталог" title="Товары" text="Добавляйте товары, указывайте одну понятную цену и управляйте публикацией." actions={<Link className="btn btn--primary" to="/admin/products/new"><PackagePlus size={18}/> Добавить товар</Link>}/>
     <div className="admin-toolbar">
-      <label className="search-field"><Search/><input value={q} onChange={(e)=>setQ(e.target.value)} placeholder="Название, артикул, шов…"/></label>
+      <label className="search-field"><Search/><input value={q} onChange={(e)=>setQ(e.target.value)} placeholder="Название или характеристика…"/></label>
       <select value={status} onChange={(e)=>setStatus(e.target.value)}><option value="all">Все статусы</option><option value="published">Опубликовано</option><option value="draft">Черновик</option><option value="hidden">Скрыто</option></select>
     </div>
     {error && <div className="notice notice--error">{error}</div>}
@@ -59,7 +58,7 @@ export default function Products() {
       <thead><tr><th>Товар</th><th>Цена</th><th>Остаток</th><th>Статус</th><th></th></tr></thead>
       <tbody>
         {filtered.map((product) => <tr key={product.id}>
-            <td data-label="Товар"><div className="admin-product-name"><span className="admin-product-thumb">{(product.name_ru || 'SO').slice(0,2).toUpperCase()}</span><span><strong>{product.name_ru || 'Без названия'}</strong><small>{product.sku || 'без артикула'} · {product.seam || 'шов не указан'}</small></span></div></td>
+            <td data-label="Товар"><div className="admin-product-name"><span className="admin-product-thumb">{(product.name_ru || 'SO').slice(0,2).toUpperCase()}</span><span><strong>{product.name_ru || 'Без названия'}</strong><small>{product.seam || 'Характеристики не указаны'}</small></span></div></td>
             <td data-label="Цена"><strong>{money(product.sale_price)}</strong></td>
             <td data-label="Остаток">{Number(product.stock_qty || 0) > 0 ? `${product.stock_qty} шт.` : 'Под заказ'}</td>
             <td data-label="Статус"><span className={`visibility-pill is-${product.status}`}>{product.status === 'published' ? 'Опубликован' : product.status === 'hidden' ? 'Скрыт' : 'Черновик'}</span></td>
