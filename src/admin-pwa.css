@@ -27,7 +27,7 @@
 .admin-app-status h2,.admin-app-note h2{font-size:1.15rem;margin:0 0 12px}
 .admin-app-status dl{margin:0 0 24px}
 .admin-app-status dl>div{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding:13px 0;border-bottom:1px solid var(--border);font-size:.85rem}
-.admin-app-status dt{color:var(--muted)}.admin-app-status dd{margin:0;font-weight:700}
+.admin-app-status dt{color:#655c67}.admin-app-status dd{margin:0;font-weight:700}
 .admin-app-note{display:flex;gap:14px;align-items:flex-start}
 .admin-app-note>svg{flex:none;color:#92526d;width:22px;height:22px;margin-top:2px}
 .admin-app-note p{font-size:.88rem;line-height:1.65;margin:6px 0 0}

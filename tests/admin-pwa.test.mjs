@@ -116,4 +116,6 @@ test('production admin responses prohibit caching, framing and inline scripts', 
   assert.match(csp, /script-src 'self';/)
   assert.match(csp, /frame-ancestors 'none'/)
   assert.equal(config.redirects.find(({ source }) => source === '/admin').destination, '/admin/')
+  assert.equal(config.rewrites.find(({ source }) => source === '/admin/').destination, '/admin.html')
+  assert.equal(config.headers.find(({ source }) => source === '/admin/').headers.find(({ key }) => key === 'Cache-Control').value, 'no-store')
 })
