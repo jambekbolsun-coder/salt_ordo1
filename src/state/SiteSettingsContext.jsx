@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { getSiteSettings } from '../lib/api'
 import { DEFAULT_WHATSAPP } from '../lib/whatsapp'
+import { useLocation } from 'react-router-dom'
 
 const defaults = {
   brand_name: 'Salt Ordo',
@@ -17,6 +18,8 @@ const SiteSettingsContext = createContext(null)
 
 export function SiteSettingsProvider({ children }) {
   const [settings, setSettings] = useState(defaults)
+  const { pathname } = useLocation()
+  const isAdmin = pathname === '/admin' || pathname.startsWith('/admin/')
 
   useEffect(() => {
     let active = true
@@ -27,10 +30,10 @@ export function SiteSettingsProvider({ children }) {
   }, [])
 
   useEffect(() => {
-    if (settings.seo_title) document.title = settings.seo_title
+    document.title = isAdmin ? 'Salt Ordo Admin' : settings.seo_title
     const meta = document.querySelector('meta[name="description"]')
-    if (meta && settings.seo_description) meta.setAttribute('content', settings.seo_description)
-  }, [settings.seo_title, settings.seo_description])
+    if (meta) meta.setAttribute('content', isAdmin ? 'Рабочее пространство Salt Ordo: каталог, заявки и аналитика.' : settings.seo_description)
+  }, [isAdmin, settings.seo_title, settings.seo_description])
 
   const value = useMemo(() => ({ settings, setSettings }), [settings])
   return <SiteSettingsContext.Provider value={value}>{children}</SiteSettingsContext.Provider>

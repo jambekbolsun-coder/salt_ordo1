@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../state/AuthContext'
 import Logo from '../../components/Logo'
 import Ornament from '../../components/Ornament'
+import AdminInstallCard from '../../components/AdminInstallCard'
+import { useAdminPwa } from '../../state/AdminPwaContext'
 
 export default function AdminLogin() {
   const { login, signupFirstOwner, isStaff, loading: authLoading, supabaseConfigured } = useAuth()
@@ -15,9 +17,10 @@ export default function AdminLogin() {
   const [notice, setNotice] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
+  const { online } = useAdminPwa()
 
   useEffect(() => {
-    if (!authLoading && isStaff) navigate(location.state?.from || '/admin', { replace: true })
+    if (!authLoading && isStaff) navigate(location.state?.from || '/admin/', { replace: true })
   }, [authLoading, isStaff, navigate, location.state])
 
   const submit = async (event) => {
@@ -36,7 +39,7 @@ export default function AdminLogin() {
       } else {
         await login(form.email.trim(), form.password)
       }
-      navigate(location.state?.from || '/admin', { replace: true })
+      navigate(location.state?.from || '/admin/', { replace: true })
     } catch (err) {
       setError(err.message || 'Не удалось войти. Проверьте email и пароль.')
     } finally {
@@ -50,11 +53,11 @@ export default function AdminLogin() {
         <div className="admin-auth__story-inner">
           <Logo />
           <span className="admin-auth__kicker"><Sparkles size={16}/> Salt Ordo · управление</span>
-          <h1>Каталог, заказы и аналитика — в одном спокойном интерфейсе.</h1>
-          <p>Товары, единая цена, фотографии, характеристики и заявки доступны только владельцу сайта.</p>
+          <h1>Управление Salt Ordo — в одном приложении.</h1>
+          <p>Рабочее пространство вашей команды: управляйте магазином с компьютера или телефона.</p>
           <div className="admin-auth__trust">
-            <span><ShieldCheck/> Доступ только владельцу</span>
-            <span><LockKeyhole/> Публичной регистрации нет</span>
+            <span><ShieldCheck/> Доступ по роли сотрудника</span>
+            <span><LockKeyhole/> Защищённый вход</span>
           </div>
           <Ornament className="admin-auth__ornament"/>
         </div>
@@ -65,7 +68,7 @@ export default function AdminLogin() {
           <div className="admin-auth__mobile-logo"><Logo compact/></div>
           <span className="eyebrow">Административный отдел</span>
           <h2>{setup ? 'Первичная настройка' : 'Вход в систему'}</h2>
-          <p>Эта страница не отображается на клиентской стороне. Доступ открывается только через адрес <strong>/admin</strong>.</p>
+          <p>Войдите с учётной записью сотрудника, чтобы открыть рабочее пространство Salt Ordo.</p>
 
           <form onSubmit={submit} className="auth-form">
             {setup && <label>
@@ -84,14 +87,15 @@ export default function AdminLogin() {
                 <button type="button" aria-label={show ? 'Скрыть пароль' : 'Показать пароль'} onClick={()=>setShow(!show)}>{show?<EyeOff/>:<Eye/>}</button>
               </div>
             </label>
-            {error && <div className="notice notice--error">{error}</div>}
+            {error && <div className="notice notice--error" role="alert">{error}</div>}
             {notice && <div className="notice notice--success">{notice}</div>}
             {!supabaseConfigured && <div className="notice notice--error">Supabase ещё не подключён к этой сборке.</div>}
-            <button type="submit" className="btn btn--primary btn--block" disabled={busy || authLoading || !supabaseConfigured} aria-busy={busy}>
+            <button type="submit" className="btn btn--primary btn--block" disabled={busy || authLoading || !supabaseConfigured || !online} aria-busy={busy}>
               <LogIn size={18}/>{busy ? 'Проверяем…' : setup ? 'Создать владельца' : 'Войти'}
             </button>
           </form>
           <div className="admin-auth__links"><button type="button" className="text-link" onClick={()=>{setSetup(!setup);setError('');setNotice('')}}>{setup ? 'У меня уже есть доступ' : 'Первый запуск: создать владельца'}</button><Link to="/">Вернуться на сайт</Link></div>
+          <AdminInstallCard compact/>
         </div>
       </section>
     </main>

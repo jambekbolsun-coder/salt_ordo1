@@ -4,6 +4,7 @@ import PublicLayout from './components/PublicLayout'
 import ProtectedAdmin from './components/ProtectedAdmin'
 import AdminLayout from './components/AdminLayout'
 import RequireAdminRole from './components/RequireAdminRole'
+import { AdminPwaProvider } from './state/AdminPwaContext'
 
 const Home = lazy(() => import('./pages/Home'))
 const Catalog = lazy(() => import('./pages/Catalog'))
@@ -24,6 +25,7 @@ const Settings = lazy(() => import('./pages/admin/Settings'))
 const Leads = lazy(() => import('./pages/admin/Leads'))
 const Analytics = lazy(() => import('./pages/admin/Analytics'))
 const Profile = lazy(() => import('./pages/admin/Profile'))
+const Application = lazy(() => import('./pages/admin/Application'))
 
 export default function App() {
   return (
@@ -39,6 +41,7 @@ export default function App() {
         <Route path="/contacts" element={<Contacts/>}/>
       </Route>
 
+      <Route element={<AdminPwaProvider/>}>
       <Route path="/admin/login" element={<AdminLogin/>}/>
       <Route path="/admin" element={<ProtectedAdmin/>}>
         <Route element={<AdminLayout/>}>
@@ -58,7 +61,9 @@ export default function App() {
             <Route path="analytics" element={<Analytics/>}/>
           </Route>
           <Route path="profile" element={<Profile/>}/>
+          <Route path="application" element={<Application/>}/>
         </Route>
+      </Route>
       </Route>
 
       <Route path="*" element={<NotFound/>}/>

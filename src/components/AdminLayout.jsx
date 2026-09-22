@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import {
   BarChart3, Bot, Boxes, ChevronLeft, ClipboardList, Gauge, LogOut, Menu, PackagePlus,
-  Settings, ShoppingBag, Tags, UserRound, X
+  Settings, ShoppingBag, Smartphone, Tags, UserRound, X
 } from 'lucide-react'
-import Logo from './Logo'
 import { useAuth } from '../state/AuthContext'
+import { useAdminPwa } from '../state/AdminPwaContext'
 
 const nav = [
-  ['/admin', 'Обзор', Gauge, ['owner','admin','manager','content'], true],
+  ['/admin/', 'Обзор', Gauge, ['owner','admin','manager','content'], true],
   ['/admin/leads', 'Заявки', ClipboardList, ['owner','admin','manager']],
   ['/admin/analytics', 'Аналитика', BarChart3, ['owner','admin','manager']],
   ['/admin/products', 'Товары', ShoppingBag, ['owner','admin','content']],
@@ -17,13 +17,14 @@ const nav = [
   ['/admin/chatbot', 'Чат-бот', Bot, ['owner','admin','content']],
   ['/admin/settings', 'Настройки', Settings, ['owner','admin']],
   ['/admin/profile', 'Профиль', UserRound, ['owner','admin','manager','content']],
+  ['/admin/application', 'Приложение', Smartphone, ['owner','admin','manager','content']],
 ]
 
 export default function AdminLayout() {
   const [open, setOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
   const { staff, logout } = useAuth()
-  const navigate = useNavigate()
+  const { updateReady } = useAdminPwa()
 
   useEffect(() => {
     if (!open) return
@@ -39,7 +40,6 @@ export default function AdminLayout() {
 
   const signOut = async () => {
     await logout()
-    navigate('/admin/login')
   }
 
   return (
@@ -47,7 +47,10 @@ export default function AdminLayout() {
       <div className={`admin-backdrop ${open ? 'is-open' : ''}`} onClick={() => setOpen(false)}/>
       <aside className={`admin-sidebar ${open ? 'is-open' : ''}`}>
         <div className="admin-sidebar__brand">
-          <Logo compact={collapsed}/>
+          <Link className="admin-app-brand" to="/admin/" aria-label="Salt Ordo Admin — обзор">
+            <img src="/admin-pwa/icon-192.png" width="44" height="44" alt=""/>
+            {!collapsed && <span><strong>Salt Ordo</strong><small>Рабочее пространство</small></span>}
+          </Link>
           <button className="icon-btn admin-close" onClick={() => setOpen(false)} aria-label="Закрыть меню"><X/></button>
         </div>
         <div className="admin-sidebar__label">{!collapsed && 'Управление Salt Ordo'}</div>
@@ -59,7 +62,7 @@ export default function AdminLayout() {
           ))}
         </nav>
         <div className="admin-sidebar__bottom">
-          <button className="admin-user" onClick={signOut}>
+          <button className="admin-user" onClick={signOut} aria-label="Выйти из кабинета">
             <span className="admin-user__avatar">{(staff?.full_name || 'SO').slice(0,2).toUpperCase()}</span>
             <span className="admin-user__text"><strong>{staff?.full_name || 'Salt Ordo'}</strong><small>{staff?.role || 'owner'}</small></span>
             <LogOut size={18}/>
@@ -74,6 +77,7 @@ export default function AdminLayout() {
           <div className="admin-topbar__title"><Boxes size={19}/><span>Каталог и контент</span></div>
           <a className="btn btn--small btn--soft" href="/" target="_blank" rel="noreferrer">Открыть сайт</a>
         </header>
+        {updateReady && <div className="admin-update-note" role="status">Доступна новая версия приложения. <Link to="/admin/application">Как обновить</Link></div>}
         <main className="admin-main"><Outlet/></main>
       </div>
     </div>

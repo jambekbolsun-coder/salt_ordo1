@@ -1,0 +1,51 @@
+.admin-install{padding:28px;background:#fff;border:1px solid var(--border);border-radius:20px;min-width:0}
+.admin-install__heading{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.admin-install__heading img{border-radius:15px;flex:none}
+.admin-install__heading h2{font-size:1.4rem;margin:3px 0 4px;letter-spacing:-.03em}
+.admin-install__heading p{margin:0;font-size:.88rem}
+.admin-install__heading .eyebrow{font-size:.62rem}
+.admin-install>p{font-size:.9rem}
+.admin-install__security{display:flex;align-items:flex-start;gap:8px;color:#655362;margin:20px 0 0!important;font-size:.78rem!important;line-height:1.5}
+.admin-install__security svg{flex:none;margin-top:2px}
+.admin-install__help{border:1px solid var(--border);border-radius:12px;background:#fbfafb}
+.admin-install__help summary{display:flex;align-items:center;gap:9px;padding:13px 16px;min-height:48px;cursor:pointer;font-weight:700;font-size:.86rem}
+.admin-install__help summary::after{content:'+';margin-left:auto;font-size:20px}
+.admin-install__help[open] summary::after{content:'−'}
+.admin-install__help ol{margin:0;padding:0 26px 18px 38px;font-size:.86rem;color:#655c67}
+.admin-install__help li+li{margin-top:10px}
+.admin-install__status{display:flex;align-items:center;gap:8px;color:#236040;font-weight:700}
+.admin-install__feedback{padding:12px;background:#f8f3f6;border-radius:10px}
+.admin-install .btn--primary{background:#241f27;color:#fff;box-shadow:none}
+.admin-install .btn--primary:hover{background:#413346}
+.admin-auth input{font-size:16px}
+.admin-install--compact{margin-top:24px;padding:20px;box-shadow:none}
+.admin-install--compact .admin-install__heading{gap:12px;margin-bottom:14px}
+.admin-install--compact .admin-install__heading h2{font-size:1.1rem}
+.admin-install--compact .admin-install__heading img{width:44px;height:44px;border-radius:12px}
+.admin-install--compact .eyebrow{display:none}
+.admin-app-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:18px;max-width:1120px}
+.admin-app-status h2,.admin-app-note h2{font-size:1.15rem;margin:0 0 12px}
+.admin-app-status dl{margin:0 0 24px}
+.admin-app-status dl>div{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding:13px 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.admin-app-status dt{color:var(--muted)}.admin-app-status dd{margin:0;font-weight:700}
+.admin-app-note{display:flex;gap:14px;align-items:flex-start}
+.admin-app-note>svg{flex:none;color:#92526d;width:22px;height:22px;margin-top:2px}
+.admin-app-note p{font-size:.88rem;line-height:1.65;margin:6px 0 0}
+.admin-connection{padding:12px max(20px,env(safe-area-inset-left));background:#fff1d5;color:#654414;text-align:center;font-size:.85rem;position:relative;z-index:40}
+.admin-update-note{padding:12px 24px;background:#f3e9ee;color:#654151;font-size:.85rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.admin-update-note a{font-weight:800;text-decoration:underline}
+.admin-shell .admin-topbar{padding-top:max(12px,env(safe-area-inset-top));padding-right:max(20px,env(safe-area-inset-right));min-height:74px}
+.admin-shell .admin-sidebar{padding-top:max(18px,env(safe-area-inset-top));padding-bottom:max(18px,env(safe-area-inset-bottom))}
+.admin-sidebar__brand,.admin-sidebar__label,.admin-sidebar__bottom{flex-shrink:0}
+.admin-shell .admin-nav{overflow-y:auto;min-height:0;flex:1;align-content:start;margin-bottom:12px}
+.admin-app-brand{display:flex;align-items:center;gap:10px;min-width:0;color:#fff}
+.admin-app-brand img{border-radius:12px;flex:none}
+.admin-app-brand>span{display:grid;min-width:0}
+.admin-app-brand strong{font-size:.95rem}.admin-app-brand small{font-size:.65rem;color:#c7bdc8;white-space:nowrap}
+.admin-shell .admin-main{padding-bottom:max(30px,env(safe-area-inset-bottom))}
+.admin-auth__panel{padding-bottom:max(35px,env(safe-area-inset-bottom))}
+.admin-auth__story h1{font-size:clamp(2.5rem,4.2vw,4rem);text-wrap:balance}
+.admin-install :focus-visible,.admin-shell :focus-visible{outline:3px solid #a35577;outline-offset:3px}
+.admin-shell .admin-topbar .icon-btn,.admin-shell .admin-close{min-width:44px;min-height:44px}
+@media(max-width:760px){.admin-app-grid{grid-template-columns:1fr}.admin-install{padding:20px}.admin-auth__panel{padding-inline:20px}.admin-install__heading{align-items:flex-start}.admin-install__heading h2{font-size:1.25rem}.admin-install .btn{width:100%}.admin-install__heading .eyebrow{letter-spacing:.04em}.admin-auth__links{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){.admin-shell,.admin-shell *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

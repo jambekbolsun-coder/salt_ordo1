@@ -1,0 +1,18 @@
+{
+  "id": "/admin/",
+  "name": "Salt Ordo Admin",
+  "short_name": "SO Admin",
+  "description": "Рабочее пространство Salt Ordo: каталог, заявки и аналитика.",
+  "lang": "ru",
+  "start_url": "/admin/",
+  "scope": "/admin/",
+  "display": "standalone",
+  "background_color": "#f8f7f8",
+  "theme_color": "#241f27",
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "/admin-pwa/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/admin-pwa/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/admin-pwa/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

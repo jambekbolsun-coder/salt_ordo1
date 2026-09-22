@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { supabase, supabaseConfigured } from '../lib/supabase'
+import { supabase, supabaseConfigured, adminAuthStorage, ADMIN_AUTH_KEY } from '../lib/supabase'
 
 const AuthContext = createContext(null)
 
@@ -173,12 +173,17 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       if (supabaseConfigured) {
-        await withTimeout(supabase.auth.signOut(), 'Не удалось завершить сессию. Обновите страницу.')
+        await withTimeout(supabase.auth.signOut({ scope: 'local' }), 'Не удалось завершить сессию. Обновите страницу.')
       }
+    } catch {
+      // Local exit must still work offline. Clear the credential below and
+      // destroy this JS context so an in-memory token cannot restore access.
     } finally {
+      adminAuthStorage.removeItem(ADMIN_AUTH_KEY)
       setSession(null)
       setStaff(null)
       setLoading(false)
+      window.location.replace('/admin/login')
     }
   }
 
