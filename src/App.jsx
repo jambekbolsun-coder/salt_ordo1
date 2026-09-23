@@ -21,6 +21,7 @@ const Products = lazy(() => import('./pages/admin/Products'))
 const ProductForm = lazy(() => import('./pages/admin/ProductForm'))
 const Categories = lazy(() => import('./pages/admin/Categories'))
 const Chatbot = lazy(() => import('./pages/admin/Chatbot'))
+const Staff = lazy(() => import('./pages/admin/Staff'))
 const Settings = lazy(() => import('./pages/admin/Settings'))
 const Leads = lazy(() => import('./pages/admin/Leads'))
 const Analytics = lazy(() => import('./pages/admin/Analytics'))
@@ -54,6 +55,7 @@ export default function App() {
             <Route path="chatbot" element={<Chatbot/>}/>
           </Route>
           <Route element={<RequireAdminRole roles={['owner','admin']}/> }>
+            <Route path="staff" element={<Staff/>}/>
             <Route path="settings" element={<Settings/>}/>
           </Route>
           <Route element={<RequireAdminRole roles={['owner','admin','manager']}/> }>

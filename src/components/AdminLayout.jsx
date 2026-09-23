@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import {
   BarChart3, Bot, Boxes, ChevronLeft, ClipboardList, Gauge, LogOut, Menu, PackagePlus,
-  Settings, ShoppingBag, Smartphone, Tags, UserRound, X
+  Settings, ShoppingBag, Smartphone, Tags, UserRound, UsersRound, X
 } from 'lucide-react'
 import { useAuth } from '../state/AuthContext'
 import { useAdminPwa } from '../state/AdminPwaContext'
@@ -15,6 +15,7 @@ const nav = [
   ['/admin/products/new', 'Добавить товар', PackagePlus, ['owner','admin','content']],
   ['/admin/categories', 'Категории', Tags, ['owner','admin','content']],
   ['/admin/chatbot', 'Чат-бот', Bot, ['owner','admin','content']],
+  ['/admin/staff', 'Сотрудники', UsersRound, ['owner','admin']],
   ['/admin/settings', 'Настройки', Settings, ['owner','admin']],
   ['/admin/profile', 'Профиль', UserRound, ['owner','admin','manager','content']],
   ['/admin/application', 'Приложение', Smartphone, ['owner','admin','manager','content']],

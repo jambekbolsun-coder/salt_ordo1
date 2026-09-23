@@ -23,8 +23,10 @@ export default function Staff() {
     event.preventDefault(); setBusy(true); setError(''); setSuccess('')
     if (form.password.length < 8) { setBusy(false); return setError('Пароль должен содержать минимум 8 символов.') }
     try {
-      await createStaffAccount(form)
-      setSuccess('Сотрудник создан. Передайте ему email и пароль лично.')
+      const result = await createStaffAccount(form)
+      setSuccess(result?.mode === 'updated'
+        ? 'Доступ сотрудника обновлён. Новый пароль уже действует.'
+        : 'Сотрудник создан. Передайте ему email и пароль лично.')
       setForm({ fullName:'',email:'',password:'',role:'content' })
       await load()
     } catch (err) { setError(err.message) }
@@ -38,13 +40,13 @@ export default function Staff() {
   return <>
     <AdminPageHeader eyebrow="Команда" title="Сотрудники и роли" text="Публичной регистрации нет. Сотрудников создаёт владелец или администратор прямо здесь."/>
     {canManage && <section className="admin-panel staff-create-panel">
-      <div><span className="eyebrow">Новый сотрудник</span><h2>Создать доступ</h2><p>Укажите данные сотрудника. Система создаст аккаунт без отдельной страницы регистрации.</p></div>
+      <div><span className="eyebrow">Доступ сотрудника</span><h2>Создать или обновить доступ</h2><p>Если email уже существует, система подтвердит аккаунт, обновит пароль и сохранит выбранную роль.</p></div>
       <form className="staff-account-form" onSubmit={create}>
         <label><span>Имя</span><input value={form.fullName} onChange={(e)=>setForm({ ...form,fullName:e.target.value })} required placeholder="Имя и фамилия"/></label>
         <label><span>Email</span><input type="email" value={form.email} onChange={(e)=>setForm({ ...form,email:e.target.value })} required placeholder="manager@example.com"/></label>
         <label><span>Пароль</span><div className="input-with-icon"><KeyRound/><input type="password" minLength="8" value={form.password} onChange={(e)=>setForm({ ...form,password:e.target.value })} required autoComplete="new-password"/></div></label>
-        <label><span>Роль</span><select value={form.role} onChange={(e)=>setForm({ ...form,role:e.target.value })}>{role === 'owner' && <option value="admin">Администратор</option>}<option value="content">Контент-менеджер</option></select></label>
-        <button className="btn btn--primary" disabled={busy}><Plus/>{busy ? 'Создаём…' : 'Создать сотрудника'}</button>
+        <label><span>Роль</span><select value={form.role} onChange={(e)=>setForm({ ...form,role:e.target.value })}>{role === 'owner' && <option value="admin">Администратор</option>}<option value="manager">Менеджер</option><option value="content">Контент-менеджер</option></select></label>
+        <button className="btn btn--primary" disabled={busy}><Plus/>{busy ? 'Сохраняем…' : 'Сохранить доступ'}</button>
       </form>
       {success && <div className="notice notice--success">{success}</div>}
       {error && <div className="notice notice--error">{error}</div>}

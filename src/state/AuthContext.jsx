@@ -16,6 +16,9 @@ function withTimeout(operation, message) {
 }
 
 function readableAuthError(error) {
+  if (error?.message === 'Failed to fetch' || error?.name === 'TypeError') {
+    return new Error('Сервис данных временно недоступен. Подождите минуту и попробуйте снова.')
+  }
   if (error?.code === 'email_not_confirmed') {
     return new Error('Подтвердите email по ссылке из письма, затем войдите снова.')
   }

@@ -53,28 +53,56 @@ Deno.serve(async (req) => {
     if (!["admin", "manager", "content"].includes(role)) return json({ error: "Недопустимая роль" }, 400);
     if (actor.role !== "owner" && role === "admin") return json({ error: "Только владелец может создавать администратора" }, 403);
 
-    const { data: created, error: createError } = await service.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-      user_metadata: { full_name: fullName },
-    });
-    if (createError || !created.user) return json({ error: createError?.message || "Не удалось создать пользователя" }, 400);
+    const { data: usersPage, error: listError } = await service.auth.admin.listUsers({ page: 1, perPage: 1000 });
+    if (listError) return json({ error: listError.message }, 400);
 
-    const { data: staff, error: staffError } = await service.from("staff").insert({
-      user_id: created.user.id,
+    const existingUser = usersPage.users.find((candidate) => candidate.email?.toLowerCase() === email);
+    const { data: existingStaff, error: existingStaffError } = existingUser
+      ? await service.from("staff").select("id,role").eq("user_id", existingUser.id).maybeSingle()
+      : { data: null, error: null };
+    if (existingStaffError) return json({ error: existingStaffError.message }, 400);
+    if (existingStaff?.role === "owner" && existingUser?.id !== user.id) {
+      return json({ error: "Нельзя изменить доступ другого владельца" }, 403);
+    }
+
+    let managedUser = existingUser;
+    let createdNow = false;
+
+    if (managedUser) {
+      const { data: updated, error: updateError } = await service.auth.admin.updateUserById(managedUser.id, {
+        password,
+        email_confirm: true,
+        user_metadata: { ...managedUser.user_metadata, full_name: fullName },
+      });
+      if (updateError || !updated.user) return json({ error: updateError?.message || "Не удалось обновить пользователя" }, 400);
+      managedUser = updated.user;
+    } else {
+      const { data: created, error: createError } = await service.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        user_metadata: { full_name: fullName },
+      });
+      if (createError || !created.user) return json({ error: createError?.message || "Не удалось создать пользователя" }, 400);
+      managedUser = created.user;
+      createdNow = true;
+    }
+
+    const { data: staff, error: staffError } = await service.from("staff").upsert({
+      user_id: managedUser.id,
       email,
       full_name: fullName,
       role,
+      is_active: true,
       created_by: user.id,
-    }).select().single();
+    }, { onConflict: "user_id" }).select().single();
 
     if (staffError) {
-      await service.auth.admin.deleteUser(created.user.id);
+      if (createdNow) await service.auth.admin.deleteUser(managedUser.id);
       return json({ error: staffError.message }, 400);
     }
 
-    return json({ staff });
+    return json({ staff, mode: createdNow ? "created" : "updated" });
   } catch (error) {
     return json({ error: error instanceof Error ? error.message : "Unexpected error" }, 500);
   }
