@@ -8,7 +8,7 @@ const roleLabels = { owner:'Владелец', admin:'Администратор
 
 export default function Staff() {
   const { role } = useAuth()
-  const canManage = ['owner','admin'].includes(role)
+  const canManage = role === 'owner'
   const [staff,setStaff] = useState([])
   const [q,setQ] = useState('')
   const [form,setForm] = useState({ fullName:'',email:'',password:'',role:'content' })
@@ -21,7 +21,7 @@ export default function Staff() {
 
   const create = async (event) => {
     event.preventDefault(); setBusy(true); setError(''); setSuccess('')
-    if (form.password.length < 8) { setBusy(false); return setError('Пароль должен содержать минимум 8 символов.') }
+    if (form.password.length < 12) { setBusy(false); return setError('Пароль должен содержать минимум 12 символов.') }
     try {
       const result = await createStaffAccount(form)
       setSuccess(result?.mode === 'updated'
@@ -38,13 +38,13 @@ export default function Staff() {
   }
 
   return <>
-    <AdminPageHeader eyebrow="Команда" title="Сотрудники и роли" text="Публичной регистрации нет. Сотрудников создаёт владелец или администратор прямо здесь."/>
+    <AdminPageHeader eyebrow="Команда" title="Сотрудники и роли" text="Публичной регистрации нет. Сотрудников создаёт владелец прямо здесь."/>
     {canManage && <section className="admin-panel staff-create-panel">
       <div><span className="eyebrow">Доступ сотрудника</span><h2>Создать или обновить доступ</h2><p>Если email уже существует, система подтвердит аккаунт, обновит пароль и сохранит выбранную роль.</p></div>
       <form className="staff-account-form" onSubmit={create}>
         <label><span>Имя</span><input value={form.fullName} onChange={(e)=>setForm({ ...form,fullName:e.target.value })} required placeholder="Имя и фамилия"/></label>
         <label><span>Email</span><input type="email" value={form.email} onChange={(e)=>setForm({ ...form,email:e.target.value })} required placeholder="manager@example.com"/></label>
-        <label><span>Пароль</span><div className="input-with-icon"><KeyRound/><input type="password" minLength="8" value={form.password} onChange={(e)=>setForm({ ...form,password:e.target.value })} required autoComplete="new-password"/></div></label>
+        <label><span>Пароль</span><div className="input-with-icon"><KeyRound/><input type="password" minLength="12" value={form.password} onChange={(e)=>setForm({ ...form,password:e.target.value })} required autoComplete="new-password"/></div></label>
         <label><span>Роль</span><select value={form.role} onChange={(e)=>setForm({ ...form,role:e.target.value })}>{role === 'owner' && <option value="admin">Администратор</option>}<option value="manager">Менеджер</option><option value="content">Контент-менеджер</option></select></label>
         <button className="btn btn--primary" disabled={busy}><Plus/>{busy ? 'Сохраняем…' : 'Сохранить доступ'}</button>
       </form>

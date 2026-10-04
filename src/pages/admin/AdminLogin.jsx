@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Eye, EyeOff, LockKeyhole, LogIn, Mail, ShieldCheck, Sparkles, UserRound } from 'lucide-react'
+import { Eye, EyeOff, LockKeyhole, LogIn, Mail, ShieldCheck, Sparkles } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../state/AuthContext'
 import Logo from '../../components/Logo'
@@ -8,9 +8,8 @@ import AdminInstallCard from '../../components/AdminInstallCard'
 import { useAdminPwa } from '../../state/AdminPwaContext'
 
 export default function AdminLogin() {
-  const { login, signupFirstOwner, isStaff, loading: authLoading, supabaseConfigured } = useAuth()
+  const { login, isStaff, loading: authLoading, supabaseConfigured } = useAuth()
   const [form, setForm] = useState({ email: '', password: '', fullName:'' })
-  const [setup, setSetup] = useState(false)
   const [show, setShow] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -30,15 +29,7 @@ export default function AdminLogin() {
     setError('')
     setNotice('')
     try {
-      if (setup) {
-        const result = await signupFirstOwner(form.email.trim(), form.password, form.fullName.trim())
-        if (result.confirmationRequired) {
-          setNotice('Проверьте email и подтвердите регистрацию. После этого вернитесь сюда и войдите.')
-          return
-        }
-      } else {
-        await login(form.email.trim(), form.password)
-      }
+      await login(form.email.trim(), form.password)
       navigate(location.state?.from || '/admin/', { replace: true })
     } catch (err) {
       setError(err.message || 'Не удалось войти. Проверьте email и пароль.')
@@ -67,14 +58,10 @@ export default function AdminLogin() {
         <div className="admin-auth__card">
           <div className="admin-auth__mobile-logo"><Logo compact/></div>
           <span className="eyebrow">Административный отдел</span>
-          <h2>{setup ? 'Первичная настройка' : 'Вход в систему'}</h2>
+          <h2>Вход в систему</h2>
           <p>Войдите с учётной записью сотрудника, чтобы открыть рабочее пространство Salt Ordo.</p>
 
           <form onSubmit={submit} className="auth-form">
-            {setup && <label>
-              <span>Имя владельца</span>
-              <div className="input-with-icon"><UserRound/><input value={form.fullName} onChange={(e)=>setForm({...form,fullName:e.target.value})} placeholder="Имя и фамилия" minLength="2" required/></div>
-            </label>}
             <label>
               <span>Email</span>
               <div className="input-with-icon"><Mail/><input type="email" autoComplete="email" value={form.email} onChange={(e)=>setForm({...form,email:e.target.value})} placeholder="name@example.com" required/></div>
@@ -83,7 +70,7 @@ export default function AdminLogin() {
               <span>Пароль</span>
               <div className="input-with-icon">
                 <LockKeyhole/>
-                <input type={show ? 'text' : 'password'} autoComplete="current-password" value={form.password} onChange={(e)=>setForm({...form,password:e.target.value})} placeholder="••••••••" minLength="8" required/>
+                <input aria-label="Пароль" type={show ? 'text' : 'password'} autoComplete="current-password" value={form.password} onChange={(e)=>setForm({...form,password:e.target.value})} placeholder="••••••••" minLength="8" required/>
                 <button type="button" aria-label={show ? 'Скрыть пароль' : 'Показать пароль'} onClick={()=>setShow(!show)}>{show?<EyeOff/>:<Eye/>}</button>
               </div>
             </label>
@@ -91,10 +78,10 @@ export default function AdminLogin() {
             {notice && <div className="notice notice--success">{notice}</div>}
             {!supabaseConfigured && <div className="notice notice--error">Supabase ещё не подключён к этой сборке.</div>}
             <button type="submit" className="btn btn--primary btn--block" disabled={busy || authLoading || !supabaseConfigured || !online} aria-busy={busy}>
-              <LogIn size={18}/>{busy ? 'Проверяем…' : setup ? 'Создать владельца' : 'Войти'}
+              <LogIn size={18}/>{busy ? 'Проверяем…' : 'Войти'}
             </button>
           </form>
-          <div className="admin-auth__links"><button type="button" className="text-link" onClick={()=>{setSetup(!setup);setError('');setNotice('')}}>{setup ? 'У меня уже есть доступ' : 'Первый запуск: создать владельца'}</button><Link to="/">Вернуться на сайт</Link></div>
+          <div className="admin-auth__links"><span>Доступ выдаёт владелец Salt Ordo.</span><Link to="/">Вернуться на сайт</Link></div>
           <AdminInstallCard compact/>
         </div>
       </section>

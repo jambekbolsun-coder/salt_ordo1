@@ -2,13 +2,13 @@ import { useMemo, useState } from 'react'
 import { CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../state/CartContext'
-import { createLead, createOrder } from '../lib/api'
+import { createOrder } from '../lib/api'
 import { money } from '../lib/format'
 import { useLanguage } from '../state/LanguageContext'
 import { useSiteSettings } from '../state/SiteSettingsContext'
 import { localizedField } from '../lib/productText'
 import { whatsappUrl } from '../lib/whatsapp'
-import { getTrackingIds, track } from '../lib/analytics'
+import { track } from '../lib/analytics'
 
 export default function Checkout() {
   const { items, total, clear } = useCart()
@@ -19,6 +19,7 @@ export default function Checkout() {
   const [result, setResult] = useState(null)
   const [error, setError] = useState('')
   const [whatsappLink, setWhatsappLink] = useState('')
+  const [requestId] = useState(()=>crypto.randomUUID())
 
   const hasRequest = useMemo(() => items.some((item) => item.price_on_request || item.sale_price == null), [items])
   const change = (event) => {
@@ -40,15 +41,7 @@ export default function Checkout() {
     setSending(true)
     setError('')
     try {
-      const order = await createOrder({ ...form, items, language: lang })
-      await createLead({
-        source:'checkout',
-        customerName:form.customerName,
-        phone:form.phone,
-        email:form.email,
-        message:`${form.note || ''} · Заявка ${order.order_number}`.trim(),
-        ...getTrackingIds(),
-      })
+      const order = await createOrder({ ...form, items, language: lang, requestId })
       const link = whatsappUrl(settings.whatsapp, buildMessage(order.order_number))
       setWhatsappLink(link)
       setResult(order)

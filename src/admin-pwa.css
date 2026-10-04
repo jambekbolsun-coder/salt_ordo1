@@ -49,3 +49,4 @@
 .admin-shell .admin-topbar .icon-btn,.admin-shell .admin-close{min-width:44px;min-height:44px}
 @media(max-width:760px){.admin-app-grid{grid-template-columns:1fr}.admin-install{padding:20px}.admin-auth__panel{padding-inline:20px}.admin-install__heading{align-items:flex-start}.admin-install__heading h2{font-size:1.25rem}.admin-install .btn{width:100%}.admin-install__heading .eyebrow{letter-spacing:.04em}.admin-auth__links{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){.admin-shell,.admin-shell *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:1024px){.admin-sidebar:not(.is-open){visibility:hidden}}

@@ -9,6 +9,7 @@ import { useAdminPwa } from '../state/AdminPwaContext'
 
 const nav = [
   ['/admin/', 'Обзор', Gauge, ['owner','admin','manager','content'], true],
+  ['/admin/clients', 'Клиенты', UsersRound, ['owner','admin']],
   ['/admin/leads', 'Заявки', ClipboardList, ['owner','admin','manager']],
   ['/admin/analytics', 'Аналитика', BarChart3, ['owner','admin','manager']],
   ['/admin/products', 'Товары', ShoppingBag, ['owner','admin','content']],
@@ -75,7 +76,7 @@ export default function AdminLayout() {
         <header className="admin-topbar">
           <button className="icon-btn admin-menu" onClick={() => setOpen(true)} aria-label="Открыть меню"><Menu/></button>
           <button className="icon-btn admin-collapse" onClick={() => setCollapsed((x)=>!x)} title="Свернуть меню"><ChevronLeft/></button>
-          <div className="admin-topbar__title"><Boxes size={19}/><span>Каталог и контент</span></div>
+          <div className="admin-topbar__title"><Boxes size={19}/><span>Рабочее пространство</span></div>
           <a className="btn btn--small btn--soft" href="/" target="_blank" rel="noreferrer">Открыть сайт</a>
         </header>
         {updateReady && <div className="admin-update-note" role="status">Доступна новая версия приложения. <Link to="/admin/application">Как обновить</Link></div>}

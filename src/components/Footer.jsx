@@ -34,6 +34,9 @@ export default function Footer() {
               <Link to="/">{t.nav.home}</Link>
               <Link to="/catalog">{t.nav.catalog}</Link>
               <Link to="/contacts">{t.nav.contacts}</Link>
+              <Link to="/privacy">Конфиденциальность</Link>
+              <Link to="/cookies">Политика cookies</Link>
+              <button className="footer-cookie-link" onClick={openCookieSettings}>Настройки cookies</button>
             </nav>
 
             <div className="footer-contact">
@@ -51,3 +54,4 @@ export default function Footer() {
     </footer>
   )
 }
+import { openCookieSettings } from '../lib/consent'

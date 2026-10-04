@@ -14,6 +14,7 @@ const Cart = lazy(() => import('./pages/Cart'))
 const Checkout = lazy(() => import('./pages/Checkout'))
 const Contacts = lazy(() => import('./pages/Contacts'))
 const NotFound = lazy(() => import('./pages/NotFound'))
+const Privacy = lazy(() => import('./pages/Privacy'))
 
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
 const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
@@ -27,6 +28,7 @@ const Leads = lazy(() => import('./pages/admin/Leads'))
 const Analytics = lazy(() => import('./pages/admin/Analytics'))
 const Profile = lazy(() => import('./pages/admin/Profile'))
 const Application = lazy(() => import('./pages/admin/Application'))
+const Crm = lazy(() => import('./pages/admin/Crm'))
 
 export default function App() {
   return (
@@ -40,6 +42,8 @@ export default function App() {
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/checkout" element={<Checkout/>}/>
         <Route path="/contacts" element={<Contacts/>}/>
+        <Route path="/privacy" element={<Privacy/>}/>
+        <Route path="/cookies" element={<Privacy/>}/>
       </Route>
 
       <Route element={<AdminPwaProvider/>}>
@@ -55,6 +59,7 @@ export default function App() {
             <Route path="chatbot" element={<Chatbot/>}/>
           </Route>
           <Route element={<RequireAdminRole roles={['owner','admin']}/> }>
+            <Route path="clients/*" element={<Crm/>}/>
             <Route path="staff" element={<Staff/>}/>
             <Route path="settings" element={<Settings/>}/>
           </Route>

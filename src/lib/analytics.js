@@ -1,4 +1,5 @@
 import { trackPublicEvent } from './api'
+import { allowed } from './consent'
 
 const VISITOR_KEY = 'salt-ordo-visitor-id'
 const SESSION_KEY = 'salt-ordo-session-id'
@@ -34,6 +35,7 @@ function readOrCreate(storage, key) {
 }
 
 export function getTrackingIds() {
+  if(!allowed('analytics'))return {visitorId:null,sessionId:null}
   return {
     visitorId: readOrCreate(window.localStorage, VISITOR_KEY),
     sessionId: readOrCreate(window.sessionStorage, SESSION_KEY),
@@ -41,11 +43,12 @@ export function getTrackingIds() {
 }
 
 export function track(eventType, details = {}) {
+  if(!allowed('analytics'))return Promise.resolve(null)
   const ids = getTrackingIds()
   return trackPublicEvent({
     ...ids,
     eventType,
-    path: details.path || `${window.location.pathname}${window.location.search}`,
+    path: (details.path || window.location.pathname).split('?')[0],
     productId: details.productId || null,
     categorySlug: details.categorySlug || null,
     metadata: details.metadata || {},

@@ -5,11 +5,14 @@ import Footer from './Footer'
 import MobileBottomNav from './MobileBottomNav'
 import QuizOverlay from './QuizOverlay'
 import { track } from '../lib/analytics'
+import CookieConsent from './CookieConsent'
+import { campaignAttribution } from '../lib/consent'
 
 export default function PublicLayout() {
   const location = useLocation()
 
   useEffect(() => {
+    campaignAttribution()
     track('page_view', { path: `${location.pathname}${location.search}` })
   }, [location.pathname, location.search])
 
@@ -21,6 +24,7 @@ export default function PublicLayout() {
       <Footer />
       <QuizOverlay />
       <MobileBottomNav />
+      <CookieConsent/>
     </div>
   )
 }

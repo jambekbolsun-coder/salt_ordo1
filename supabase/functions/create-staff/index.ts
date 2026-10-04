@@ -1,5 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "jsr:@supabase/supabase-js@2";
+import { createClient } from "jsr:@supabase/supabase-js@2.57.4";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -37,19 +37,22 @@ Deno.serve(async (req) => {
       .select("id,role,is_active")
       .eq("user_id", user.id)
       .maybeSingle();
-    if (actorError || !actor?.is_active || !["owner", "admin"].includes(actor.role)) {
+    if (actorError || !actor?.is_active || actor.role !== "owner") {
       return json({ error: "Недостаточно прав" }, 403);
     }
 
+    const {data: rate,error: rateError}=await service.rpc('salt_crm_rate_limit',{p_key:'staff:'+user.id,p_limit:5,p_seconds:900});
+    if(rateError) return json({error:'Сервис временно недоступен'},503);
+    if(!rate.allowed) return new Response(JSON.stringify({error:'Слишком много запросов. Повторите позже.'}),{status:429,headers:{...cors,'Content-Type':'application/json','Retry-After':String(rate.retry_after)}});
     const body = await req.json();
     const email = String(body.email || "").trim().toLowerCase();
     const fullName = String(body.fullName || "").trim();
     const password = String(body.password || "");
     const role = String(body.role || "manager");
 
-    if (!/^\S+@\S+\.\S+$/.test(email)) return json({ error: "Введите корректный email" }, 400);
-    if (fullName.length < 2) return json({ error: "Введите имя сотрудника" }, 400);
-    if (password.length < 8) return json({ error: "Пароль должен содержать минимум 8 символов" }, 400);
+    if (email.length>254||!/^\S+@\S+\.\S+$/.test(email)) return json({ error: "Введите корректный email" }, 400);
+    if (fullName.length < 2||fullName.length>150) return json({ error: "Введите имя сотрудника" }, 400);
+    if (password.length < 12||password.length>256) return json({ error: "Пароль должен содержать от 12 до 256 символов" }, 400);
     if (!["admin", "manager", "content"].includes(role)) return json({ error: "Недопустимая роль" }, 400);
     if (actor.role !== "owner" && role === "admin") return json({ error: "Только владелец может создавать администратора" }, 403);
 
@@ -61,8 +64,8 @@ Deno.serve(async (req) => {
       ? await service.from("staff").select("id,role").eq("user_id", existingUser.id).maybeSingle()
       : { data: null, error: null };
     if (existingStaffError) return json({ error: existingStaffError.message }, 400);
-    if (existingStaff?.role === "owner" && existingUser?.id !== user.id) {
-      return json({ error: "Нельзя изменить доступ другого владельца" }, 403);
+    if (existingStaff?.role === "owner" || existingUser?.id === user.id) {
+      return json({ error: "Доступ владельца нельзя менять через управление сотрудниками" }, 403);
     }
 
     let managedUser = existingUser;

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { KeyRound, Mail, ShieldCheck, UserRound } from 'lucide-react'
 import AdminPageHeader from '../../components/AdminPageHeader'
 import { useAuth } from '../../state/AuthContext'
-import { supabase } from '../../lib/supabase'
+import { request } from '../../lib/crm'
 
 export default function Profile() {
   const { staff, user } = useAuth()
@@ -14,10 +14,8 @@ export default function Profile() {
   const updatePassword = async (event) => {
     event.preventDefault()
     setBusy(true); setError(''); setNotice('')
-    const { error: updateError } = await supabase.auth.updateUser({ password })
-    if (updateError) setError(updateError.message)
-    else { setNotice('Пароль обновлён.'); setPassword('') }
-    setBusy(false)
+    try { await request('password',{password});setNotice('Пароль обновлён.');setPassword('') }
+    catch(error){setError(error.message)} finally{setBusy(false)}
   }
 
   return <>
@@ -32,7 +30,7 @@ export default function Profile() {
       <section className="admin-panel">
         <div className="admin-panel__head"><div><span className="eyebrow">Безопасность</span><h2>Новый пароль</h2></div></div>
         <form className="profile-password" onSubmit={updatePassword}>
-          <label><KeyRound/><input type="password" minLength={8} required value={password} onChange={(event)=>setPassword(event.target.value)} placeholder="Минимум 8 символов"/></label>
+          <label><KeyRound/><input aria-label="Новый пароль" autoComplete="new-password" type="password" minLength={12} required value={password} onChange={(event)=>setPassword(event.target.value)} placeholder="Минимум 12 символов"/></label>
           {notice && <div className="notice notice--success">{notice}</div>}
           {error && <div className="notice notice--error">{error}</div>}
           <button className="btn btn--primary" disabled={busy} type="submit">{busy ? 'Сохраняем…' : 'Обновить пароль'}</button>

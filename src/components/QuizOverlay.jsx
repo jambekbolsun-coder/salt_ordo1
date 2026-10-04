@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight, Box, Check, Clock, DollarSign, HelpCircle, Layers3, Package, Palette, Ruler, Sparkles, X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { completeQuiz, dismissQuiz, saveQuizAnswer, startQuiz } from '../lib/api'
 import { getTrackingIds } from '../lib/analytics'
+import { consent } from '../lib/consent'
 import { useLanguage } from '../state/LanguageContext'
 
 const COMPLETED_KEY = 'salt-ordo-quiz-completed'
@@ -124,13 +125,16 @@ export default function QuizOverlay() {
   const text = copy[lang] || copy.ru
   const items = questions[lang] || questions.ru
   const current = items[step]
-  const tracking = useMemo(() => getTrackingIds(), [])
+  const [tracking,setTracking] = useState(()=>getTrackingIds())
+  useEffect(()=>{const update=()=>setTracking(getTrackingIds());window.addEventListener('salt-consent-change',update);return()=>window.removeEventListener('salt-consent-change',update)},[])
   const cardRef = useRef(null)
 
   useEffect(() => {
     if (safeGet(COMPLETED_KEY) || safeGet(DISMISSED_KEY)) return
-    const timer = window.setTimeout(() => setOpen(true), 650)
-    return () => window.clearTimeout(timer)
+    let timer
+    const schedule=()=>{if(consent())timer=window.setTimeout(()=>setOpen(true),1500)}
+    schedule();window.addEventListener('salt-consent-change',schedule,{once:true})
+    return () => {window.clearTimeout(timer);window.removeEventListener('salt-consent-change',schedule)}
   }, [])
 
   useEffect(() => {

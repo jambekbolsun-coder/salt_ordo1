@@ -58,10 +58,10 @@ export default function LeadCapture({
         <div><h3>{status === 'success' ? text.success : text.title}</h3><p>{text.text}</p></div>
       </div>
       <form onSubmit={submit}>
-        <label><UserRound/><input required minLength={2} maxLength={100} value={form.name} onChange={change('name')} placeholder={text.name}/></label>
-        <label><Phone/><input required inputMode="tel" minLength={9} maxLength={20} value={form.phone} onChange={change('phone')} placeholder={text.phone}/></label>
-        <label><Mail/><input type="email" maxLength={160} value={form.email} onChange={change('email')} placeholder={text.email}/></label>
-        {!compact && <textarea maxLength={1000} value={form.note} onChange={change('note')} placeholder={text.note}/>}
+        <label><UserRound/><input required minLength={2} maxLength={100} value={form.name} onChange={change('name')} aria-label={text.name} placeholder={text.name}/></label>
+        <label><Phone/><input required inputMode="tel" minLength={9} maxLength={20} value={form.phone} onChange={change('phone')} aria-label={text.phone} placeholder={text.phone}/></label>
+        <label><Mail/><input type="email" maxLength={160} value={form.email} onChange={change('email')} aria-label={text.email} placeholder={text.email}/></label>
+        {!compact && <textarea maxLength={1000} value={form.note} onChange={change('note')} aria-label={text.note} placeholder={text.note}/>}
         {error && <div className="notice notice--error">{error}</div>}
         <button className="btn btn--primary btn--block" type="submit" disabled={busy}>{busy ? text.sending : text.submit}<MessageCircle/></button>
       </form>

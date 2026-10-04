@@ -1,4 +1,5 @@
 import { supabase, supabaseConfigured } from './supabase'
+import { allowed } from './consent'
 
 const createId = () => typeof globalThis.crypto?.randomUUID === 'function'
   ? globalThis.crypto.randomUUID()
@@ -73,6 +74,8 @@ export async function createOrder(payload) {
   if (!supabaseConfigured) throw new Error('Supabase не подключён. Добавьте VITE_SALT_SUPABASE_URL и VITE_SALT_SUPABASE_PUBLISHABLE_KEY.')
   const { data, error } = await supabase.rpc('create_public_order', {
     p_customer_name: payload.customerName,
+    p_email: payload.email || null,
+    p_request_id: payload.requestId,
     p_phone: payload.phone,
     p_city: payload.city || null,
     p_delivery_method: payload.deliveryMethod || 'manager',
@@ -313,6 +316,7 @@ export async function deleteChatbotFaq(id) {
 }
 
 export async function startQuiz({ visitorId, sessionId, language }) {
+  if(!allowed('analytics')||!visitorId||!sessionId)return null
   if (!supabaseConfigured) return createId()
   const { data, error } = await supabase.rpc('start_public_quiz', {
     p_visitor_id: visitorId,
@@ -324,6 +328,7 @@ export async function startQuiz({ visitorId, sessionId, language }) {
 }
 
 export async function saveQuizAnswer({ quizSessionId, visitorId, sessionId, questionKey, answer }) {
+  if(!allowed('analytics'))return
   if (!supabaseConfigured) return
   const { error } = await supabase.rpc('save_public_quiz_answer', {
     p_quiz_session_id: quizSessionId,
@@ -336,6 +341,7 @@ export async function saveQuizAnswer({ quizSessionId, visitorId, sessionId, ques
 }
 
 export async function completeQuiz({ quizSessionId, visitorId, sessionId, categorySlugs }) {
+  if(!allowed('analytics'))return
   if (!supabaseConfigured) return
   const { error } = await supabase.rpc('complete_public_quiz', {
     p_quiz_session_id: quizSessionId,
@@ -347,6 +353,7 @@ export async function completeQuiz({ quizSessionId, visitorId, sessionId, catego
 }
 
 export async function dismissQuiz({ quizSessionId, visitorId, sessionId }) {
+  if(!allowed('analytics'))return
   if (!supabaseConfigured || !quizSessionId) return
   const { error } = await supabase.rpc('dismiss_public_quiz', {
     p_quiz_session_id: quizSessionId,
@@ -360,6 +367,7 @@ export async function trackPublicEvent({
   visitorId, sessionId, eventType, path = null, productId = null,
   categorySlug = null, metadata = {},
 }) {
+  if(!allowed('analytics'))return
   if (!supabaseConfigured) return
   const { error } = await supabase.rpc('track_public_event', {
     p_visitor_id: visitorId,
