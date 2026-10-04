@@ -49,6 +49,11 @@ test('normalization, duplicate inquiry, idempotency, audit and pagination', asyn
 })
 test('anonymous and inactive users cannot call CRM', async () => {
   await assert.rejects(db.query('select public.salt_crm_api($1,$2,$3)', ['list','{}','66666666-6666-4666-8666-666666666666']),/Forbidden/)
+  await db.query('update public.staff set is_active=false where user_id=$1',[actor])
+  await assert.rejects(api('list'),/Forbidden/)
+  await db.query("update public.staff set is_active=true,role='manager' where user_id=$1",[actor])
+  await assert.rejects(api('list'),/Forbidden/)
+  await db.query("update public.staff set role='owner' where user_id=$1",[actor])
   await db.exec('set role anon')
   await assert.rejects(db.query("select public.salt_crm_api('list','{}',null)"),/permission denied/)
   await assert.rejects(db.query('select * from salt_crm.clients'),/permission denied/)
@@ -104,4 +109,21 @@ test('checkout saves order and lead atomically and replays the same request once
   payload.request_id='99999999-9999-4999-8999-999999999999';payload.p_customer_name='FAIL'
   await assert.rejects(order(),/reject_test/)
   assert.equal((await db.query('select count(*)::int n from public.orders')).rows[0].n,1)
+})
+
+test('cutover closes direct writes and pause/resume preserves CRM records', async()=>{
+  for(const signature of ['create_public_lead(text,text,text,text,text,uuid,uuid,uuid,uuid)','start_public_quiz(uuid,uuid,text)','save_public_quiz_answer(uuid,uuid,uuid,text,text)','complete_public_quiz(uuid,uuid,uuid,text[])','dismiss_public_quiz(uuid,uuid,uuid)','track_public_event(uuid,uuid,text,text,uuid,text,jsonb)'])
+    await db.exec(`create function public.${signature} returns void language sql as 'select';`)
+  const cutover=await readFile(new URL('../supabase/migrations/20261004090600_crm_public_api_cutover.sql',import.meta.url),'utf8')
+  await db.exec(cutover)
+  const permission=()=>db.query("select has_function_privilege('anon','public.start_public_quiz(uuid,uuid,text)','execute') as allowed")
+  assert.equal((await permission()).rows[0].allowed,false)
+  const before=(await api('list',{archived:'all'})).total
+  await db.exec(await readFile(new URL('../supabase/rollback/crm_pause.sql',import.meta.url),'utf8'))
+  assert.equal((await db.query('select count(*)::int n from salt_crm_preserved.clients')).rows[0].n,before)
+  assert.equal((await permission()).rows[0].allowed,true)
+  await db.exec(await readFile(new URL('../supabase/rollback/crm_resume.sql',import.meta.url),'utf8'))
+  await db.exec(cutover)
+  assert.equal((await api('list',{archived:'all'})).total,before)
+  assert.equal((await permission()).rows[0].allowed,false)
 })
