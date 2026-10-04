@@ -1,3 +1,4 @@
+import { measure } from './measurement'
 import { trackPublicEvent } from './api'
 import { allowed } from './consent'
 
@@ -43,6 +44,7 @@ export function getTrackingIds() {
 }
 
 export function track(eventType, details = {}) {
+  void measure(eventType,details).catch(()=>{})
   if(!allowed('analytics'))return Promise.resolve(null)
   const ids = getTrackingIds()
   return trackPublicEvent({
@@ -52,14 +54,5 @@ export function track(eventType, details = {}) {
     productId: details.productId || null,
     categorySlug: details.categorySlug || null,
     metadata: details.metadata || {},
-  }).catch((error) => {
-    if (import.meta.env.DEV) {
-      console.warn(
-        `Analytics event failed: ${eventType}`,
-        error?.message || 'Unknown analytics error',
-        error?.code || '',
-      )
-    }
-    return null
-  })
+  }).catch(() => null)
 }

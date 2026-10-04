@@ -1,3 +1,4 @@
+import { assurance } from './mfa.mjs';
 import {
   createHash,
   createHmac,
@@ -106,7 +107,7 @@ export async function identity(accessToken) {
       403,
       "У аккаунта нет доступа к административной системе.",
     );
-  return { user: { id: user.id, email: user.email }, staff: staff[0] };
+  return { user: { id: user.id, email: user.email }, staff: staff[0], mfa: assurance(user,accessToken) };
 }
 export async function session(req, res) {
   const raw = cookie(req);

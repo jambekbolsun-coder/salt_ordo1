@@ -26,6 +26,8 @@ const Staff = lazy(() => import('./pages/admin/Staff'))
 const Settings = lazy(() => import('./pages/admin/Settings'))
 const Leads = lazy(() => import('./pages/admin/Leads'))
 const Analytics = lazy(() => import('./pages/admin/Analytics'))
+const Security = lazy(() => import('./pages/admin/Security'))
+const MfaChallenge = lazy(() => import('./pages/admin/MfaChallenge'))
 const Profile = lazy(() => import('./pages/admin/Profile'))
 const Application = lazy(() => import('./pages/admin/Application'))
 const Crm = lazy(() => import('./pages/admin/Crm'))
@@ -47,6 +49,7 @@ export default function App() {
       </Route>
 
       <Route element={<AdminPwaProvider/>}>
+      <Route path="/admin/mfa" element={<MfaChallenge/>}/>
       <Route path="/admin/login" element={<AdminLogin/>}/>
       <Route path="/admin" element={<ProtectedAdmin/>}>
         <Route element={<AdminLayout/>}>
@@ -67,6 +70,7 @@ export default function App() {
             <Route path="leads" element={<Leads/>}/>
             <Route path="analytics" element={<Analytics/>}/>
           </Route>
+          <Route path="security" element={<Security/>}/>
           <Route path="profile" element={<Profile/>}/>
           <Route path="application" element={<Application/>}/>
         </Route>

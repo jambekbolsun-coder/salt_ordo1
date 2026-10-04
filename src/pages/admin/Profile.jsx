@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { KeyRound, Mail, ShieldCheck, UserRound } from 'lucide-react'
 import AdminPageHeader from '../../components/AdminPageHeader'
@@ -20,6 +21,7 @@ export default function Profile() {
 
   return <>
     <AdminPageHeader eyebrow="Аккаунт" title="Профиль" text="Данные сотрудника и безопасность входа."/>
+    <p><Link className="btn btn--soft" to="/admin/security">Двухэтапный вход и сессии</Link></p>
     <div className="admin-two-col profile-grid">
       <section className="admin-panel profile-card">
         <span className="profile-card__avatar"><UserRound/></span>

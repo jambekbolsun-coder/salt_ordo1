@@ -1,0 +1,78 @@
+{
+  "recorded_at": "2026-10-04T09:44:37.976Z",
+  "engine": "PGlite isolated in-memory PostgreSQL; no network or production data",
+  "clients": 10000,
+  "initial_inquiries": 15000,
+  "sales": 2000,
+  "rate_limit": "10 allowed; 11th rejected; retry_after=1",
+  "node": "v24.18.0",
+  "platform": "win32",
+  "measurements": [
+    {
+      "operation": "list",
+      "runs": 7,
+      "median_ms": 41.68,
+      "p95_ms": 43.68
+    },
+    {
+      "operation": "page_200",
+      "runs": 7,
+      "median_ms": 99.4,
+      "p95_ms": 111.43
+    },
+    {
+      "operation": "name_search",
+      "runs": 7,
+      "median_ms": 53.93,
+      "p95_ms": 58.35
+    },
+    {
+      "operation": "phone_search",
+      "runs": 7,
+      "median_ms": 66.4,
+      "p95_ms": 67.55
+    },
+    {
+      "operation": "combined_filters",
+      "runs": 7,
+      "median_ms": 20.02,
+      "p95_ms": 21.78
+    },
+    {
+      "operation": "sort_amount",
+      "runs": 7,
+      "median_ms": 67.87,
+      "p95_ms": 73.16
+    },
+    {
+      "operation": "sort_activity",
+      "runs": 7,
+      "median_ms": 47.87,
+      "p95_ms": 49.03
+    },
+    {
+      "operation": "attribution_filter",
+      "runs": 7,
+      "median_ms": 119.7,
+      "p95_ms": 127.37
+    },
+    {
+      "operation": "report_90_days",
+      "runs": 7,
+      "median_ms": 205.55,
+      "p95_ms": 208.86
+    },
+    {
+      "operation": "export_10000_csv",
+      "runs": 3,
+      "median_ms": 1742.25,
+      "p95_ms": 1773.11
+    },
+    {
+      "operation": "duplicate_phone",
+      "runs": 7,
+      "median_ms": 3.32,
+      "p95_ms": 4.6
+    }
+  ]
+}

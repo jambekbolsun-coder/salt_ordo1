@@ -8,7 +8,7 @@ import AdminInstallCard from '../../components/AdminInstallCard'
 import { useAdminPwa } from '../../state/AdminPwaContext'
 
 export default function AdminLogin() {
-  const { login, isStaff, loading: authLoading, supabaseConfigured } = useAuth()
+  const { login, isStaff, mfa, loading: authLoading, supabaseConfigured } = useAuth()
   const [form, setForm] = useState({ email: '', password: '', fullName:'' })
   const [show, setShow] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -19,8 +19,9 @@ export default function AdminLogin() {
   const { online } = useAdminPwa()
 
   useEffect(() => {
+    if(!authLoading&&mfa?.required)navigate('/admin/mfa',{replace:true})
     if (!authLoading && isStaff) navigate(location.state?.from || '/admin/', { replace: true })
-  }, [authLoading, isStaff, navigate, location.state])
+  }, [authLoading, isStaff, navigate, location.state, mfa])
 
   const submit = async (event) => {
     event.preventDefault()
@@ -29,8 +30,8 @@ export default function AdminLogin() {
     setError('')
     setNotice('')
     try {
-      await login(form.email.trim(), form.password)
-      navigate(location.state?.from || '/admin/', { replace: true })
+      const identity=await login(form.email.trim(), form.password)
+      navigate(identity.mfa?.required?'/admin/mfa':(location.state?.from || '/admin/'), { replace: true })
     } catch (err) {
       setError(err.message || 'Не удалось войти. Проверьте email и пароль.')
     } finally {

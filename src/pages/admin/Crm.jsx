@@ -92,6 +92,7 @@ const filterLabels = {
   to: "По дату",
   source: "Источник",
   campaign: "Кампания",
+  campaign_id:"ID кампании", adset_id:"ID группы объявлений", ad_id:"ID объявления", utm_source:"UTM source",
   region: "Регион",
   responsible_id: "Ответственный",
   outcome: "Результат",
@@ -142,6 +143,7 @@ function Filters({ reports = false }) {
           values={options.sources.map((s) => [s.code, s.name])}
           current={params.get("source")}
         />
+        {['campaign_id','adset_id','ad_id','utm_source'].map(k=><label key={k}>{filterLabels[k]}<input name={k} defaultValue={params.get(k)||''} maxLength={200}/></label>)}
         <label>
           Кампания
           <input
@@ -929,6 +931,7 @@ function Report() {
                 </table>
               </div>
             </section>
+            <div className="crm-two"><section className="crm-panel"><h2>Кампании · обращения</h2><Bars rows={state.data.current.campaigns||[]}/></section><section className="crm-panel"><h2>Объявления · обращения</h2><Bars rows={state.data.current.ads||[]}/></section></div>
             <div className="crm-two">
               <section className="crm-panel">
                 <h2>Регионы · обращения</h2>

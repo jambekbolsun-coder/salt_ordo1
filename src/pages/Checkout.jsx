@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useRef } from 'react'
 import { CheckCircle2, MessageCircle, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../state/CartContext'
@@ -17,6 +17,8 @@ export default function Checkout() {
   const [form, setForm] = useState({ customerName:'', phone:'', email:'', city:'', deliveryMethod:'manager', note:'' })
   const [sending, setSending] = useState(false)
   const [result, setResult] = useState(null)
+  const started=useRef(false)
+  const start=()=>{if(!started.current){started.current=true;track('form_start')}}
   const [error, setError] = useState('')
   const [whatsappLink, setWhatsappLink] = useState('')
   const [requestId] = useState(()=>crypto.randomUUID())
@@ -45,6 +47,7 @@ export default function Checkout() {
       const link = whatsappUrl(settings.whatsapp, buildMessage(order.order_number))
       setWhatsappLink(link)
       setResult(order)
+      track('request_complete',{eventId:requestId})
       clear()
       track('whatsapp_click', { metadata:{ source:'checkout', orderNumber:order.order_number } })
       if (whatsappWindow) {
@@ -81,7 +84,7 @@ export default function Checkout() {
       <div className="container">
         <div className="page-hero compact-page-hero"><span className="eyebrow">{t.checkout.eyebrow}</span><h1>{t.checkout.title}</h1><p>{t.checkout.text}</p></div>
         {items.length === 0 ? <div className="notice">{t.cart.emptyText}</div> : <div className="checkout-layout">
-          <form className="form-card" onSubmit={submit}>
+          <form className="form-card" onSubmit={submit} onChange={start}>
             <div className="form-grid">
               <label><span>{t.checkout.name} *</span><input name="customerName" value={form.customerName} onChange={change} required autoComplete="name"/></label>
               <label><span>{t.checkout.phone} *</span><input name="phone" value={form.phone} onChange={change} required inputMode="tel" autoComplete="tel" placeholder="+996 ..."/></label>

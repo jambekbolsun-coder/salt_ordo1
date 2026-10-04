@@ -90,6 +90,7 @@ export function filters(params) {
     "q",
     "source",
     "campaign",
+    "campaign_id", "adset_id", "ad_id", "utm_source",
     "region",
     "responsible_id",
     "outcome",
@@ -146,6 +147,7 @@ export function attribution(input, marketing) {
     "utm_medium",
     "utm_campaign",
     "utm_content",
+    "utm_term",
     "campaign_id",
     "adset_id",
     "ad_id",
@@ -156,6 +158,7 @@ export function attribution(input, marketing) {
   ]) {
     if (input?.[k]) result[k] = text(input[k], 250);
   }
+  if(input?.landing_page)try{const url=new URL(input.landing_page);if(["https:","http:"].includes(url.protocol))result.landing_page=(url.origin+url.pathname).slice(0,500)}catch{/* Invalid URL. */}
   if (input?.referrer) {
     try {
       const url = new URL(input.referrer);

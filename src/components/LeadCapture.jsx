@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { CheckCircle2, Mail, MessageCircle, Phone, UserRound, X } from 'lucide-react'
 import { createLead } from '../lib/api'
 import { getTrackingIds, track } from '../lib/analytics'
@@ -21,6 +21,8 @@ export default function LeadCapture({
   const [form, setForm] = useState({ name:'', phone:'', email:'', note:'' })
   const [busy, setBusy] = useState(false)
   const [status, setStatus] = useState('')
+  const started=useRef(false)
+  const start=()=>{if(!started.current){started.current=true;track('form_start')}}
   const [error, setError] = useState('')
 
   const change = (key) => (event) => setForm((state) => ({ ...state, [key]: event.target.value }))
@@ -41,6 +43,7 @@ export default function LeadCapture({
         ...tracking,
       })
       setStatus('success')
+      track('lead_submit', {productId:product?.id||null})
       track('whatsapp_click', { productId: product?.id || null, metadata: { source } })
       window.open(whatsappUrl(settings.whatsapp, message || form.note), '_blank', 'noopener,noreferrer')
     } catch (err) {
@@ -57,7 +60,7 @@ export default function LeadCapture({
         <span>{status === 'success' ? <CheckCircle2/> : <MessageCircle/>}</span>
         <div><h3>{status === 'success' ? text.success : text.title}</h3><p>{text.text}</p></div>
       </div>
-      <form onSubmit={submit}>
+      <form onSubmit={submit} onChange={start}>
         <label><UserRound/><input required minLength={2} maxLength={100} value={form.name} onChange={change('name')} aria-label={text.name} placeholder={text.name}/></label>
         <label><Phone/><input required inputMode="tel" minLength={9} maxLength={20} value={form.phone} onChange={change('phone')} aria-label={text.phone} placeholder={text.phone}/></label>
         <label><Mail/><input type="email" maxLength={160} value={form.email} onChange={change('email')} aria-label={text.email} placeholder={text.email}/></label>

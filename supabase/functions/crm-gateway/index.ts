@@ -1,6 +1,6 @@
 // Server-to-server bridge. Supabase's master key remains in the Edge environment.
 // Vercel uses a separate, revocable 256-bit credential whose hash is in the DB.
-const allowed = new Set(['salt_crm_api','salt_crm_security_event','salt_crm_reports','salt_crm_session','salt_crm_rate_limit','salt_crm_public_lead','salt_crm_public_order','create_public_order','start_public_quiz','save_public_quiz_answer','complete_public_quiz','dismiss_public_quiz','track_public_event']);
+const allowed = new Set(['salt_crm_export','salt_crm_health','salt_crm_event_delivery','salt_crm_manage_sessions','salt_crm_api','salt_crm_security_event','salt_crm_reports','salt_crm_session','salt_crm_rate_limit','salt_crm_public_lead','salt_crm_public_order','create_public_order','start_public_quiz','save_public_quiz_answer','complete_public_quiz','dismiss_public_quiz','track_public_event']);
 Deno.serve(async (req: Request) => {
   const headers = {'Content-Type':'application/json','Cache-Control':'no-store'};
   const json=(data:unknown,status:number)=>new Response(JSON.stringify(data),{status,headers});

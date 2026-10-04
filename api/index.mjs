@@ -1,3 +1,6 @@
+import { mfaRequest, ownSessions, requireAssurance } from '../server/mfa.mjs';
+import { measurementConfig, sendConversion } from '../server/measurement.mjs';
+import { reportError } from '../server/monitoring.mjs';
 import {
   HttpError,
   text,
@@ -62,13 +65,16 @@ export default async function handler(req, res) {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Content-Type", "application/json; charset=utf-8");
   const send = (data) => res.end(JSON.stringify(data));
+  let route="";
   try {
     if (!["GET", "POST", "PATCH", "DELETE", "PUT"].includes(req.method))
       throw new HttpError(405, "Метод запрещён.");
     checkOrigin(req);
-    const params = new URL(req.url, "https://local.invalid").searchParams,
-      route = params.get("route") || "";
+    const params = new URL(req.url, "https://local.invalid").searchParams;
+    route = params.get("route") || "";
     await limit(res, `ip:${ipKey(req)}`);
+    if(route==="health"&&req.method==="GET"){if(await rpc("salt_crm_health",{})!==true)throw new HttpError(503,"Сервис недоступен.");return send({status:"ok"})}
+    if(route==="tracking-config"&&req.method==="GET")return send(measurementConfig());
     const raw =
       req.method === "GET"
         ? Buffer.alloc(0)
@@ -82,6 +88,7 @@ export default async function handler(req, res) {
       }
     }
     if(!body||typeof body!=="object"||Array.isArray(body))throw new HttpError(400,"Некорректный запрос.");
+    if(route==="telemetry"&&req.method==="POST")return send(await sendConversion(body,req));
     if (route === "public" && req.method === "POST") {
       if (
         ["create_public_lead", "create_public_order"].includes(body.operation)
@@ -103,7 +110,7 @@ export default async function handler(req, res) {
     }
     if (route === "logout" && req.method === "POST") {
       const token = cookie(req);
-      if(token)try{const who=await session(req,res);await rpc("salt_crm_security_event",{p_actor:who.user.id,p_action:"logout"})}catch{/* Expired sessions must still be cleared. */}
+      if(token)try{const who=await session(req,res);await upstream("/auth/v1/logout?scope=local",{method:"POST",token:who.tokens.access_token}).catch(()=>{});await rpc("salt_crm_security_event",{p_actor:who.user.id,p_action:"logout"})}catch{/* Expired sessions must still be cleared. */}
       if (token)
         await rpc("salt_crm_session", {
           p_operation: "delete",
@@ -116,7 +123,10 @@ export default async function handler(req, res) {
     if(route==="session"&&req.method==="GET"&&!cookie(req))return send({user:null,staff:null});
     const who = await session(req, res);
     if (route === "session" && req.method === "GET")
-      return send({ user: who.user, staff: who.staff });
+      return send({ user: who.user, staff: who.staff, mfa:who.mfa });
+    if(route==="mfa")return send(await mfaRequest(who,body,req,res));
+    requireAssurance(who);
+    if(route==="security")return send(await ownSessions(who,body,req,res));
     if (route === "password" && req.method === "POST") {
       await limit(res, `password:${who.user.id}`, 3, 900);
       text(body.password,256,true);
@@ -171,6 +181,7 @@ export default async function handler(req, res) {
         signal: AbortSignal.timeout(25000),
         cache: "no-store",
       });
+      if(!response.ok)throw new HttpError(response.status>=500?503:response.status,"Не удалось выполнить запрос. Проверьте доступ и повторите попытку.");
       res.statusCode = response.status;
       for (const name of ["content-type", "content-range"])
         if (response.headers.has(name))
@@ -211,8 +222,8 @@ export default async function handler(req, res) {
           report = params.get("type") === "report";
 
         const metricNames={total_clients:'Всего клиентов',new_clients:'Новых клиентов',inquiries:'Обращений',repeat_inquiries:'Повторных обращений',meta_inquiries:'Обращений из Meta Ads',website_inquiries:'Обращений с сайта',sales:'Продаж',revenue:'Сумма продаж',average_sale:'Средняя продажа'};
-        const sectionNames={regions:'Регионы',interests:'Товары',timeline:'Динамика'};
-        const first=report ? await rpc("salt_crm_reports",{p_payload:f,p_actor:who.user.id}) : await crm("list",{...f,page:1,limit:100},who.user.id);
+        const sectionNames={regions:'Регионы',interests:'Товары',timeline:'Динамика',campaigns:'Кампании',ads:'Объявления'};
+        const first=report ? await rpc("salt_crm_reports",{p_payload:f,p_actor:who.user.id}) : await rpc("salt_crm_export",{p_payload:{...f,page:1},p_actor:who.user.id});
         await rpc("salt_crm_security_event",{p_actor:who.user.id,p_action:report?"export_reports":"export_clients"});
         res.setHeader("Content-Type","text/csv; charset=utf-8");
         res.setHeader("Content-Disposition",'attachment; filename="salt-ordo.csv"');
@@ -220,14 +231,16 @@ export default async function handler(req, res) {
           const rows=[];
           for(const [key,value] of Object.entries(first.current)) if(typeof value==="number") rows.push({section:"Показатели",name:metricNames[key]||key,current:value,previous:first.previous[key]});
           for(const s of first.current.sources) rows.push({section:"Источники",name:s.name,clients:s.clients,inquiries:s.inquiries,sales:s.sales,revenue:s.revenue});
-          for(const section of ["regions","interests","timeline"])for(const r of first.current[section])rows.push({section:sectionNames[section],name:r.name||r.period,inquiries:r.inquiries});
+          for(const section of ["regions","interests","timeline","campaigns","ads"])for(const r of first.current[section])rows.push({section:sectionNames[section],name:r.name||r.period,inquiries:r.inquiries});
           return res.end(csv(rows,[["section","Раздел"],["name","Показатель"],["current","Текущий период"],["previous","Предыдущий период"],["clients","Новые клиенты"],["inquiries","Обращения"],["sales","Продажи"],["revenue","Выручка, KGS"]]));
         }
-        res.write(csv(first.items,columns));
-        for(let page=2;(page-1)*100<first.total;page++){
+        res.write(csv(first,columns));
+        let lastCount=first.length;
+        for(let page=2;lastCount===500;page++){
           if(res.destroyed)return;
-          const batch=await crm("list",{...f,page,limit:100},who.user.id);
-          const chunk=csv(batch.items,columns).split("\r\n").slice(1).join("\r\n");
+          const batch=await rpc("salt_crm_export",{p_payload:{...f,page},p_actor:who.user.id});
+          lastCount=batch.length;
+          const chunk=csv(batch,columns).split("\r\n").slice(1).join("\r\n");
           if(chunk)res.write("\r\n"+chunk);
         }
         return res.end();
@@ -278,9 +291,12 @@ export default async function handler(req, res) {
     } else throw new HttpError(404, "Страница не найдена.");
     return send(await crm(route, payload, who.user.id));
   } catch (error) {
+    await reportError(route,error instanceof HttpError ? error.status : 503);
     if(res.headersSent){res.destroy();return;}
     res.statusCode = error instanceof HttpError ? error.status : 503;
+    if(route==="health")return send({status:"unavailable"});
     return send({
+      ...(error.code?{code:error.code}:{}),
       error:
         error instanceof HttpError
           ? error.message

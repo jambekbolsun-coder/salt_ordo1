@@ -32,6 +32,9 @@ Deno.serve(async (req) => {
     const { data: { user }, error: userError } = await caller.auth.getUser();
     if (userError || !user) return json({ error: "Unauthorized" }, 401);
 
+    // getUser above validates the JWT before its AAL claim is used.
+    const claims = JSON.parse(atob(authorization.replace(/^Bearer /i, '').split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+    if (user.factors?.some(f => f.status === 'verified') && claims.aal !== 'aal2') return json({ error: 'Требуется MFA' }, 403);
     const { data: actor, error: actorError } = await service
       .from("staff")
       .select("id,role,is_active")
@@ -57,13 +60,13 @@ Deno.serve(async (req) => {
     if (actor.role !== "owner" && role === "admin") return json({ error: "Только владелец может создавать администратора" }, 403);
 
     const { data: usersPage, error: listError } = await service.auth.admin.listUsers({ page: 1, perPage: 1000 });
-    if (listError) return json({ error: listError.message }, 400);
+    if (listError) return json({ error: "Не удалось выполнить запрос" }, 400);
 
     const existingUser = usersPage.users.find((candidate) => candidate.email?.toLowerCase() === email);
     const { data: existingStaff, error: existingStaffError } = existingUser
       ? await service.from("staff").select("id,role").eq("user_id", existingUser.id).maybeSingle()
       : { data: null, error: null };
-    if (existingStaffError) return json({ error: existingStaffError.message }, 400);
+    if (existingStaffError) return json({ error: "Не удалось выполнить запрос" }, 400);
     if (existingStaff?.role === "owner" || existingUser?.id === user.id) {
       return json({ error: "Доступ владельца нельзя менять через управление сотрудниками" }, 403);
     }
@@ -77,7 +80,7 @@ Deno.serve(async (req) => {
         email_confirm: true,
         user_metadata: { ...managedUser.user_metadata, full_name: fullName },
       });
-      if (updateError || !updated.user) return json({ error: updateError?.message || "Не удалось обновить пользователя" }, 400);
+      if (updateError || !updated.user) return json({ error: "Не удалось обновить пользователя" }, 400);
       managedUser = updated.user;
     } else {
       const { data: created, error: createError } = await service.auth.admin.createUser({
@@ -86,7 +89,7 @@ Deno.serve(async (req) => {
         email_confirm: true,
         user_metadata: { full_name: fullName },
       });
-      if (createError || !created.user) return json({ error: createError?.message || "Не удалось создать пользователя" }, 400);
+      if (createError || !created.user) return json({ error: "Не удалось создать пользователя" }, 400);
       managedUser = created.user;
       createdNow = true;
     }
@@ -102,11 +105,11 @@ Deno.serve(async (req) => {
 
     if (staffError) {
       if (createdNow) await service.auth.admin.deleteUser(managedUser.id);
-      return json({ error: staffError.message }, 400);
+      return json({ error: "Не удалось выполнить запрос" }, 400);
     }
 
     return json({ staff, mode: createdNow ? "created" : "updated" });
-  } catch (error) {
-    return json({ error: error instanceof Error ? error.message : "Unexpected error" }, 500);
+  } catch {
+    return json({ error: "Сервис временно недоступен" }, 500);
   }
 });

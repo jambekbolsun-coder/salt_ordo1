@@ -51,6 +51,7 @@ export const supabase = supabaseConfigured
           const target=new URL(String(input))
           const headers=new Headers(init?.headers); headers.delete('authorization');headers.delete('apikey');headers.set('X-Salt-Request','1')
           const response=await fetch(`/api/index?route=proxy&path=${encodeURIComponent(target.pathname+target.search)}`,{...init,headers,credentials:'same-origin',cache:'no-store'})
+          if(response.status===403){const data=await response.clone().json().catch(()=>({}));if(data.code==='MFA_REQUIRED')window.dispatchEvent(new Event('salt-mfa-required'))}
           if(response.status===401) window.dispatchEvent(new Event('salt-session-expired'))
           return response
         }

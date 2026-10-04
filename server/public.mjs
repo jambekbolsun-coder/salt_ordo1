@@ -1,3 +1,4 @@
+import { validConsent } from '../shared/measurement.mjs';
 import { HttpError, text, uuid, phone, attribution } from "./validation.mjs";
 import { rpc } from "./supabase.mjs";
 const operations = [
@@ -14,11 +15,7 @@ export async function publicRequest(body) {
     throw new HttpError(404, "Запрос не найден.");
   const p = body.payload || {},
     c = body.consent,
-    valid =
-      c?.version === "2026-10-04.1" &&
-      Number.isFinite(Date.parse(c.date)) &&
-      Date.parse(c.date) <= Date.now() + 60000 &&
-      Date.now() - Date.parse(c.date) < 180 * 86400000;
+    valid = validConsent(c);
   const analytics = valid && c.analytics === true,
     marketing = valid && c.marketing === true;
   let data = {};
