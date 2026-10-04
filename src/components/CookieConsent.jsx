@@ -83,7 +83,7 @@ export default function CookieConsent() {
             />
             Маркетинговые — источник рекламного обращения
           </label>
-          <p>Рекламные пиксели Meta и Google сейчас не подключены.</p>
+          <p>Если владелец подключит Google Analytics, он работает только с аналитическим согласием; Meta Pixel и Conversions API — только с маркетинговым.</p>
         </div>
       )}
       <div className="cookie-actions">

@@ -1,5 +1,6 @@
+import { fetchRead } from './http'
 export async function request(route, body, params='', signal) {
-  const response=await fetch(`/api/index?route=${route}${params?'&'+params:''}`,{
+  const response=await fetchRead(`/api/index?route=${route}${params?'&'+params:''}`,{
     method:body===undefined?'GET':'POST',credentials:'same-origin',cache:'no-store',signal,
     headers:{'Content-Type':'application/json','X-Salt-Request':'1'},body:body===undefined?undefined:JSON.stringify(body),
   })
