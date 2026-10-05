@@ -13,8 +13,9 @@ import {
 } from "react-router-dom";
 import { request, outcomeNames, money, date } from "../../lib/crm";
 import { useAuth } from "../../state/AuthContext";
+import { WhatsAppConnection, WhatsAppHistory, WhatsAppPreview } from "../../components/WhatsAppCrm";
 import "../../crm.css";
-const auditNames={inquiry_added:"Добавлено обращение",update:"Изменена карточка",note:"Добавлена заметка",sale:"Записана продажа",void_sale:"Отменена продажа",archive:"Перенесён в архив",restore:"Восстановлен"};
+const auditNames={whatsapp_received:"Сообщение WhatsApp",inquiry_added:"Добавлено обращение",update:"Изменена карточка",note:"Добавлена заметка",sale:"Записана продажа",void_sale:"Отменена продажа",archive:"Перенесён в архив",restore:"Восстановлен"};
 const fieldNames={full_name:"ФИО",phone:"Телефон",whatsapp:"WhatsApp",region:"Регион",source:"Источник",campaign:"Кампания",interest:"Товар",responsible_id:"Ответственный",outcome:"Результат",note:"Примечание",version:"Версия",updated_at:"Дата изменения",amount:"Сумма",sale_id:"Номер продажи",reason:"Причина",duplicate:"Повторное обращение"};
 
 function useData(route, query = "", revision = 0) {
@@ -91,6 +92,7 @@ const filterLabels = {
   from: "С даты",
   to: "По дату",
   source: "Источник",
+  wa_source: "WhatsApp",
   campaign: "Кампания",
   campaign_id:"ID кампании", adset_id:"ID группы объявлений", ad_id:"ID объявления", utm_source:"UTM source",
   region: "Регион",
@@ -144,6 +146,7 @@ function Filters({ reports = false }) {
           current={params.get("source")}
         />
         {['campaign_id','adset_id','ad_id','utm_source'].map(k=><label key={k}>{filterLabels[k]}<input name={k} defaultValue={params.get(k)||''} maxLength={200}/></label>)}
+        <Select name="wa_source" label="Обращения WhatsApp" values={[["all","Все WhatsApp"],["meta_ads","Meta Ads"],["website","Сайт"],["whatsapp","WhatsApp без рекламы"]]} current={params.get('wa_source')}/>
         <label>
           Кампания
           <input
@@ -265,7 +268,7 @@ function Chips() {
         ? options.staff.find((s) => s.id === value)?.full_name
         : key === "outcome"
           ? outcomeNames[value]
-          : key==="sale" ? (value==="yes"?"Есть":"Нет") : key==="archived"?(value==="all"?"Все записи":"В архиве"):value;
+          : key==="wa_source" ? (value==='all'?'Все WhatsApp':options.sources.find(s=>s.code===value)?.name) : key==="sale" ? (value==="yes"?"Есть":"Нет") : key==="archived"?(value==="all"?"Все записи":"В архиве"):value;
   return (
     <div className="crm-chips">
       {Object.entries(filterLabels)
@@ -363,6 +366,7 @@ function List() {
                       </Link>
                       <a href={`tel:${c.phone}`}>{c.phone}</a>
                       {c.whatsapp&&<span>WhatsApp: {c.whatsapp}</span>}
+                      <WhatsAppPreview summary={c.wa_summary}/>
                       <span>{c.region || "Регион не указан"}</span>
                     </div>
                     <div>
@@ -701,7 +705,7 @@ function Detail() {
                   onSubmit={async (e) => {
                     e.preventDefault();
                     if (
-                      await mutate("sale", { amount: sale, request_id: saleId })
+                      await mutate("sale", { amount: sale, request_id: saleId, inquiry_id:new FormData(e.currentTarget).get("inquiry_id")||null })
                     ) {
                       setSale("");
                       setSaleId(crypto.randomUUID());
@@ -720,6 +724,12 @@ function Detail() {
                       value={sale}
                       onChange={(e) => setSale(e.target.value)}
                     />
+                  </label>
+                  <label>Обращение, которое привело к продаже
+                    <select name="inquiry_id">
+                      <option value="">Первоначальный источник клиента</option>
+                      {state.data.inquiries.map(i=><option key={i.id} value={i.id}>{date(i.occurred_at)} · {options.sources.find(s=>s.code===i.source)?.name} · {i.message?.slice(0,50)}</option>)}
+                    </select>
                   </label>
                   <button
                     className="btn btn--primary"
@@ -775,6 +785,7 @@ function Detail() {
                 </div>
               ))}
             </section>
+            <WhatsAppHistory client={state.data.client}/>
             <section className="crm-panel">
               <h2>История изменений</h2>
               {state.data.audit.map((a) => (
@@ -833,6 +844,14 @@ const metrics = [
   ["sales", "Продаж"],
   ["revenue", "Сумма продаж"],
   ["average_sale", "Средняя продажа"],
+  ["wa_inquiries", "Обращений WhatsApp"],
+  ["wa_clients", "Клиентов WhatsApp"],
+  ["wa_repeat_inquiries", "Повторных WhatsApp-обращений"],
+  ["wa_ads", "WhatsApp · Meta Ads"],
+  ["wa_website", "WhatsApp · сайт"],
+  ["wa_organic", "WhatsApp без рекламы"],
+  ["wa_inquiry_conversion", "WhatsApp · конверсия обращений, %"],
+  ["wa_client_conversion", "WhatsApp · клиентов с продажей, %"],
 ];
 function Report() {
   const [p] = useSearchParams(),
@@ -1082,11 +1101,7 @@ function Settings() {
         Записей с некорректным телефоном: {options.import_issues}. Они сохранены
         в разделе «Заявки» и не объединяются автоматически.
       </p>
-      <h3>WhatsApp Business</h3>
-      <p>
-        Подготовлены внешние идентификаторы и защита от повторной обработки
-        обращений. Webhook не подключён. Рабочий номер не изменён.
-      </p>
+      <WhatsAppConnection/>
     </section>
   );
 }

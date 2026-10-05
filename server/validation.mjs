@@ -91,6 +91,7 @@ export function filters(params) {
     "source",
     "campaign",
     "campaign_id", "adset_id", "ad_id", "utm_source",
+    "wa_source",
     "region",
     "responsible_id",
     "outcome",
@@ -116,6 +117,7 @@ export function filters(params) {
   if (output.responsible_id) uuid(output.responsible_id);
   if (output.source && !SOURCES.includes(output.source))
     throw new HttpError(400, "Неизвестный источник.");
+  if(output.wa_source&&!['all','meta_ads','website','whatsapp'].includes(output.wa_source))throw new HttpError(400,'Неизвестный источник WhatsApp.');
   if (output.outcome && !OUTCOMES.includes(output.outcome))
     throw new HttpError(400, "Неизвестный результат.");
   output.page = Math.max(1, Math.min(1000000, Number(params.get("page")) || 1));

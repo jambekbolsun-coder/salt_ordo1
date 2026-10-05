@@ -9,6 +9,7 @@ import CookieConsent from './CookieConsent'
 import { revokeProviders } from '../lib/measurement'
 import { campaignAttribution } from '../lib/consent'
 import SeoHead from './SeoHead'
+import { openTrackedWhatsApp } from '../lib/whatsapp-tracking'
 
 const utilitySeo = {
   '/favorites': ['Избранные товары | Salt Ordo', 'Сохранённые товары Salt Ordo.'],
@@ -24,7 +25,7 @@ export default function PublicLayout() {
   const lastPage=useRef('')
   useEffect(()=>{
     const change=()=>{revokeProviders();campaignAttribution();track('consent_change');track('page_view')}
-    const click=e=>{const a=e.target.closest?.('a[href]');if(a&&/^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(a.href))track('whatsapp_click')}
+    const click=e=>{const a=e.target.closest?.('a[href]');if(a&&/^https:\/\/(wa\.me|api\.whatsapp\.com)\//.test(a.href)){track('whatsapp_click');if(!e.defaultPrevented&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&e.button===0){e.preventDefault();const context=a.closest('[data-wa-product]');openTrackedWhatsApp(a.href,{product:context?.dataset.waProduct,category:context?.dataset.waCategory})}}}
     window.addEventListener('salt-consent-change',change);document.addEventListener('click',click);revokeProviders()
     return()=>{window.removeEventListener('salt-consent-change',change);document.removeEventListener('click',click)}
   },[])

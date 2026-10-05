@@ -24,7 +24,7 @@ export async function database({hardening=true}={}) {
     create function public.bootstrap_first_owner(text) returns void language sql as 'select';`);
   for(const signature of ['create_public_lead(text,text,text,text,text,uuid,uuid,uuid,uuid)','start_public_quiz(uuid,uuid,text)','save_public_quiz_answer(uuid,uuid,uuid,text,text)','complete_public_quiz(uuid,uuid,uuid,text[])','dismiss_public_quiz(uuid,uuid,uuid)','track_public_event(uuid,uuid,text,text,uuid,text,jsonb)'])await db.exec(`create function public.${signature} returns void language sql as 'select';`);
   const folder=new URL('../../supabase/migrations/',import.meta.url);
-  const files=(await readdir(folder)).filter(f=>/^20261004.*\.sql$/.test(f)).sort();
+  const files=(await readdir(folder)).filter(f=>/^2026100[45].*\.sql$/.test(f)).sort();
   for(const file of files){if(!hardening&&file>='20261004093422')continue;await db.exec(await readFile(new URL(file,folder),'utf8'))}
   return db;
 }

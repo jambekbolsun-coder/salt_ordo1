@@ -33,7 +33,7 @@ export default function ProductCard({ product }) {
   }
 
   return (
-    <article className="product-card">
+    <article className="product-card" data-wa-product={name} data-wa-category={category}>
       <div className="product-card__media">
         <Link to={`/product/${product.slug}`} aria-label={`${t.catalog.openProduct}: ${name}`}>
           <ProductVisual product={product}/>

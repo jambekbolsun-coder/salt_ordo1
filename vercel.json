@@ -1,9 +1,24 @@
 {
-  "regions": ["bom1"],
-  "functions": {"api/index.mjs": {"maxDuration": 300}},
+  "regions": [
+    "bom1"
+  ],
+  "functions": {
+    "api/index.mjs": {
+      "maxDuration": 300
+    },
+    "api/whatsapp/webhook.mjs": {
+      "maxDuration": 60
+    }
+  },
   "rewrites": [
-    {"source":"/privacy","destination":"/index.html"},
-    {"source":"/cookies","destination":"/index.html"},
+    {
+      "source": "/privacy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/cookies",
+      "destination": "/index.html"
+    },
     {
       "source": "/admin/",
       "destination": "/admin.html"
@@ -68,22 +83,74 @@
     {
       "source": "/sitemap.xml",
       "headers": [
-        {"key": "Content-Type", "value": "application/xml; charset=utf-8"},
-        {"key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600"}
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=3600"
+        }
       ]
     },
     {
       "source": "/robots.txt",
       "headers": [
-        {"key": "Content-Type", "value": "text/plain; charset=utf-8"},
-        {"key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600"}
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=3600"
+        }
       ]
     },
-    {"source": "/cart", "headers": [{"key": "X-Robots-Tag", "value": "noindex, follow, noarchive"}]},
-    {"source": "/favorites", "headers": [{"key": "X-Robots-Tag", "value": "noindex, follow, noarchive"}]},
-    {"source": "/checkout", "headers": [{"key": "X-Robots-Tag", "value": "noindex, follow, noarchive"}]},
-    {"source": "/privacy", "headers": [{"key": "X-Robots-Tag", "value": "noindex, follow, noarchive"}]},
-    {"source": "/cookies", "headers": [{"key": "X-Robots-Tag", "value": "noindex, follow, noarchive"}]},
+    {
+      "source": "/cart",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/favorites",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/checkout",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/privacy",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow, noarchive"
+        }
+      ]
+    },
+    {
+      "source": "/cookies",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow, noarchive"
+        }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
@@ -118,7 +185,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://bgpcnfxwdndmrgkvcjez.supabase.co wss://bgpcnfxwdndmrgkvcjez.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' https://connect.facebook.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; frame-src https://www.facebook.com https://web.facebook.com; connect-src https://www.facebook.com https://graph.facebook.com 'self' https://bgpcnfxwdndmrgkvcjez.supabase.co wss://bgpcnfxwdndmrgkvcjez.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
         }
       ]
     },
@@ -135,7 +202,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://bgpcnfxwdndmrgkvcjez.supabase.co wss://bgpcnfxwdndmrgkvcjez.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' https://connect.facebook.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; frame-src https://www.facebook.com https://web.facebook.com; connect-src https://www.facebook.com https://graph.facebook.com 'self' https://bgpcnfxwdndmrgkvcjez.supabase.co wss://bgpcnfxwdndmrgkvcjez.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
         }
       ]
     },
@@ -178,7 +245,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://bgpcnfxwdndmrgkvcjez.supabase.co wss://bgpcnfxwdndmrgkvcjez.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' https://connect.facebook.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; frame-src https://www.facebook.com https://web.facebook.com; connect-src https://www.facebook.com https://graph.facebook.com 'self' https://bgpcnfxwdndmrgkvcjez.supabase.co wss://bgpcnfxwdndmrgkvcjez.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
         }
       ]
     }

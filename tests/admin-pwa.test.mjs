@@ -113,7 +113,8 @@ test('production admin responses prohibit caching, framing and inline scripts', 
   const headers = config.headers.find(({ source }) => source === '/admin/:path*').headers
   assert.equal(headers.find(({ key }) => key === 'Cache-Control').value, 'no-store')
   const csp = headers.find(({ key }) => key === 'Content-Security-Policy').value
-  assert.match(csp, /script-src 'self';/)
+  assert.match(csp, /script-src 'self' https:\/\/connect\.facebook\.net;/)
+  assert.doesNotMatch(csp.match(/script-src[^;]+/)[0], /unsafe-inline|unsafe-eval/)
   assert.match(csp, /frame-ancestors 'none'/)
   assert.equal(config.redirects.find(({ source }) => source === '/admin').destination, '/admin/')
   assert.equal(config.rewrites.find(({ source }) => source === '/admin/').destination, '/admin.html')

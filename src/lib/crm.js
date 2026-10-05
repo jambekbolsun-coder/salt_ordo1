@@ -1,4 +1,4 @@
-import { fetchRead } from './http'
+import { fetchRead } from './http.js'
 export async function request(route, body, params='', signal) {
   const response=await fetchRead(`/api/index?route=${route}${params?'&'+params:''}`,{
     method:body===undefined?'GET':'POST',credentials:'same-origin',cache:'no-store',signal,

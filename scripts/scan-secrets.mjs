@@ -8,11 +8,11 @@ const rules=[
  ['supabase-secret',/\b(?:sb_secret_[A-Za-z0-9_-]{20,}|sbp_[a-f0-9]{35,})\b/],
  ['cloud-access-key',/\b(?:AKIA|ASIA)[A-Z0-9]{16}\b/],
  ['database-password',/postgres(?:ql)?:\/\/[^\s:'"/]+:[^\s'"@${}<>]{8,}@/],
- ['secret-assignment',/(?:SALT_SESSION_KEY|SALT_GATEWAY_SECRET|SALT_META_ACCESS_TOKEN|SUPABASE_SERVICE_ROLE_KEY)\s*[:=]\s*["']?[A-Za-z0-9+/_-]{32,}/],
+ ['secret-assignment',/(?:SALT_SESSION_KEY|SALT_GATEWAY_SECRET|SALT_META_ACCESS_TOKEN|SUPABASE_SERVICE_ROLE_KEY|META_APP_SECRET|WHATSAPP_WEBHOOK_VERIFY_TOKEN|WHATSAPP_TOKEN_ENCRYPTION_KEY)\s*[:=]\s*["']?[A-Za-z0-9+/_-]{32,}/],
 ];
 const known=[];
 // Optional local check against actual server secrets, without printing them.
-if(existsSync('.env.local'))for(const line of readFileSync('.env.local','utf8').split(/\r?\n/)){const [name,...rest]=line.split('=');if(/SECRET|TOKEN|SESSION_KEY/.test(name)){const value=rest.join('=').trim().replace(/^["']|["']$/g,'');if(value.length>=20)known.push(value)}}
+if(existsSync('.env.local'))for(const line of readFileSync('.env.local','utf8').split(/\r?\n/)){const [name,...rest]=line.split('=');if(/SECRET|TOKEN|SESSION_KEY|ENCRYPTION_KEY/.test(name)){const value=rest.join('=').trim().replace(/^["']|["']$/g,'');if(value.length>=20)known.push(value)}}
 let checked=0;const findings=[];
 function scan(content,path){
  checked++;

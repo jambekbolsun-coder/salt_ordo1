@@ -8,6 +8,7 @@ import { useLanguage } from '../state/LanguageContext'
 import { useSiteSettings } from '../state/SiteSettingsContext'
 import { localizedField } from '../lib/productText'
 import { whatsappUrl } from '../lib/whatsapp'
+import { trackedWhatsAppUrl } from '../lib/whatsapp-tracking'
 import { track } from '../lib/analytics'
 
 export default function Checkout() {
@@ -40,11 +41,12 @@ export default function Checkout() {
     event.preventDefault()
     if (!items.length) return
     const whatsappWindow = window.open('about:blank', '_blank')
+    if (whatsappWindow) whatsappWindow.opener=null
     setSending(true)
     setError('')
     try {
       const order = await createOrder({ ...form, items, language: lang, requestId })
-      const link = whatsappUrl(settings.whatsapp, buildMessage(order.order_number))
+      const link = await trackedWhatsAppUrl(whatsappUrl(settings.whatsapp, buildMessage(order.order_number)),{product:items.map(i=>localizedField(i,'name',lang)).join(', ').slice(0,200)})
       setWhatsappLink(link)
       setResult(order)
       track('request_complete',{eventId:requestId})

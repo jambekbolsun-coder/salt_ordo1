@@ -1,4 +1,4 @@
-export const CONSENT_VERSION = '2026-10-04.2';
+export const CONSENT_VERSION = '2026-10-05.1';
 export function validConsent(c, now = Date.now()) {
   const date = Date.parse(c?.date);
   return c?.version === CONSENT_VERSION && typeof c.analytics === 'boolean' && typeof c.marketing === 'boolean' && Number.isFinite(date) && date <= now + 60000 && now - date < 180 * 86400000;

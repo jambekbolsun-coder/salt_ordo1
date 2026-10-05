@@ -5,6 +5,7 @@ import { getTrackingIds, track } from '../lib/analytics'
 import { useLanguage } from '../state/LanguageContext'
 import { useSiteSettings } from '../state/SiteSettingsContext'
 import { whatsappUrl } from '../lib/whatsapp'
+import { trackedWhatsAppUrl } from '../lib/whatsapp-tracking'
 
 const labels = {
   ru: { title:'Оставьте контакты', text:'Мы сохраним заявку и откроем WhatsApp с готовым сообщением.', name:'Ваше имя', phone:'Номер телефона', email:'Email — необязательно', note:'Комментарий — необязательно', submit:'Продолжить в WhatsApp', sending:'Сохраняем…', success:'Заявка сохранена', error:'Не удалось сохранить заявку.' },
@@ -24,11 +25,13 @@ export default function LeadCapture({
   const started=useRef(false)
   const start=()=>{if(!started.current){started.current=true;track('form_start')}}
   const [error, setError] = useState('')
+  const [chatLink,setChatLink]=useState('')
 
   const change = (key) => (event) => setForm((state) => ({ ...state, [key]: event.target.value }))
 
   const submit = async (event) => {
     event.preventDefault()
+    const popup=window.open('about:blank','_blank');if(popup)popup.opener=null
     setBusy(true)
     setError('')
     try {
@@ -45,8 +48,10 @@ export default function LeadCapture({
       setStatus('success')
       track('lead_submit', {productId:product?.id||null})
       track('whatsapp_click', { productId: product?.id || null, metadata: { source } })
-      window.open(whatsappUrl(settings.whatsapp, message || form.note), '_blank', 'noopener,noreferrer')
+      const link=await trackedWhatsAppUrl(whatsappUrl(settings.whatsapp,message||form.note),{product:product?.name_ru||'',category:product?.category?.name_ru||''})
+      setChatLink(link);if(popup&&!popup.closed)popup.location.replace(link)
     } catch (err) {
+      popup?.close()
       setError(err.message || text.error)
     } finally {
       setBusy(false)
@@ -66,6 +71,7 @@ export default function LeadCapture({
         <label><Mail/><input type="email" maxLength={160} value={form.email} onChange={change('email')} aria-label={text.email} placeholder={text.email}/></label>
         {!compact && <textarea maxLength={1000} value={form.note} onChange={change('note')} aria-label={text.note} placeholder={text.note}/>}
         {error && <div className="notice notice--error">{error}</div>}
+        {chatLink&&<a className="btn btn--soft" href={chatLink} target="_blank" rel="noreferrer">Открыть WhatsApp</a>}
         <button className="btn btn--primary btn--block" type="submit" disabled={busy}>{busy ? text.sending : text.submit}<MessageCircle/></button>
       </form>
     </section>

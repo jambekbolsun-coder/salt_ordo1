@@ -8,6 +8,7 @@ export function config() {
     throw new HttpError(503, "Сервис ещё не настроен. Обратитесь к владельцу.");
   return { url, key, service };
 }
+/** @param {string} path @param {{method?:string,body?:unknown,token?:string,privileged?:boolean,headers?:Record<string,string>}} [options] */
 export async function upstream(
   path,
   { method = "GET", body, token, privileged = false, headers = {} } = {},

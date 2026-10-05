@@ -196,7 +196,7 @@ export default function Product() {
       <div className="container">
         <nav className="product-breadcrumbs" aria-label="Breadcrumb"><Link to="/">{t.nav.home}</Link><span>›</span><Link to={categoryPath}>{category}</Link><span>›</span><span>{name}</span></nav>
         <Link className="back-link" to="/catalog"><ArrowLeft size={17}/>{t.product.back}</Link>
-        <div className="product-detail">
+        <div className="product-detail" data-wa-product={name} data-wa-category={category}>
           <div className="product-detail__gallery">
             <div className="product-detail__main">
               {currentImage?.public_url
@@ -250,7 +250,7 @@ export default function Product() {
           </div>
         </div>
 
-        <section className="product-contact-card">
+        <section className="product-contact-card" data-wa-product={name} data-wa-category={category}>
           <div className="product-contact-card__copy">
             <span className="eyebrow">Salt Ordo</span>
             <h2>{t.product.contactTitle || t.cta.title}</h2>

@@ -1,6 +1,7 @@
 import { mfaRequest, ownSessions, requireAssurance } from '../server/mfa.mjs';
 import { measurementConfig, sendConversion } from '../server/measurement.mjs';
 import { reportError } from '../server/monitoring.mjs';
+import { whatsappAdmin,whatsappClick,waStore } from '../server/whatsapp.mjs';
 import {
   HttpError,
   text,
@@ -89,6 +90,10 @@ export default async function handler(req, res) {
     }
     if(!body||typeof body!=="object"||Array.isArray(body))throw new HttpError(400,"Некорректный запрос.");
     if(route==="telemetry"&&req.method==="POST")return send(await sendConversion(body,req));
+    if(route==="whatsapp-click"&&req.method==="POST"){
+      await limit(res,`wa-click:${ipKey(req)}`,10,60);
+      return send(await whatsappClick(body));
+    }
     if (route === "public" && req.method === "POST") {
       if (
         ["create_public_lead", "create_public_order"].includes(body.operation)
@@ -126,6 +131,7 @@ export default async function handler(req, res) {
       return send({ user: who.user, staff: who.staff, mfa:who.mfa });
     if(route==="mfa")return send(await mfaRequest(who,body,req,res));
     requireAssurance(who);
+    if(route==="whatsapp")return send(await whatsappAdmin(who,body,req,res,params));
     if(route==="security")return send(await ownSessions(who,body,req,res));
     if (route === "password" && req.method === "POST") {
       await limit(res, `password:${who.user.id}`, 3, 900);
@@ -193,8 +199,11 @@ export default async function handler(req, res) {
     if (req.method === "GET") {
       if (route === "options")
         return send(await crm("options", {}, who.user.id));
-      if (route === "clients")
-        return send(await crm("list", filters(params), who.user.id));
+      if (route === "clients") {
+        const list=await crm("list",filters(params),who.user.id);
+        const summaries=list.items.length?await waStore('summaries',{ids:list.items.map(c=>c.id)},who.user.id):{};
+        return send({...list,items:list.items.map(c=>({...c,wa_summary:summaries[c.id]||null}))});
+      }
       if (route === "client")
         return send(
           await crm(
@@ -221,7 +230,7 @@ export default async function handler(req, res) {
         const f = filters(params),
           report = params.get("type") === "report";
 
-        const metricNames={total_clients:'Всего клиентов',new_clients:'Новых клиентов',inquiries:'Обращений',repeat_inquiries:'Повторных обращений',meta_inquiries:'Обращений из Meta Ads',website_inquiries:'Обращений с сайта',sales:'Продаж',revenue:'Сумма продаж',average_sale:'Средняя продажа'};
+        const metricNames={wa_inquiries:'Обращения WhatsApp',wa_clients:'Клиенты WhatsApp',wa_repeat_inquiries:'Повторные WhatsApp-обращения',wa_ads:'WhatsApp Meta Ads',wa_website:'WhatsApp с сайта',wa_organic:'WhatsApp без рекламы',wa_client_conversion:'Клиенты WhatsApp с продажей, %',wa_inquiry_conversion:'Конверсия обращений WhatsApp, %',total_clients:'Всего клиентов',new_clients:'Новых клиентов',inquiries:'Обращений',repeat_inquiries:'Повторных обращений',meta_inquiries:'Обращений из Meta Ads',website_inquiries:'Обращений с сайта',sales:'Продаж',revenue:'Сумма продаж',average_sale:'Средняя продажа'};
         const sectionNames={regions:'Регионы',interests:'Товары',timeline:'Динамика',campaigns:'Кампании',ads:'Объявления'};
         const first=report ? await rpc("salt_crm_reports",{p_payload:f,p_actor:who.user.id}) : await rpc("salt_crm_export",{p_payload:{...f,page:1},p_actor:who.user.id});
         await rpc("salt_crm_security_event",{p_actor:who.user.id,p_action:report?"export_reports":"export_clients"});
@@ -268,6 +277,7 @@ export default async function handler(req, res) {
       payload = {
         id: uuid(body.id),
         amount: amount(body.amount),
+        inquiry_id: uuid(body.inquiry_id,true),
         request_id: uuid(body.request_id),
       };
     else if (route === "void_sale")

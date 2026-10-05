@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-const routes = new Set(['login','password','mfa','security','clients','client','reports','export','create','inquiry','sale','update','archive','restore','public','telemetry','health','proxy']);
+const routes = new Set(['whatsapp','whatsapp-webhook','login','password','mfa','security','clients','client','reports','export','create','inquiry','sale','update','archive','restore','public','telemetry','health','proxy']);
 export function errorRecord(route, status) {
   return { level: status >= 500 ? 'error' : 'warning', event: 'request_failed', route: routes.has(route) ? route : 'other', status: Number.isInteger(status) ? status : 503, request_id: randomUUID(), at: new Date().toISOString() };
 }
