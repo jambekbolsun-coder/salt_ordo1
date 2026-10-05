@@ -7,6 +7,16 @@ import EmptyState from '../components/EmptyState'
 import { useLanguage } from '../state/LanguageContext'
 import { categoryName, isPromotionActive, localizedField } from '../lib/productText'
 import { track } from '../lib/analytics'
+import SeoHead from '../components/SeoHead'
+import { SITE_ORIGIN } from '../lib/seoContent'
+
+const catalogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Каталог Salt Ordo',
+  description: 'Кызга сеп, жер төшөк, жаздык, сандык и домашний текстиль ручной работы.',
+  url: `${SITE_ORIGIN}/catalog`,
+}
 
 export default function Catalog() {
   const [params, setParams] = useSearchParams()
@@ -117,6 +127,13 @@ export default function Catalog() {
 
   return (
     <section className="section page-section">
+      <SeoHead
+        title="Каталог Salt Ordo — кызга сеп, жер төшөк и сандык"
+        description="Каталог Salt Ordo: кызга сеп, жер төшөк, жаздык, сандык и текстиль ручной работы. Цены, наличие, индивидуальный пошив и доставка по Кыргызстану."
+        path="/catalog"
+        robots={params.toString() ? 'noindex, follow' : undefined}
+        schema={catalogSchema}
+      />
       <div className="container">
         <div className="page-hero compact-page-hero">
           <span className="eyebrow">{t.catalog.eyebrow}</span>

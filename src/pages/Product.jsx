@@ -14,6 +14,8 @@ import LeadCapture from '../components/LeadCapture'
 import ProductLightbox from '../components/ProductLightbox'
 import { track } from '../lib/analytics'
 import { markProductViewed } from '../lib/productViewState'
+import SeoHead from '../components/SeoHead'
+import { SITE_ORIGIN, categoryPathBySlug } from '../lib/seoContent'
 
 async function copyProductLink(url) {
   if (navigator.clipboard?.writeText) {
@@ -88,7 +90,7 @@ export default function Product() {
   const closeLightbox = useCallback(() => setLightboxOpen(false), [])
 
   if (loading) return <div className="screen-loader"><img src="/salt-ordo-logo.png" alt=""/><span>{t.common.loading}</span></div>
-  if (!product) return <section className="section page-section"><div className="container"><EmptyState title={t.catalog.emptyTitle} text={loadError || t.catalog.emptyText}/></div></section>
+  if (!product) return <section className="section page-section"><SeoHead title="Товар не найден | Salt Ordo" description="Такого товара нет в актуальном каталоге Salt Ordo." path={`/product/${slug}`} robots="noindex, follow"/><div className="container"><EmptyState title={t.catalog.emptyTitle} text={loadError || t.catalog.emptyText}/></div></section>
 
   const sortedImages = (product.images || []).slice().sort((a,b)=>(a.sort_order||0)-(b.sort_order||0))
   const currentImage = sortedImages[Math.min(activeImage, Math.max(0, sortedImages.length - 1))]
@@ -98,6 +100,46 @@ export default function Product() {
   const material = localizedField(product, 'material', lang)
   const category = categoryName(product.category, lang) || 'Salt Ordo'
   const promo = isPromotionActive(product)
+  const productPath = `/product/${product.slug}`
+  const productUrl = `${SITE_ORIGIN}${productPath}`
+  const productImage = sortedImages[0]?.public_url || '/og.webp'
+  const priceText = product.price_on_request ? t.product.priceOnRequest : money(product.sale_price, t.common.som)
+  const productSeoDescription = `${name} от Salt Ordo${material ? `, материал — ${material}` : ''}${product.sizes?.length ? `, размер — ${product.sizes.join(', ')}` : ''}. ${product.price_on_request ? 'Цена по запросу' : `Цена ${priceText}`}. Ручная работа в Бишкеке, индивидуальный заказ и доставка по Кыргызстану.`
+  const categoryPath = categoryPathBySlug[product.category?.slug] || '/catalog'
+  const productSchema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name,
+      description: description?.length >= 80 ? description : productSeoDescription,
+      image: sortedImages.map((image) => image.public_url).filter(Boolean),
+      sku: product.sku || product.slug,
+      category,
+      brand: { '@type': 'Brand', name: 'Salt Ordo' },
+      url: productUrl,
+      material: material || undefined,
+      color: product.colors?.join(', ') || undefined,
+      size: product.sizes?.join(', ') || undefined,
+      offers: {
+        '@type': 'Offer',
+        url: productUrl,
+        priceCurrency: 'KGS',
+        price: product.price_on_request ? undefined : Number(product.sale_price || 0),
+        availability: Number(product.stock_qty || 0) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/PreOrder',
+        itemCondition: 'https://schema.org/NewCondition',
+        seller: { '@type': 'Organization', name: 'Salt Ordo' },
+      },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: t.nav.home, item: `${SITE_ORIGIN}/` },
+        { '@type': 'ListItem', position: 2, name: category, item: `${SITE_ORIGIN}${categoryPath}` },
+        { '@type': 'ListItem', position: 3, name, item: productUrl },
+      ],
+    },
+  ]
   const phoneHref = `tel:+${String(settings.whatsapp).replace(/\D/g,'')}`
   const message = lang === 'kg'
     ? `Саламатсызбы! «${name}» товары мага жакты. Баасын, бар-жогун жана буйрутма шарттарын тактап бересизби?`
@@ -143,7 +185,16 @@ export default function Product() {
 
   return (
     <section className="section product-page">
+      <SeoHead
+        title={`${name} купить в Бишкеке — ${priceText} | Salt Ordo`}
+        description={productSeoDescription}
+        path={productPath}
+        image={productImage}
+        type="product"
+        schema={productSchema}
+      />
       <div className="container">
+        <nav className="product-breadcrumbs" aria-label="Breadcrumb"><Link to="/">{t.nav.home}</Link><span>›</span><Link to={categoryPath}>{category}</Link><span>›</span><span>{name}</span></nav>
         <Link className="back-link" to="/catalog"><ArrowLeft size={17}/>{t.product.back}</Link>
         <div className="product-detail">
           <div className="product-detail__gallery">
@@ -211,6 +262,12 @@ export default function Product() {
             <a className="btn btn--ghost" href={phoneHref}><Phone/>{t.product.contactCall || settings.whatsapp}</a>
             <a className="btn btn--ghost" href={settings.instagram} target="_blank" rel="noreferrer"><Instagram/>{t.product.contactInstagram || 'Instagram'}</a>
           </div>
+        </section>
+        <section className="product-seo-copy">
+          <h2>{name} — ручная работа Salt Ordo</h2>
+          <p>{productSeoDescription}</p>
+          <p>{description || 'Цвет, ткань, размер и детали можно адаптировать под ваш интерьер, кызга сеп или семейное событие. Перед изготовлением менеджер согласует комплектацию, стоимость и срок.'}</p>
+          <div className="product-seo-links"><Link to={categoryPath}>{category}</Link><Link to="/contacts">Шоурум Salt Ordo в Бишкеке</Link><Link to="/catalog">Смотреть весь каталог</Link></div>
         </section>
       </div>
       {leadOpen && <div className="lead-modal" role="dialog" aria-modal="true">

@@ -7,7 +7,7 @@ import { whatsappUrl } from '../lib/whatsapp'
 
 const content = {
   ru: [
-    { eyebrow:'Ручная работа в Бишкеке', title:'Комфорт, созданный вручную', text:'Төшөк, подушки и целые комплекты — в вашей палитре, размере и стиле.', cta:'Смотреть каталог' },
+    { eyebrow:'Ручная работа в Бишкеке', title:'Кызга сеп и жер төшөк в Бишкеке', text:'Төшөк, подушки и целые комплекты — в вашей палитре, размере и стиле.', cta:'Смотреть каталог' },
     { eyebrow:'Наш шоурум', title:'Бишкек, Мукаша Абдраева 198/1', text:'Приезжайте посмотреть ткани, оттенки и готовые работы вживую.', cta:'Открыть контакты' },
     { eyebrow:'Всегда на связи', title:'+996 998 992 996', text:'Instagram @salt_ordo · консультация и заказ через WhatsApp.', cta:'Написать в WhatsApp' },
     { eyebrow:'Кызга сеп', title:'Сеп в одной гармоничной палитре', text:'Соберём төшөк, одеяла, подушки и декор как единый продуманный комплект.', cta:'Выбрать сеп' },
@@ -16,7 +16,7 @@ const content = {
     { eyebrow:'Индивидуальный пошив', title:'Любая идея — в точном исполнении', text:'Пришлите фото или эскиз: адаптируем стиль, размеры и детали под ваш заказ.', cta:'Обсудить заказ' },
   ],
   kg: [
-    { eyebrow:'Бишкекте кол менен жасалат', title:'Кол менен жасалган ыңгайлуулук', text:'Төшөк, жаздык жана толук комплекттер — сиздин түсүңүздө, өлчөмүңүздө жана стилиңизде.', cta:'Каталогду көрүү' },
+    { eyebrow:'Бишкекте кол менен жасалат', title:'Бишкекте кызга сеп жана жер төшөк', text:'Төшөк, жаздык жана толук комплекттер — сиздин түсүңүздө, өлчөмүңүздө жана стилиңизде.', cta:'Каталогду көрүү' },
     { eyebrow:'Биздин шоурум', title:'Бишкек, Мукаша Абдраева 198/1', text:'Кездемелерди, түстөрдү жана даяр иштерди көрүү үчүн келиңиз.', cta:'Байланышты ачуу' },
     { eyebrow:'Ар дайым байланыштабыз', title:'+996 998 992 996', text:'Instagram @salt_ordo · кеңеш жана WhatsApp аркылуу буйрутма.', cta:'WhatsApp аркылуу жазуу' },
     { eyebrow:'Кызга сеп', title:'Бир палитрадагы гармониялуу сеп', text:'Төшөк, жууркан, жаздык жана декорду бир бүтүн комплект кылып чогултабыз.', cta:'Сеп тандоо' },
@@ -25,7 +25,7 @@ const content = {
     { eyebrow:'Жеке тигүү', title:'Ар бир идеяны так ишке ашырабыз', text:'Сүрөт же эскиз жөнөтүңүз — стилин, өлчөмүн жана деталдарын ылайыкташтырабыз.', cta:'Буйрутманы талкуулоо' },
   ],
   en: [
-    { eyebrow:'Handmade in Bishkek', title:'Comfort, crafted by hand', text:'Floor bedding, pillows and complete sets in your palette, size and style.', cta:'Browse catalog' },
+    { eyebrow:'Handmade in Bishkek', title:'Bridal dowry sets and floor bedding in Bishkek', text:'Floor bedding, pillows and complete sets in your palette, size and style.', cta:'Browse catalog' },
     { eyebrow:'Our showroom', title:'Bishkek, Mukasha Abdrayeva 198/1', text:'Visit us to see fabrics, colors and finished work in person.', cta:'Open contacts' },
     { eyebrow:'Always in touch', title:'+996 998 992 996', text:'Instagram @salt_ordo · consultation and orders via WhatsApp.', cta:'Message on WhatsApp' },
     { eyebrow:'Bridal dowry', title:'One harmonious palette for the whole set', text:'Floor bedding, quilts, pillows and details are composed as one considered collection.', cta:'Choose a dowry set' },
@@ -74,10 +74,10 @@ export default function HeroSlider() {
     { to:'/catalog' },
     { to:'/contacts' },
     { href:whatsappUrl(settings.whatsapp, slides[2].text), external:true },
-    { to:'/catalog?category=sep' },
-    { to:'/catalog?category=jer-toshok' },
-    { to:'/catalog?category=sandyk' },
-    { to:'/contacts' },
+    { to:'/kyzga-sep-bishkek' },
+    { to:'/zher-toshok-bishkek' },
+    { to:'/sandyk-kyzga-sep' },
+    { to:'/individualnyy-poshiv-bishkek' },
   ]
 
   return (
@@ -88,11 +88,11 @@ export default function HeroSlider() {
           const action = actions[index]
           return (
             <article className={`hero-slide ${active === index ? 'is-active' : ''}`} key={slide.title} aria-hidden={active !== index}>
-              <img src={image} alt="" fetchpriority={index === 0 ? 'high' : 'auto'} decoding="async"/>
+              <img src={image} alt="" fetchPriority={index === 0 ? 'high' : 'auto'} loading={index === 0 ? 'eager' : 'lazy'} decoding="async"/>
               <div className="hero-slide__veil" aria-hidden="true"/>
               <div className="container hero-slide__content">
                 <span className="hero-slide__eyebrow"><Icon aria-hidden="true"/>{slide.eyebrow}</span>
-                <h1>{slide.title}</h1>
+                {index === 0 ? <h1>{slide.title}</h1> : <h2>{slide.title}</h2>}
                 <p>{slide.text}</p>
                 {action.to
                   ? <Link className="btn btn--primary" to={action.to}>{slide.cta}<ArrowRight aria-hidden="true"/></Link>

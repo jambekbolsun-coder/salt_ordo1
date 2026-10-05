@@ -2,11 +2,13 @@ import { ArrowLeft, Home, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Ornament from '../components/Ornament'
 import { useLanguage } from '../state/LanguageContext'
+import SeoHead from '../components/SeoHead'
 
 export default function NotFound() {
   const { t } = useLanguage()
   return (
     <section className="not-found">
+      <SeoHead title="Страница не найдена | Salt Ordo" description="Запрошенная страница не найдена." path={window.location.pathname} robots="noindex, follow"/>
       <div className="not-found__glow not-found__glow--pink"/><div className="not-found__glow not-found__glow--blue"/>
       <div className="not-found__card">
         <img src="/salt-ordo-logo.png" alt="" className="not-found__logo"/>

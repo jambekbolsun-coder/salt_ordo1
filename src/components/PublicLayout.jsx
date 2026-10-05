@@ -8,6 +8,15 @@ import { track } from '../lib/analytics'
 import CookieConsent from './CookieConsent'
 import { revokeProviders } from '../lib/measurement'
 import { campaignAttribution } from '../lib/consent'
+import SeoHead from './SeoHead'
+
+const utilitySeo = {
+  '/favorites': ['Избранные товары | Salt Ordo', 'Сохранённые товары Salt Ordo.'],
+  '/cart': ['Корзина | Salt Ordo', 'Товары, выбранные для заказа в Salt Ordo.'],
+  '/checkout': ['Оформление заявки | Salt Ordo', 'Оформление заявки на изделия Salt Ordo.'],
+  '/privacy': ['Политика конфиденциальности | Salt Ordo', 'Политика конфиденциальности сайта Salt Ordo.'],
+  '/cookies': ['Политика cookies | Salt Ordo', 'Информация об использовании cookies на сайте Salt Ordo.'],
+}
 
 export default function PublicLayout() {
   const location = useLocation()
@@ -29,6 +38,7 @@ export default function PublicLayout() {
 
   return (
     <div className="public-app">
+      {utilitySeo[location.pathname] && <SeoHead title={utilitySeo[location.pathname][0]} description={utilitySeo[location.pathname][1]} path={location.pathname} robots="noindex, follow"/>}
       <a className="skip-link" href="#main-content">Перейти к содержанию</a>
       <Header />
       <main id="main-content"><Outlet/></main>

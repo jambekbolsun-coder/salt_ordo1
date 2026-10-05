@@ -10,15 +10,35 @@
     },
     {
       "source": "/catalog",
-      "destination": "/index.html"
+      "destination": "/seo/catalog.html"
     },
     {
       "source": "/contacts",
-      "destination": "/index.html"
+      "destination": "/seo/contacts.html"
     },
     {
-      "source": "/product/:path*",
-      "destination": "/index.html"
+      "source": "/kyzga-sep-bishkek",
+      "destination": "/seo/categories/kyzga-sep-bishkek.html"
+    },
+    {
+      "source": "/zher-toshok-bishkek",
+      "destination": "/seo/categories/zher-toshok-bishkek.html"
+    },
+    {
+      "source": "/zhazdyk-bishkek",
+      "destination": "/seo/categories/zhazdyk-bishkek.html"
+    },
+    {
+      "source": "/sandyk-kyzga-sep",
+      "destination": "/seo/categories/sandyk-kyzga-sep.html"
+    },
+    {
+      "source": "/individualnyy-poshiv-bishkek",
+      "destination": "/seo/categories/individualnyy-poshiv-bishkek.html"
+    },
+    {
+      "source": "/product/:slug",
+      "destination": "/seo/products/:slug.html"
     },
     {
       "source": "/favorites",
@@ -45,6 +65,25 @@
     }
   ],
   "headers": [
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {"key": "Content-Type", "value": "application/xml; charset=utf-8"},
+        {"key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600"}
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {"key": "Content-Type", "value": "text/plain; charset=utf-8"},
+        {"key": "Cache-Control", "value": "public, max-age=0, s-maxage=3600"}
+      ]
+    },
+    {"source": "/cart", "headers": [{"key": "X-Robots-Tag", "value": "noindex, follow, noarchive"}]},
+    {"source": "/favorites", "headers": [{"key": "X-Robots-Tag", "value": "noindex, follow, noarchive"}]},
+    {"source": "/checkout", "headers": [{"key": "X-Robots-Tag", "value": "noindex, follow, noarchive"}]},
+    {"source": "/privacy", "headers": [{"key": "X-Robots-Tag", "value": "noindex, follow, noarchive"}]},
+    {"source": "/cookies", "headers": [{"key": "X-Robots-Tag", "value": "noindex, follow, noarchive"}]},
     {
       "source": "/(.*)",
       "headers": [

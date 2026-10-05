@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "dev:full": "node --env-file=.env.production --env-file=.env.local scripts/dev-server.mjs",
-    "build": "vite build",
+    "seo:prepare": "node scripts/generate-seo.mjs prepare",
+    "seo:render": "node scripts/generate-seo.mjs render",
+    "build": "npm run seo:prepare && vite build && npm run seo:render",
     "preview": "vite preview --host 0.0.0.0",
     "lint": "eslint .",
     "test": "node --test tests/*.test.mjs",

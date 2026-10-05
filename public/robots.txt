@@ -1,3 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://salt-ordo1.vercel.app/sitemap.xml

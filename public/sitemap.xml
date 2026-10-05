@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://salt-ordo1.vercel.app/</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/catalog</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/contacts</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/kyzga-sep-bishkek</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/zher-toshok-bishkek</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/zhazdyk-bishkek</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/sandyk-kyzga-sep</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/individualnyy-poshiv-bishkek</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/zher-toshok</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/1b98a4e0-9941-455c-8bfc-bd227520f1a4/3583d5d9-1a0c-49be-8e1b-a984d52b11ed.jpg</image:loc><image:title>Жер төшөк</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/chiy-kurak</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/974a0daa-5660-49d8-a294-7d10933fd79b/edd49e0a-d77d-45f1-873d-3de6fa6bde29.jpg</image:loc><image:title>Чий курак</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/sayma-toshok</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/55796a8f-8753-40f8-95a1-3ea8f94380aa/dabe4de4-b549-41ca-88a8-0408f8170516.jpg</image:loc><image:title>Сайма төшөк</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/ming-kurak</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/0e7d33c2-4ec2-4a46-89cc-c641fe5d4612/2c20bf1b-a96e-4538-b4ba-74ad903bafc3.jpg</image:loc><image:title>Миң курак</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/ming-kurak-f7f166ca</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/18fc54ab-7a92-444c-bc6b-b696d54c3b94/4b82f24f-3294-4342-b080-5b60e5c41b75.jpg</image:loc><image:title>Миң курак</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/tambur</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/c8f67d7a-8c9f-4ee5-81e6-73fadd28eb83/2b83fa5c-caec-41d4-b1c5-68e80af4c1c9.jpg</image:loc><image:title>Тамбур</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/sandyk-komplekt</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/d6b97c25-f4d0-44a5-a25f-b039ac52f3d4/5ee9b031-94d4-4c97-8436-edd24e78098e.jpg</image:loc><image:title>Сандык комплект</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/mamalak-toshok</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/96d8ec1e-3287-4ad5-bf3b-0c7d35e41edd/d9d83002-0abb-4c64-b5ad-cea19110731c.jpg</image:loc><image:title>Мамалак төшөк</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/3d-toshok</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/4fe7dc30-fb34-4461-8bc8-f18cceb61d1b/0d2c2aeb-172b-4fae-8e40-10743e338268.jpg</image:loc><image:title>3д төшөк</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/ming-kurak-0ccde54e</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/10b520af-fe4a-4ac5-ab11-ea13fcdda254/acf9ef66-0897-4a7c-b129-769880383d0c.jpg</image:loc><image:title>Миң курак</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/chiy-kurak-c63d5ca1</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/2218547a-e889-4c56-add6-02d56bbc981f/505b82b1-73b1-41aa-9327-ebee55f1e053.jpg</image:loc><image:title>Чий курак</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://salt-ordo1.vercel.app/product/zhakkard-toshok</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://bgpcnfxwdndmrgkvcjez.supabase.co/storage/v1/object/public/product-images/1ae5a07b-f421-4466-9665-fecd964be2fd/44473a28-66da-4bbf-9102-619479d3a0bc.jpg</image:loc><image:title>Жаккард төшөк</image:title></image:image>
+  </url>
+</urlset>

@@ -13,6 +13,7 @@ const Favorites = lazy(() => import('./pages/Favorites'))
 const Cart = lazy(() => import('./pages/Cart'))
 const Checkout = lazy(() => import('./pages/Checkout'))
 const Contacts = lazy(() => import('./pages/Contacts'))
+const SeoCategory = lazy(() => import('./pages/SeoCategory'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const Privacy = lazy(() => import('./pages/Privacy'))
 
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/contacts" element={<Contacts/>}/>
         <Route path="/privacy" element={<Privacy/>}/>
         <Route path="/cookies" element={<Privacy/>}/>
+        <Route path="/:pageSlug" element={<SeoCategory/>}/>
       </Route>
 
       <Route element={<AdminPwaProvider/>}>

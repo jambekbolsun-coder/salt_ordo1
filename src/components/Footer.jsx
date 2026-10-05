@@ -33,6 +33,9 @@ export default function Footer() {
               <span>{t.footer.navigation}</span>
               <Link to="/">{t.nav.home}</Link>
               <Link to="/catalog">{t.nav.catalog}</Link>
+              <Link to="/kyzga-sep-bishkek">Кызга сеп</Link>
+              <Link to="/zher-toshok-bishkek">Жер төшөк</Link>
+              <Link to="/sandyk-kyzga-sep">Сандык</Link>
               <Link to="/contacts">{t.nav.contacts}</Link>
               <Link to="/privacy">Конфиденциальность</Link>
               <Link to="/cookies">Политика cookies</Link>

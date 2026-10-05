@@ -30,9 +30,10 @@ export function SiteSettingsProvider({ children }) {
   }, [])
 
   useEffect(() => {
-    document.title = isAdmin ? 'Salt Ordo Admin' : settings.seo_title
+    if (!isAdmin) return
+    document.title = 'Salt Ordo Admin'
     const meta = document.querySelector('meta[name="description"]')
-    if (meta) meta.setAttribute('content', isAdmin ? 'Рабочее пространство Salt Ordo: каталог, заявки и аналитика.' : settings.seo_description)
+    if (meta) meta.setAttribute('content', 'Рабочее пространство Salt Ordo: каталог, заявки и аналитика.')
   }, [isAdmin, settings.seo_title, settings.seo_description])
 
   const value = useMemo(() => ({ settings, setSettings }), [settings])

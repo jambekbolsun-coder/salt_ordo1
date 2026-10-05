@@ -3,6 +3,8 @@ import LeadCapture from '../components/LeadCapture'
 import { whatsappUrl } from '../lib/whatsapp'
 import { useLanguage } from '../state/LanguageContext'
 import { useSiteSettings } from '../state/SiteSettingsContext'
+import SeoHead from '../components/SeoHead'
+import { SITE_ORIGIN } from '../lib/seoContent'
 
 const copy = {
   ru: {
@@ -84,6 +86,23 @@ export default function Contacts() {
 
   return (
     <section className="contacts-page page-section">
+      <SeoHead
+        title="Контакты Salt Ordo — шоурум домашнего текстиля в Бишкеке"
+        description="Шоурум Salt Ordo в Бишкеке: ул. Мукаша Абдраева, 198/1. Кызга сеп, жер төшөк, сандык и индивидуальный пошив. WhatsApp: +996 998 992 996."
+        path="/contacts"
+        image="/hero-blush-handmade.webp"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': ['LocalBusiness', 'Store'],
+          name: 'Salt Ordo',
+          url: `${SITE_ORIGIN}/contacts`,
+          telephone: '+996998992996',
+          image: `${SITE_ORIGIN}/hero-blush-handmade.webp`,
+          address: { '@type': 'PostalAddress', streetAddress: 'ул. Мукаша Абдраева, 198/1', addressLocality: 'Бишкек', addressCountry: 'KG' },
+          areaServed: { '@type': 'Country', name: 'Кыргызстан' },
+          sameAs: ['https://www.instagram.com/salt_ordo/'],
+        }}
+      />
       <div className="container contacts-page__container">
         <div className="contacts-intro">
           <div className="contacts-intro__copy">

@@ -6,6 +6,35 @@ import ProductCard from '../components/ProductCard'
 import { listCategories, listProducts } from '../lib/api'
 import { categoryName } from '../lib/productText'
 import { useLanguage } from '../state/LanguageContext'
+import SeoHead from '../components/SeoHead'
+import { SITE_ORIGIN, categoryLandingPages, categoryPathBySlug } from '../lib/seoContent'
+
+const homeSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': ['LocalBusiness', 'Store'],
+    name: 'Salt Ordo',
+    url: SITE_ORIGIN,
+    image: `${SITE_ORIGIN}/og.webp`,
+    telephone: '+996998992996',
+    priceRange: '3 500–22 200 KGS',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: 'ул. Мукаша Абдраева, 198/1',
+      addressLocality: 'Бишкек',
+      addressCountry: 'KG',
+    },
+    areaServed: { '@type': 'Country', name: 'Кыргызстан' },
+    sameAs: ['https://www.instagram.com/salt_ordo/'],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Salt Ordo',
+    url: SITE_ORIGIN,
+    inLanguage: ['ru', 'ky', 'en'],
+  },
+]
 
 export default function Home() {
   const [products, setProducts] = useState([])
@@ -30,7 +59,28 @@ export default function Home() {
 
   return (
     <>
+      <SeoHead
+        title="Кызга сеп и жер төшөк в Бишкеке | Salt Ordo"
+        description="Salt Ordo — кызга сеп, жер төшөк, жууркан, жаздык и сандык ручной работы в Бишкеке. Готовые изделия, индивидуальный пошив и доставка по Кыргызстану."
+        path="/"
+        image="/og.webp"
+        schema={homeSchema}
+      />
       <HeroSlider/>
+      <section className="home-seo-intro">
+        <div className="container">
+          <span className="eyebrow">Salt Ordo · Бишкек</span>
+          <h2>{lang === 'kg' ? 'Кызга сеп, жер төшөк жана үй текстили' : lang === 'en' ? 'Bridal dowry sets and handmade home textiles' : 'Кызга сеп, жер төшөк и домашний текстиль ручной работы'}</h2>
+          <p>{lang === 'kg'
+            ? 'Даяр буюмдарды тандаңыз же сүрөтүңүз боюнча жеке комплектке буйрутма бериңиз. Кездеме, түс, өлчөм жана жасалгалоо сиздин каалооңузга ылайык тандалат.'
+            : lang === 'en'
+              ? 'Choose an available piece or order a coordinated set from your reference. Fabric, palette, dimensions and finishing are tailored to you.'
+              : 'Выберите готовое изделие или закажите комплект по своему референсу. Подберём ткань, цвет, размер и оформление под вашу традицию и интерьер.'}</p>
+          <nav className="home-seo-links" aria-label="Популярные категории">
+            {categoryLandingPages.map((item) => <Link key={item.slug} to={`/${item.slug}`}>{(item.copy[lang] || item.copy.ru).eyebrow}</Link>)}
+          </nav>
+        </div>
+      </section>
       <section className="home-catalog" id="categories">
         <div className="container home-catalog__inner">
           <div className="home-catalog__heading">
@@ -40,7 +90,7 @@ export default function Home() {
           {categories.length > 0 ? (
             <nav className="home-category-pills" aria-label={t.catalog.category}>
               {categories.slice(0, 6).map((category, index) => (
-                <Link className={index === 0 ? 'is-active' : ''} key={category.id} to={`/catalog?category=${category.slug}`}>
+                <Link className={index === 0 ? 'is-active' : ''} key={category.id} to={categoryPathBySlug[category.slug] || `/catalog?category=${category.slug}`}>
                   {categoryName(category, lang)}
                 </Link>
               ))}
