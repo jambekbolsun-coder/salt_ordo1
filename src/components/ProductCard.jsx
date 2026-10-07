@@ -1,4 +1,4 @@
-import { Heart } from 'lucide-react'
+import { Bookmark } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ProductVisual from './ProductVisual'
@@ -28,7 +28,7 @@ export default function ProductCard({ product }) {
   }, [favoriteFlash])
 
   const toggleFavorite = () => {
-    toggle(product.id)
+    toggle(product.id, product)
     setFavoriteFlash(true)
   }
 
@@ -42,8 +42,8 @@ export default function ProductCard({ product }) {
           {promo && <span className="product-badge product-badge--sale">{label}</span>}
           {!promo && showNew && <span className="product-badge">NEW</span>}
         </div>
-        <button className={`favorite-btn ${favorite ? 'is-active' : ''} ${favoriteFlash ? 'is-animating' : ''}`} onClick={toggleFavorite} aria-label={t.catalog.favorite}>
-          <Heart size={19} fill={favorite ? 'currentColor' : 'none'}/>
+        <button className={`favorite-btn ${favorite ? 'is-active' : ''} ${favoriteFlash ? 'is-animating' : ''}`} onClick={toggleFavorite} aria-pressed={favorite} aria-label={`${favorite?'Убрать из подборки':'В подборку'}: ${name}`}>
+          <Bookmark size={19} fill={favorite ? 'currentColor' : 'none'}/>
         </button>
       </div>
       <div className="product-card__body">
@@ -53,6 +53,7 @@ export default function ProductCard({ product }) {
           <strong>{product.price_on_request ? t.catalog.requestPrice : money(product.sale_price, t.common.som)}</strong>
           {promo && product.old_price && <del>{money(product.old_price, t.common.som)}</del>}
         </div>
+        <p className="product-stock">{Number(product.stock_qty)>0 ? (Number(product.stock_qty)<=5 ? `Осталось: ${product.stock_qty}` : t.catalog.inStock) : t.catalog.madeToOrder}</p>
         <div className="product-card__actions">
           <Link className="btn btn--card-detail" to={`/product/${product.slug}`}>{t.catalog.openProduct}</Link>
         </div>

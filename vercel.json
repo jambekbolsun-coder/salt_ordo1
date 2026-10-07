@@ -12,6 +12,34 @@
   },
   "rewrites": [
     {
+      "source": "/collections",
+      "destination": "/seo/catalog.html"
+    },
+    {
+      "source": "/selection",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/materials",
+      "destination": "/seo/materials.html"
+    },
+    {
+      "source": "/individual-order",
+      "destination": "/seo/individual-order.html"
+    },
+    {
+      "source": "/atelier",
+      "destination": "/seo/atelier.html"
+    },
+    {
+      "source": "/works",
+      "destination": "/seo/works.html"
+    },
+    {
+      "source": "/care",
+      "destination": "/seo/care.html"
+    },
+    {
       "source": "/privacy",
       "destination": "/index.html"
     },
@@ -22,10 +50,6 @@
     {
       "source": "/admin/",
       "destination": "/admin.html"
-    },
-    {
-      "source": "/catalog",
-      "destination": "/seo/catalog.html"
     },
     {
       "source": "/contacts",
@@ -76,6 +100,16 @@
     {
       "source": "/admin",
       "destination": "/admin/",
+      "permanent": true
+    },
+    {
+      "source": "/catalog",
+      "destination": "/collections",
+      "permanent": true
+    },
+    {
+      "source": "/favorites",
+      "destination": "/selection",
       "permanent": true
     }
   ],
@@ -246,6 +280,15 @@
         {
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self' https://connect.facebook.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; frame-src https://www.facebook.com https://web.facebook.com; connect-src https://www.facebook.com https://graph.facebook.com 'self' https://bgpcnfxwdndmrgkvcjez.supabase.co wss://bgpcnfxwdndmrgkvcjez.supabase.co; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+        }
+      ]
+    },
+    {
+      "source": "/selection",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow, noarchive"
         }
       ]
     }

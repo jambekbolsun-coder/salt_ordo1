@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Instagram, MapPin, MessageCircle, Navigation, Phone, Scissors, Sparkles } from 'lucide-react'
 import LeadCapture from '../components/LeadCapture'
 import { whatsappUrl } from '../lib/whatsapp'
@@ -79,6 +80,7 @@ const mapUrl = 'https://www.google.com/maps/search/?api=1&query=%D0%91%D0%B8%D1%
 
 export default function Contacts() {
   const { lang, t } = useLanguage()
+  const [purpose,setPurpose]=useState("Подобрать материал")
   const { settings } = useSiteSettings()
   const text = copy[lang] || copy.ru
   const phoneHref = `tel:+${String(settings.whatsapp).replace(/\D/g,'')}`
@@ -90,14 +92,14 @@ export default function Contacts() {
         title="Контакты Salt Ordo — шоурум домашнего текстиля в Бишкеке"
         description="Шоурум Salt Ordo в Бишкеке: ул. Мукаша Абдраева, 198/1. Кызга сеп, жер төшөк, сандык и индивидуальный пошив. WhatsApp: +996 998 992 996."
         path="/contacts"
-        image="/hero-blush-handmade.webp"
+        image="/atelier/sayma-toshok-960.webp"
         schema={{
           '@context': 'https://schema.org',
           '@type': ['LocalBusiness', 'Store'],
           name: 'Salt Ordo',
           url: `${SITE_ORIGIN}/contacts`,
           telephone: '+996998992996',
-          image: `${SITE_ORIGIN}/hero-blush-handmade.webp`,
+          image: `${SITE_ORIGIN}/atelier/sayma-toshok-960.webp`,
           address: { '@type': 'PostalAddress', streetAddress: 'ул. Мукаша Абдраева, 198/1', addressLocality: 'Бишкек', addressCountry: 'KG' },
           areaServed: { '@type': 'Country', name: 'Кыргызстан' },
           sameAs: ['https://www.instagram.com/salt_ordo/'],
@@ -117,7 +119,7 @@ export default function Contacts() {
 
           <article className="contact-profile-card">
             <div className="contact-profile-card__visual">
-              <img src="/hero-blush-handmade.webp" alt="Salt Ordo handmade textile set"/>
+              <img src="/atelier/sayma-toshok-960.webp" alt="Salt Ordo handmade textile set"/>
               <span><Scissors/> Salt Ordo</span>
             </div>
             <div className="contact-profile-card__body">
@@ -162,7 +164,8 @@ export default function Contacts() {
             <span>03</span>
             <div><h2>{text.formTitle}</h2><p>{text.formText}</p></div>
           </div>
-          <LeadCapture source="contact_page" message={t.common.whatsappText}/>
+          <div className="atelier-form-grid"><label>Цель обращения<select value={purpose} onChange={e=>setPurpose(e.target.value)}>{["Посмотреть готовые изделия","Подобрать материал","Заказать комплект","Посетить мастерскую","Задать вопрос"].map(p=><option key={p}>{p}</option>)}</select></label></div>
+          <LeadCapture source="contact" message={`Цель обращения: ${purpose}`}/>
         </section>
       </div>
     </section>

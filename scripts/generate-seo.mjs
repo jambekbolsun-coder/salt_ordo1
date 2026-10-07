@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises'
+import { atelierPages } from '../src/lib/atelierContent.js'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
@@ -14,7 +15,7 @@ const categoryLandings = [
     title: 'Кызга сеп в Бишкеке — готовые комплекты и пошив на заказ',
     description: 'Кызга сеп, төшөк, жууркан, жаздык и сандык в единой палитре. Ручная работа Salt Ordo, индивидуальная комплектация и доставка по Кыргызстану.',
     intro: 'Соберём приданое невесты в едином стиле: подберём ткань, цвет, размеры, количество предметов и оформление под вашу традицию и бюджет.',
-    image: '/hero-sep.webp',
+    image: '/atelier/chiy-kurak-960.webp',
   },
   {
     slug: 'zher-toshok-bishkek',
@@ -22,7 +23,7 @@ const categoryLandings = [
     title: 'Жер төшөк в Бишкеке — купить готовый или заказать',
     description: 'Жер төшөк и кыргызские төшөктөр ручной работы в Бишкеке. Выбор ткани, цвета, размера и шва, изготовление на заказ и доставка по Кыргызстану.',
     intro: 'Изготавливаем мягкие жер төшөк для дома, гостей, кызга сеп и семейных событий. Подбираем материал, плотность, размер и оформление.',
-    image: '/hero-toshok.webp',
+    image: '/atelier/zher-toshok-960.webp',
   },
   {
     slug: 'zhazdyk-bishkek',
@@ -30,7 +31,7 @@ const categoryLandings = [
     title: 'Жаздык и декоративные подушки на заказ в Бишкеке',
     description: 'Жаздык и декоративные подушки Salt Ordo: индивидуальные размеры, ткани и цвета для дома и кызга сеп. Доставка по Кыргызстану.',
     intro: 'Подберём подушки к жер төшөк, сеп-комплекту или интерьеру, чтобы ткань, оттенки и декоративные детали сочетались между собой.',
-    image: '/hero-sage-modern.webp',
+    image: '/atelier/tambur-960.webp',
   },
   {
     slug: 'sandyk-kyzga-sep',
@@ -38,7 +39,7 @@ const categoryLandings = [
     title: 'Сандык для кызга сеп в Бишкеке',
     description: 'Сандык и сандык-комплекты для кызга сеп в Бишкеке. Индивидуальное оформление, размеры и текстиль Salt Ordo, доставка по Кыргызстану.',
     intro: 'Сандык становится центральной частью сеп-комплекта. Подберём размер, цвет, декор и текстиль, чтобы всё выглядело единым набором.',
-    image: '/hero-chest-heirloom.webp',
+    image: '/atelier/sandyk-komplekt-960.webp',
   },
   {
     slug: 'individualnyy-poshiv-bishkek',
@@ -46,13 +47,14 @@ const categoryLandings = [
     title: 'Домашний текстиль на заказ по вашему фото или эскизу',
     description: 'Индивидуальный пошив төшөк, подушек и комплектов в Бишкеке. Salt Ordo адаптирует цвет, ткань, размер и детали по вашему референсу.',
     intro: 'Создаём национальные и современные комплекты по фотографии, эскизу или вашей идее. Стоимость и срок согласовываются до начала работы.',
-    image: '/hero-blush-handmade.webp',
+    image: '/atelier/mamalak-toshok-960.webp',
   },
 ]
 
 const staticPages = [
   { path: '/', priority: '1.0', changefreq: 'weekly' },
-  { path: '/catalog', priority: '0.9', changefreq: 'daily' },
+  ...Object.keys(atelierPages).map(key=>({path:`/${key}`,priority:'0.8',changefreq:'monthly'})),
+  { path: '/collections', priority: '0.9', changefreq: 'daily' },
   { path: '/contacts', priority: '0.7', changefreq: 'monthly' },
   ...categoryLandings.map((page) => ({ path: `/${page.slug}`, priority: '0.9', changefreq: 'weekly' })),
 ]
@@ -123,7 +125,7 @@ async function render() {
   const writes = []
 
   writes.push(writeHtml('index.html', buildPage(source, {
-    title: 'Кызга сеп и жер төшөк в Бишкеке | Salt Ordo',
+    title: 'Salt Ordo — ателье кыргызского текстиля в Бишкеке',
     description: 'Salt Ordo — кызга сеп, жер төшөк, жууркан, жаздык и сандык ручной работы в Бишкеке. Индивидуальный пошив и доставка по Кыргызстану.',
     path: '/',
     image: '/og.webp',
@@ -132,11 +134,11 @@ async function render() {
   })))
 
   writes.push(writeHtml('seo/catalog.html', buildPage(source, {
-    title: 'Каталог Salt Ordo — кызга сеп, жер төшөк и сандык',
-    description: 'Каталог Salt Ordo: кызга сеп, жер төшөк, жаздык, сандык и текстиль ручной работы. Цены, наличие, индивидуальный пошив и доставка по Кыргызстану.',
-    path: '/catalog',
+    title: 'Коллекции Salt Ordo — кызга сеп, жер төшөк и сандык',
+    description: 'Коллекции Salt Ordo: кызга сеп, жер төшөк, жаздык, сандык и текстиль ручной работы. Цены, наличие, индивидуальный пошив и доставка по Кыргызстану.',
+    path: '/collections',
     image: '/og.webp',
-    schema: collectionSchema('Каталог Salt Ordo', '/catalog'),
+    schema: collectionSchema('Коллекции Salt Ordo', '/collections'),
     body: catalogFallback(catalog.products),
   })))
 
@@ -144,7 +146,7 @@ async function render() {
     title: 'Контакты Salt Ordo — шоурум домашнего текстиля в Бишкеке',
     description: 'Шоурум Salt Ordo в Бишкеке: ул. Мукаша Абдраева, 198/1. Кызга сеп, жер төшөк, сандык и индивидуальный пошив. WhatsApp: +996 998 992 996.',
     path: '/contacts',
-    image: '/hero-blush-handmade.webp',
+    image: '/atelier/mamalak-toshok-960.webp',
     schema: localBusinessSchema('/contacts'),
     body: contactsFallback(),
   })))
@@ -168,8 +170,9 @@ async function render() {
     writes.push(writeHtml(`seo/products/${safeSlug(product.slug)}.html`, buildPage(source, productPage(product))))
   }
 
+  for (const [key,page] of Object.entries(atelierPages)) writes.push(writeHtml(`seo/${key}.html`,buildPage(source,{title:`${page.title} | Salt Ordo`,description:page.description,path:`/${key}`,image:"/atelier/ming-kurak-960.webp",schema:breadcrumbSchema([["Главная","/"],[page.title,`/${key}`]]),body:fallbackShell(`<main><h1>${html(page.title)}</h1><p>${html(page.description)}</p><p>Свяжитесь с мастером, чтобы обсудить материалы, палитру, размеры и индивидуальный заказ.</p><a href="/contacts">Связаться с ателье</a></main>`)})))
   await Promise.all(writes)
-  console.log(`[seo] Rendered ${3 + categoryLandings.length + catalog.products.length} crawlable HTML pages.`)
+  console.log(`[seo] Rendered ${8 + categoryLandings.length + catalog.products.length} crawlable HTML pages.`)
 }
 
 async function readBuildCatalog() {
@@ -290,15 +293,15 @@ function productPage(product) {
 }
 
 function fallbackShell(content) {
-  return `<div class="seo-static"><header><a class="seo-static__brand" href="/">SALT <b>ORDO</b></a><nav><a href="/">Главная</a><a href="/catalog">Каталог</a><a href="/kyzga-sep-bishkek">Кызга сеп</a><a href="/zher-toshok-bishkek">Жер төшөк</a><a href="/contacts">Контакты</a></nav></header>${content}<footer><b>Salt Ordo</b><span>Бишкек, ул. Мукаша Абдраева, 198/1 · +996 998 992 996 · Доставка по Кыргызстану</span></footer></div>`
+  return `<div class="seo-static"><header><a class="seo-static__brand" href="/">SALT <b>ORDO</b></a><nav><a href="/">Главная</a><a href="/collections">Коллекции</a><a href="/kyzga-sep-bishkek">Кызга сеп</a><a href="/zher-toshok-bishkek">Жер төшөк</a><a href="/contacts">Контакты</a></nav></header>${content}<footer><b>Salt Ordo</b><span>Бишкек, ул. Мукаша Абдраева, 198/1 · +996 998 992 996 · Доставка по Кыргызстану</span></footer></div>`
 }
 
 function homeFallback(products) {
-  return fallbackShell(`<main><section class="seo-static__hero"><div><small>РУЧНАЯ РАБОТА В БИШКЕКЕ</small><h1>Кызга сеп и жер төшөк в Бишкеке</h1><p>Готовые изделия и индивидуальный пошив: төшөк, жууркан, жаздык, сандык и полные сеп-комплекты с доставкой по Кыргызстану.</p><a href="/catalog">Смотреть каталог</a></div><img src="/hero-sep.webp" alt="Кызга сеп и жер төшөк Salt Ordo"></section><section><h2>Популярные категории</h2>${categoryLinks()}</section><section><h2>Изделия Salt Ordo</h2>${productCards(products.slice(0, 8))}</section></main>`)
+  return fallbackShell(`<main><section class="seo-static__hero"><div><small>РУЧНАЯ РАБОТА В БИШКЕКЕ</small><h1>Традиция, сотканная по-вашему.</h1><p>Готовые изделия и индивидуальный пошив: төшөк, жууркан, жаздык, сандык и полные сеп-комплекты с доставкой по Кыргызстану.</p><a href="/collections">Смотреть коллекции</a></div><img src="/atelier/chiy-kurak-960.webp" alt="Кызга сеп и жер төшөк Salt Ordo"></section><section><h2>Популярные категории</h2>${categoryLinks()}</section><section><h2>Изделия Salt Ordo</h2>${productCards(products.slice(0, 8))}</section></main>`)
 }
 
 function catalogFallback(products) {
-  return fallbackShell(`<main><nav class="seo-static__crumbs"><a href="/">Главная</a> › Каталог</nav><h1>Каталог Salt Ordo</h1><p>Кызга сеп, жер төшөк, жаздык, сандык и домашний текстиль ручной работы в Бишкеке.</p>${categoryLinks()}${productCards(products)}</main>`)
+  return fallbackShell(`<main><nav class="seo-static__crumbs"><a href="/">Главная</a> › Каталог</nav><h1>Коллекции Salt Ordo</h1><p>Кызга сеп, жер төшөк, жаздык, сандык и домашний текстиль ручной работы в Бишкеке.</p>${categoryLinks()}${productCards(products)}</main>`)
 }
 
 function contactsFallback() {

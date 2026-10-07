@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, Heart, Instagram, Maximize2, MessageCircle, Minus, Phone, Plus, Share2, ShoppingBag, Truck } from 'lucide-react'
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, Bookmark, Instagram, Maximize2, MessageCircle, Minus, Phone, Plus, Share2, ShoppingBag, Truck } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
+import ProductCard from '../components/ProductCard'
+import { useCatalog } from '../lib/atelierHooks'
 import { getProduct } from '../lib/api'
 import { money } from '../lib/format'
 import ProductVisual from '../components/ProductVisual'
@@ -12,6 +14,7 @@ import { useSiteSettings } from '../state/SiteSettingsContext'
 import { categoryName, isPromotionActive, localizedField } from '../lib/productText'
 import LeadCapture from '../components/LeadCapture'
 import ProductLightbox from '../components/ProductLightbox'
+import AtelierDialog from '../components/AtelierDialog'
 import { track } from '../lib/analytics'
 import { markProductViewed } from '../lib/productViewState'
 import SeoHead from '../components/SeoHead'
@@ -37,6 +40,7 @@ async function copyProductLink(url) {
 
 export default function Product() {
   const { slug } = useParams()
+  const { products: relatedProducts } = useCatalog()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [qty, setQty] = useState(1)
@@ -105,7 +109,7 @@ export default function Product() {
   const productImage = sortedImages[0]?.public_url || '/og.webp'
   const priceText = product.price_on_request ? t.product.priceOnRequest : money(product.sale_price, t.common.som)
   const productSeoDescription = `${name} от Salt Ordo${material ? `, материал — ${material}` : ''}${product.sizes?.length ? `, размер — ${product.sizes.join(', ')}` : ''}. ${product.price_on_request ? 'Цена по запросу' : `Цена ${priceText}`}. Ручная работа в Бишкеке, индивидуальный заказ и доставка по Кыргызстану.`
-  const categoryPath = categoryPathBySlug[product.category?.slug] || '/catalog'
+  const categoryPath = categoryPathBySlug[product.category?.slug] || '/collections'
   const productSchema = [
     {
       '@context': 'https://schema.org',
@@ -195,7 +199,7 @@ export default function Product() {
       />
       <div className="container">
         <nav className="product-breadcrumbs" aria-label="Breadcrumb"><Link to="/">{t.nav.home}</Link><span>›</span><Link to={categoryPath}>{category}</Link><span>›</span><span>{name}</span></nav>
-        <Link className="back-link" to="/catalog"><ArrowLeft size={17}/>{t.product.back}</Link>
+        <Link className="back-link" to="/collections"><ArrowLeft size={17}/>{t.product.back}</Link>
         <div className="product-detail" data-wa-product={name} data-wa-category={category}>
           <div className="product-detail__gallery">
             <div className="product-detail__main">
@@ -236,12 +240,14 @@ export default function Product() {
             <div className="detail-actions">
               <div className="qty-control"><button type="button" onClick={()=>setQty(Math.max(1,qty-1))} aria-label="Minus"><Minus/></button><span>{qty}</span><button type="button" onClick={()=>setQty(Math.min(99,qty+1))} aria-label="Plus"><Plus/></button></div>
               <button className={`btn btn--primary ${added ? 'is-success' : ''}`} type="button" onClick={addToCart}>{added ? <Check size={18}/> : <ShoppingBag size={18}/>} {added ? (t.catalog.added || t.product.add) : t.product.add}</button>
-              <button className={`icon-btn favorite-large ${has(product.id)?'is-active':''}`} type="button" onClick={()=>toggle(product.id)} aria-label={t.catalog.favorite}><Heart fill={has(product.id)?'currentColor':'none'}/></button>
+              <button className={`icon-btn favorite-large ${has(product.id)?'is-active':''}`} type="button" onClick={()=>toggle(product.id, product)} aria-label="Добавить изделие в подборку" aria-pressed={has(product.id)}><Bookmark fill={has(product.id)?'currentColor':'none'}/></button>
               <button className="icon-btn share-product-btn" type="button" onClick={shareProduct} aria-label={t.product.share} title={t.product.share}><Share2/></button>
             </div>
             <div className={`product-share-feedback ${shareStatus ? 'is-visible' : ''}`} role="status" aria-live="polite">{shareStatus}</div>
             <button className="btn btn--ghost btn--block" type="button" onClick={() => setLeadOpen(true)}><MessageCircle size={18}/>{t.product.whatsapp}</button>
 
+            <p className="atelier-note"><Link to="/care">Уход за этим изделием</Link> · Состав комплекта и возможность изменения дизайна согласуем до заказа.</p>
+            <Link className="atelier-link" to="/individual-order">Обсудить собственную версию ↗</Link>
             <div className="detail-trust">
               <span><Check/>{t.custom.point2}</span>
               <span><Check/>{t.custom.point3}</span>
@@ -263,17 +269,17 @@ export default function Product() {
             <a className="btn btn--ghost" href={settings.instagram} target="_blank" rel="noreferrer"><Instagram/>{t.product.contactInstagram || 'Instagram'}</a>
           </div>
         </section>
+        {relatedProducts.filter(p=>p.id!==product.id&&p.category?.id===product.category?.id).length>0&&<section className="atelier-section"><h2>В той же коллекции</h2><div className="product-grid">{relatedProducts.filter(p=>p.id!==product.id&&p.category?.id===product.category?.id).slice(0,3).map(p=><ProductCard key={p.id} product={p}/>)}</div></section>}
         <section className="product-seo-copy">
           <h2>{name} — ручная работа Salt Ordo</h2>
           <p>{productSeoDescription}</p>
           <p>{description || 'Цвет, ткань, размер и детали можно адаптировать под ваш интерьер, кызга сеп или семейное событие. Перед изготовлением менеджер согласует комплектацию, стоимость и срок.'}</p>
-          <div className="product-seo-links"><Link to={categoryPath}>{category}</Link><Link to="/contacts">Шоурум Salt Ordo в Бишкеке</Link><Link to="/catalog">Смотреть весь каталог</Link></div>
+          <div className="product-seo-links"><Link to={categoryPath}>{category}</Link><Link to="/contacts">Шоурум Salt Ordo в Бишкеке</Link><Link to="/collections">Смотреть весь каталог</Link></div>
         </section>
       </div>
-      {leadOpen && <div className="lead-modal" role="dialog" aria-modal="true">
-        <button className="lead-modal__backdrop" type="button" onClick={() => setLeadOpen(false)} aria-label="Close"/>
+      {leadOpen && <AtelierDialog label="Обсудить изделие" onClose={() => setLeadOpen(false)}>
         <LeadCapture source="product" product={product} message={message} onClose={() => setLeadOpen(false)}/>
-      </div>}
+      </AtelierDialog>}
       {lightboxOpen && currentImage?.public_url && <ProductLightbox
         images={sortedImages}
         activeIndex={activeImage}
