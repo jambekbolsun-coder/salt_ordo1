@@ -1,0 +1,2111 @@
+{
+  "status": "Pending native-language review; Russian segments may need joining into complete sentences. Source locations identify insertion points after review.",
+  "entries": {
+    "public.Home.001": {
+      "ru": "Salt Ordo — ателье кыргызского текстиля в Бишкеке",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:17"
+    },
+    "public.Home.002": {
+      "ru": "Готовые изделия и индивидуальные комплекты Salt Ordo. Выберите ткань, цвет, орнамент и размеры — создадим текстиль для вашей семейной истории.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:18"
+    },
+    "public.Home.003": {
+      "ru": "Salt Ordo · Текстильное ателье",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:24"
+    },
+    "public.Home.004": {
+      "ru": "Традиция,",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:25"
+    },
+    "public.Home.005": {
+      "ru": "сотканная",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:27"
+    },
+    "public.Home.006": {
+      "ru": "по-вашему.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:30"
+    },
+    "public.Home.007": {
+      "ru": "Кыргызский текстиль для вашего дома",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:32"
+    },
+    "public.Home.008": {
+      "ru": "и новой семейной истории.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:34"
+    },
+    "public.Home.009": {
+      "ru": "Смотреть коллекции ↗",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:37"
+    },
+    "public.Home.010": {
+      "ru": "Создать свой комплект",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:40"
+    },
+    "public.Home.011": {
+      "ru": "Бишкек, Кыргызстан",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:42"
+    },
+    "public.Home.012": {
+      "ru": "Готовые изделия и на заказ",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:43"
+    },
+    "public.Home.013": {
+      "ru": "Миң курак — комплект Salt Ordo из существующего каталога",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:49"
+    },
+    "public.Home.014": {
+      "ru": "Из коллекции Salt Ordo",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:53"
+    },
+    "public.Home.015": {
+      "ru": "Миң курак ↗",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:54"
+    },
+    "public.Home.016": {
+      "ru": "Дом начинается с близкого",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:60"
+    },
+    "public.Home.017": {
+      "ru": "Вещи, в которых",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:62"
+    },
+    "public.Home.018": {
+      "ru": "есть",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:64"
+    },
+    "public.Home.019": {
+      "ru": "ваша история.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:65"
+    },
+    "public.Home.020": {
+      "ru": "Salt Ordo — мастерская текстиля в Бишкеке. Мы создаём готовые изделия и комплекты на заказ: от жер төшөк и жаздыков до кызга сеп. Ткань, палитра, рисунок и размеры складываются в вещь, близкую именно вам.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:67"
+    },
+    "public.Home.021": {
+      "ru": "Познакомиться с ателье",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:73"
+    },
+    "public.Home.022": {
+      "ru": "01 / Коллекции",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:79"
+    },
+    "public.Home.023": {
+      "ru": "Для дома.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:80"
+    },
+    "public.Home.024": {
+      "ru": "Для особенного.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:83"
+    },
+    "public.Home.025": {
+      "ru": "Все коллекции",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:86"
+    },
+    "public.Home.026": {
+      "ru": "02 / Ваше видение",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:134"
+    },
+    "public.Home.027": {
+      "ru": "Один дом.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:136"
+    },
+    "public.Home.028": {
+      "ru": "Тысячи сочетаний.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:139"
+    },
+    "public.Home.029": {
+      "ru": "Национальный орнамент или спокойная однотонная ткань. Выразительная композиция или лаконичные детали. Эти направления — начало разговора, а не границы выбора.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:141"
+    },
+    "public.Home.030": {
+      "ru": "Рассказать о своей идее",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:164"
+    },
+    "public.Home.031": {
+      "ru": "03 / Материалы и цвет",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:170"
+    },
+    "public.Home.032": {
+      "ru": "Начните",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:171"
+    },
+    "public.Home.033": {
+      "ru": "с ощущения.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:174"
+    },
+    "public.Home.034": {
+      "ru": "Посмотрите ткань вблизи, сравните оттенки, обсудите наполнение. Окончательный выбор лучше делать по образцу — экран передаёт цвет приблизительно.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:176"
+    },
+    "public.Home.035": {
+      "ru": "Выбрать материалы",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:198"
+    },
+    "public.Home.036": {
+      "ru": "Фактура ткани крупным планом",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:200"
+    },
+    "public.Home.037": {
+      "ru": "04 / От идеи до готовой вещи",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:204"
+    },
+    "public.Home.038": {
+      "ru": "Ваш референс —",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:205"
+    },
+    "public.Home.039": {
+      "ru": "начало новой работы.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:207"
+    },
+    "public.Home.040": {
+      "ru": "Идея",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:212"
+    },
+    "public.Home.041": {
+      "ru": "Фотография, эскиз или несколько слов о будущем комплекте.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:213"
+    },
+    "public.Home.042": {
+      "ru": "Подбор",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:217"
+    },
+    "public.Home.043": {
+      "ru": "Материалы, палитра и собственная композиция Salt Ordo.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:218"
+    },
+    "public.Home.044": {
+      "ru": "Результат",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:222"
+    },
+    "public.Home.045": {
+      "ru": "Изделие по согласованным размерам и деталям.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:223"
+    },
+    "public.Home.046": {
+      "ru": "Истории реальных заказов появятся после согласования фотографий с их владельцами.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:226"
+    },
+    "public.Home.047": {
+      "ru": "Выполненные работы",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Home.jsx:230"
+    },
+    "public.AtelierPages.001": {
+      "ru": "Стриженный бархат",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:26"
+    },
+    "public.AtelierPages.002": {
+      "ru": "Материал задаёт характер.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:31"
+    },
+    "public.AtelierPages.003": {
+      "ru": "Начните с ткани: её поверхности, оттенка и ощущения в руках. Образцы и точные характеристики выбранного материала обсудим вместе.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:31"
+    },
+    "public.AtelierPages.004": {
+      "ru": "Макрофотография стриженного бархата",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:38"
+    },
+    "public.AtelierPages.005": {
+      "ru": "01 / Из существующего каталога",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:42"
+    },
+    "public.AtelierPages.006": {
+      "ru": "Стриженный",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:43"
+    },
+    "public.AtelierPages.007": {
+      "ru": "бархат.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:46"
+    },
+    "public.AtelierPages.008": {
+      "ru": "Состав и плотность",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:51"
+    },
+    "public.AtelierPages.009": {
+      "ru": "Уточним по выбранному образцу",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:55"
+    },
+    "public.AtelierPages.010": {
+      "ru": "Мягкость и блеск",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:59"
+    },
+    "public.AtelierPages.011": {
+      "ru": "Сравним при личном подборе",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:63"
+    },
+    "public.AtelierPages.012": {
+      "ru": "Цвета и уход",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:67"
+    },
+    "public.AtelierPages.013": {
+      "ru": "Согласуем для конкретного изделия",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:71"
+    },
+    "public.AtelierPages.014": {
+      "ru": "/collections?q=бархат",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:83"
+    },
+    "public.AtelierPages.015": {
+      "ru": "Изделия из каталога",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:83"
+    },
+    "public.AtelierPages.016": {
+      "ru": "Деталь изделия из стриженного бархата",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:87"
+    },
+    "public.AtelierPages.017": {
+      "ru": "Другие направления подбора",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:95"
+    },
+    "public.AtelierPages.018": {
+      "ru": "Какая ткань",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:96"
+    },
+    "public.AtelierPages.019": {
+      "ru": "вам близка?",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:99"
+    },
+    "public.AtelierPages.020": {
+      "ru": "Это пожелания для обсуждения. Наличие этих тканей в Salt Ordo пока не подтверждено.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:102"
+    },
+    "public.AtelierPages.021": {
+      "ru": "По запросу · наличие уточняется",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:112"
+    },
+    "public.AtelierPages.022": {
+      "ru": "Палитра будущего комплекта",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:126"
+    },
+    "public.AtelierPages.023": {
+      "ru": "Сохраните",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:127"
+    },
+    "public.AtelierPages.024": {
+      "ru": "любимый оттенок.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:130"
+    },
+    "public.AtelierPages.025": {
+      "ru": "Цвета ниже — ориентир для разговора, не складская карта тканей. Точный оттенок выбирается по образцу.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:132"
+    },
+    "public.AtelierPages.026": {
+      "ru": "Сравнить перед выбором",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:155"
+    },
+    "public.AtelierPages.027": {
+      "ru": "Отметьте до трёх тканей, которые хотите сравнить с мастером. Непроверенные свойства оставлены открытыми.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:156"
+    },
+    "public.AtelierPages.028": {
+      "ru": "Сравнение материалов",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:183"
+    },
+    "public.AtelierPages.029": {
+      "ru": "Вопросы для подбора ткани",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:186"
+    },
+    "public.AtelierPages.030": {
+      "ru": "Свойство",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:189"
+    },
+    "public.AtelierPages.031": {
+      "ru": "Внешний вид",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:199"
+    },
+    "public.AtelierPages.032": {
+      "ru": "Мягкость",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:200"
+    },
+    "public.AtelierPages.033": {
+      "ru": "Практичность",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:201"
+    },
+    "public.AtelierPages.034": {
+      "ru": "Уход",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:202"
+    },
+    "public.AtelierPages.035": {
+      "ru": "Подходящие изделия",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:203"
+    },
+    "public.AtelierPages.036": {
+      "ru": "Уточним по образцу",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:208"
+    },
+    "public.AtelierPages.037": {
+      "ru": "Что находится внутри",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:219"
+    },
+    "public.AtelierPages.038": {
+      "ru": "Форма начинается",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:220"
+    },
+    "public.AtelierPages.039": {
+      "ru": "с наполнения.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:223"
+    },
+    "public.AtelierPages.040": {
+      "ru": "Наполнитель выбирается вместе с тканью и назначением изделия. Его состав, мягкость и рекомендации по хранению нужно подтвердить до изготовления.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:225"
+    },
+    "public.AtelierPages.041": {
+      "ru": "Обсудить наполнение",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:230"
+    },
+    "public.AtelierPages.042": {
+      "ru": "Рисунок и смысл",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:233"
+    },
+    "public.AtelierPages.043": {
+      "ru": "Место для",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:234"
+    },
+    "public.AtelierPages.044": {
+      "ru": "вашего орнамента.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:237"
+    },
+    "public.AtelierPages.045": {
+      "ru": "Опишите мотив или дайте ему рабочее название. Референс можно передать в форме заказа. Авторские работы используем только с разрешения.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:239"
+    },
+    "public.AtelierPages.046": {
+      "ru": "Идея орнамента",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:244"
+    },
+    "public.AtelierPages.047": {
+      "ru": "Создайте то, что близко вам.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:272"
+    },
+    "public.AtelierPages.048": {
+      "ru": "Изделие, материал, цвет и рисунок — отправные точки вашего комплекта. Начните с того, что уже знаете. Остальное обсудим вместе.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:272"
+    },
+    "public.AtelierPages.049": {
+      "ru": "Миң курак из каталога Salt Ordo",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:278"
+    },
+    "public.AtelierPages.050": {
+      "ru": "Рассказать о своей идее ↓",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:283"
+    },
+    "public.AtelierPages.051": {
+      "ru": "Открыть мою подборку",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:286"
+    },
+    "public.AtelierPages.052": {
+      "ru": "Можно начать с референса.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:291"
+    },
+    "public.AtelierPages.053": {
+      "ru": "Передайте ссылку на фотографию или отправьте изображение в WhatsApp. Рисунок, ткань и пропорции обсудим перед работой.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:292"
+    },
+    "public.AtelierPages.054": {
+      "ru": "Будущие истории заказов",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:296"
+    },
+    "public.AtelierPages.055": {
+      "ru": "Ткань выбираем вместе.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:299"
+    },
+    "public.AtelierPages.056": {
+      "ru": "Наличие материала, стоимость и срок подтверждаются индивидуально. Предварительная заявка ни к чему не обязывает.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:300"
+    },
+    "public.AtelierPages.057": {
+      "ru": "Посмотреть материалы",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:304"
+    },
+    "public.AtelierPages.058": {
+      "ru": "Перед первым разговором",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:309"
+    },
+    "public.AtelierPages.059": {
+      "ru": "Нужно ли знать точные размеры?",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:312"
+    },
+    "public.AtelierPages.060": {
+      "ru": "Нет. Можно оставить этот пункт пустым и попросить мастера помочь с замерами.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:313"
+    },
+    "public.AtelierPages.061": {
+      "ru": "Можно ли изменить готовый дизайн?",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:316"
+    },
+    "public.AtelierPages.062": {
+      "ru": "Да, укажите понравившееся изделие и желаемые изменения. Возможность исполнения обсудим до заказа.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:317"
+    },
+    "public.AtelierPages.063": {
+      "ru": "Как узнать стоимость и срок?",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:320"
+    },
+    "public.AtelierPages.064": {
+      "ru": "Они зависят от согласованных материалов, размеров, состава и декора. Сначала обсудим детали, затем подтвердим расчёт.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:321"
+    },
+    "public.AtelierPages.065": {
+      "ru": "Как передать фотографию?",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:324"
+    },
+    "public.AtelierPages.066": {
+      "ru": "Добавьте доступную ссылку в форме или отправьте JPG, PNG, WebP либо PDF мастеру в WhatsApp. Ссылка должна открываться без входа в ваш аккаунт.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:325"
+    },
+    "public.AtelierPages.067": {
+      "ru": "Текстиль, который становится частью семьи.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:340"
+    },
+    "public.AtelierPages.068": {
+      "ru": "Salt Ordo — ателье домашнего текстиля в Бишкеке. Готовые вещи и индивидуальные комплекты, связанные с домом, традицией и вашим вкусом.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:340"
+    },
+    "public.AtelierPages.069": {
+      "ru": "Портрет основателя",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:348"
+    },
+    "public.AtelierPages.070": {
+      "ru": "История основателя готовится к публикации.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:352"
+    },
+    "public.AtelierPages.071": {
+      "ru": "О мастерской",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:356"
+    },
+    "public.AtelierPages.072": {
+      "ru": "Традиция",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:357"
+    },
+    "public.AtelierPages.073": {
+      "ru": "в вашем прочтении.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:360"
+    },
+    "public.AtelierPages.074": {
+      "ru": "Кызга сеп, жер төшөк, сандык и жаздыки — вещи, которые собираются вокруг семейной жизни. Их можно выбрать из готового ассортимента или создать в собственной палитре.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:362"
+    },
+    "public.AtelierPages.075": {
+      "ru": "Национальные мотивы могут стать основой композиции, а могут уступить место простому цвету и фактуре. Важен ваш замысел.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:367"
+    },
+    "public.AtelierPages.076": {
+      "ru": "Встретиться в Бишкеке",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:371"
+    },
+    "public.AtelierPages.077": {
+      "ru": "Подбор ткани и раскрой",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:377"
+    },
+    "public.AtelierPages.078": {
+      "ru": "Пошив и детали шва",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:378"
+    },
+    "public.AtelierPages.079": {
+      "ru": "Сборка и проверка комплекта",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:379"
+    },
+    "public.AtelierPages.080": {
+      "ru": "Люди и история",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:391"
+    },
+    "public.AtelierPages.081": {
+      "ru": "Здесь появятся рассказ основателя, знакомство с мастерами и этапы развития Salt Ordo — после согласования текста и фотографий.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:394"
+    },
+    "public.AtelierPages.082": {
+      "ru": "Мастерская Salt Ordo",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:405"
+    },
+    "public.AtelierPages.083": {
+      "ru": "Все",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:414"
+    },
+    "public.AtelierPages.084": {
+      "ru": "Традиционный стиль",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:417"
+    },
+    "public.AtelierPages.085": {
+      "ru": "Современный стиль",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:418"
+    },
+    "public.AtelierPages.086": {
+      "ru": "Минимализм",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:419"
+    },
+    "public.AtelierPages.087": {
+      "ru": "По референсу",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:420"
+    },
+    "public.AtelierPages.088": {
+      "ru": "Кызга сеп",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:421"
+    },
+    "public.AtelierPages.089": {
+      "ru": "Жер төшөк",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:422"
+    },
+    "public.AtelierPages.090": {
+      "ru": "Сандык",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:423"
+    },
+    "public.AtelierPages.091": {
+      "ru": "Другие изделия",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:424"
+    },
+    "public.AtelierPages.092": {
+      "ru": "У каждой работы — свой замысел.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:431"
+    },
+    "public.AtelierPages.093": {
+      "ru": "Истории индивидуальных комплектов: пожелания, палитра, подбор ткани и готовый результат.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:431"
+    },
+    "public.AtelierPages.094": {
+      "ru": "Фильтр работ",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:435"
+    },
+    "public.AtelierPages.095": {
+      "ru": "От референса до готового комплекта",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:461"
+    },
+    "public.AtelierPages.096": {
+      "ru": "Истории готовятся",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:465"
+    },
+    "public.AtelierPages.097": {
+      "ru": "Настоящие вещи.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:466"
+    },
+    "public.AtelierPages.098": {
+      "ru": "Настоящие истории.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:469"
+    },
+    "public.AtelierPages.099": {
+      "ru": "Мы добавим индивидуальные работы после согласования фотографий и описаний. Пока можно посмотреть реальные изделия в коллекциях или рассказать нам о своей идее.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:471"
+    },
+    "public.AtelierPages.100": {
+      "ru": "Посмотреть изделия",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:476"
+    },
+    "public.AtelierPages.101": {
+      "ru": "Обсудить свою идею",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:477"
+    },
+    "public.AtelierPages.102": {
+      "ru": "Чтобы вещь оставалась близкой надолго.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:488"
+    },
+    "public.AtelierPages.103": {
+      "ru": "Уход зависит от ткани, наполнителя, шва и декоративных деталей. Для вашего изделия нужны рекомендации именно к нему.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:488"
+    },
+    "public.AtelierPages.104": {
+      "ru": "Ткань и отделка",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:495"
+    },
+    "public.AtelierPages.105": {
+      "ru": "Перед очисткой уточните состав ткани, устойчивость красителя и особенности вышивки. Если эти сведения не указаны, запросите их у мастера.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:496"
+    },
+    "public.AtelierPages.106": {
+      "ru": "Очистка",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:499"
+    },
+    "public.AtelierPages.107": {
+      "ru": "Не выбирайте температуру стирки, моющее средство или способ химчистки только по внешнему виду ткани. Передайте мастеру название изделия и фотографию ярлыка.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:500"
+    },
+    "public.AtelierPages.108": {
+      "ru": "Форма и наполнитель",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:503"
+    },
+    "public.AtelierPages.109": {
+      "ru": "Допустимость стирки, отжима и сушки зависит от наполнения. Попросите рекомендации для конкретного комплекта.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:504"
+    },
+    "public.AtelierPages.110": {
+      "ru": "Хранение",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:507"
+    },
+    "public.AtelierPages.111": {
+      "ru": "Перед длительным хранением уточните способ упаковки, необходимость проветривания и условия, при которых изделие сохраняет форму.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:508"
+    },
+    "public.AtelierPages.112": {
+      "ru": "Уточним уход",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:519"
+    },
+    "public.AtelierPages.113": {
+      "ru": "за вашей вещью.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:522"
+    },
+    "public.AtelierPages.114": {
+      "ru": "В обращении укажите название изделия, материал, если он известен, и что требуется: очистка, хранение или восстановление формы.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:524"
+    },
+    "public.AtelierPages.115": {
+      "ru": "Спросить мастера",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:528"
+    },
+    "public.AtelierPages.116": {
+      "ru": "Главная",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/AtelierPages.jsx:559"
+    },
+    "public.Favorites.001": {
+      "ru": "Моя подборка Salt Ordo",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:21"
+    },
+    "public.Favorites.002": {
+      "ru": "Моя подборка",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:26"
+    },
+    "public.Favorites.003": {
+      "ru": "Соберите будущий комплект из вещей, тканей, оттенков и деталей, которые вам близки. Без регистрации.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:26"
+    },
+    "public.Favorites.004": {
+      "ru": "Убрать",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:42"
+    },
+    "public.Favorites.005": {
+      "ru": "Что объединяет эти идеи?",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:48"
+    },
+    "public.Favorites.006": {
+      "ru": "Продолжить подбор",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:57"
+    },
+    "public.Favorites.007": {
+      "ru": "Уточнить детали комплекта",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:58"
+    },
+    "public.Favorites.008": {
+      "ru": "Передайте замысел.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:63"
+    },
+    "public.Favorites.009": {
+      "ru": "Мастер получит всю подборку и ваш комментарий в одной заявке.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:64"
+    },
+    "public.Favorites.010": {
+      "ru": "Всё начинается с одной детали",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:70"
+    },
+    "public.Favorites.011": {
+      "ru": "Здесь будет",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:71"
+    },
+    "public.Favorites.012": {
+      "ru": "ваша идея.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:74"
+    },
+    "public.Favorites.013": {
+      "ru": "Нажимайте на закладку возле изделия, коллекции, цвета или материала. Ваш выбор сохранится в этом браузере.",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:76"
+    },
+    "public.Favorites.014": {
+      "ru": "Посмотреть коллекции",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:80"
+    },
+    "public.Favorites.015": {
+      "ru": "Начать с материалов",
+      "kg": null,
+      "en": null,
+      "source": "src/pages/Favorites.jsx:81"
+    },
+    "public.AtelierUI.001": {
+      "ru": "Убрать из подборки",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:73"
+    },
+    "public.AtelierUI.002": {
+      "ru": "В подборку",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:73"
+    },
+    "public.AtelierUI.003": {
+      "ru": "В подборке",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:81"
+    },
+    "public.AtelierUI.004": {
+      "ru": "Хлебные крошки",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:88"
+    },
+    "public.AtelierUI.005": {
+      "ru": "Главная",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:89"
+    },
+    "public.AtelierUI.006": {
+      "ru": "Salt Ordo · Бишкек",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:93"
+    },
+    "public.AtelierUI.007": {
+      "ru": "Фотография появится здесь ·",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:106"
+    },
+    "public.AtelierUI.008": {
+      "ru": "От разговора к изделию",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:114"
+    },
+    "public.AtelierUI.009": {
+      "ru": "У каждой вещи",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:115"
+    },
+    "public.AtelierUI.010": {
+      "ru": "свой путь.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:118"
+    },
+    "public.AtelierUI.011": {
+      "ru": "Начнём с вашей идеи",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:138"
+    },
+    "public.AtelierUI.012": {
+      "ru": "Каким будет",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:139"
+    },
+    "public.AtelierUI.013": {
+      "ru": "ваш комплект?",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:142"
+    },
+    "public.AtelierUI.014": {
+      "ru": "Можно прийти с готовым замыслом. А можно — с одним любимым оттенком.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:144"
+    },
+    "public.AtelierUI.015": {
+      "ru": "Обсудить индивидуальный заказ",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:147"
+    },
+    "public.AtelierUI.016": {
+      "ru": "Посетить мастерскую",
+      "kg": null,
+      "en": null,
+      "source": "src/components/AtelierUI.jsx:148"
+    },
+    "public.OrderComposer.001": {
+      "ru": "Что создаём",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:8"
+    },
+    "public.OrderComposer.002": {
+      "ru": "Выберите основу будущего комплекта. Любой пункт можно оставить мастеру.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:10"
+    },
+    "public.OrderComposer.003": {
+      "ru": "Изделие",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:14"
+    },
+    "public.OrderComposer.004": {
+      "ru": "Кызга сеп",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:15"
+    },
+    "public.OrderComposer.005": {
+      "ru": "Жер төшөк",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:15"
+    },
+    "public.OrderComposer.006": {
+      "ru": "Сандык",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:15"
+    },
+    "public.OrderComposer.007": {
+      "ru": "Жаздык",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:15"
+    },
+    "public.OrderComposer.008": {
+      "ru": "Другой текстиль",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:15"
+    },
+    "public.OrderComposer.009": {
+      "ru": "Состав и количество предметов",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:17"
+    },
+    "public.OrderComposer.010": {
+      "ru": "Для дома, события или подарка",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:18"
+    },
+    "public.OrderComposer.011": {
+      "ru": "Характер и детали",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:22"
+    },
+    "public.OrderComposer.012": {
+      "ru": "Это пожелания. Наличие ткани и возможность исполнения согласуем отдельно.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:24"
+    },
+    "public.OrderComposer.013": {
+      "ru": "Стиль",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:26"
+    },
+    "public.OrderComposer.014": {
+      "ru": "Цвета и сочетания",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:27"
+    },
+    "public.OrderComposer.015": {
+      "ru": "Желаемый материал",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:30"
+    },
+    "public.OrderComposer.016": {
+      "ru": "Стриженный бархат",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:31"
+    },
+    "public.OrderComposer.017": {
+      "ru": "Орнамент или декоративные элементы",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:33"
+    },
+    "public.OrderComposer.018": {
+      "ru": "Размеры и единицы измерения",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:34"
+    },
+    "public.OrderComposer.019": {
+      "ru": "Ориентиры",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:38"
+    },
+    "public.OrderComposer.020": {
+      "ru": "Желаемый срок и бюджет помогут обсудить подходящий вариант.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:39"
+    },
+    "public.OrderComposer.021": {
+      "ru": "Примерный бюджет, сом",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:41"
+    },
+    "public.OrderComposer.022": {
+      "ru": "Желаемая дата",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:42"
+    },
+    "public.OrderComposer.023": {
+      "ru": "Ссылка на фотографию или эскиз",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:43"
+    },
+    "public.OrderComposer.024": {
+      "ru": "Ваша идея",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:47"
+    },
+    "public.OrderComposer.025": {
+      "ru": "Проверьте пожелания и оставьте контакты. Повторно вводить выбранные параметры не понадобится.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:49"
+    },
+    "public.OrderComposer.026": {
+      "ru": "Укажите полную ссылку, начинающуюся с https://, или оставьте поле пустым.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:63"
+    },
+    "public.OrderComposer.027": {
+      "ru": "Создание индивидуального заказа",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:75"
+    },
+    "public.OrderComposer.028": {
+      "ru": "Шаг",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:88"
+    },
+    "public.OrderComposer.029": {
+      "ru": "из",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:89"
+    },
+    "public.OrderComposer.030": {
+      "ru": "Помогите с выбором",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:108"
+    },
+    "public.OrderComposer.031": {
+      "ru": "Можно передать общедоступную ссылку на JPG, PNG, WebP или PDF. Если фото только на телефоне, отправьте его в WhatsApp после сохранения заявки. Файл не прикрепляется автоматически. Референс используем как направление для собственной композиции.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:131"
+    },
+    "public.OrderComposer.032": {
+      "ru": "Назад",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:149"
+    },
+    "public.OrderComposer.033": {
+      "ru": "Далее →",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:157"
+    },
+    "public.OrderComposer.034": {
+      "ru": "Обсудить этот шаг с мастером",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:164"
+    },
+    "public.OrderComposer.035": {
+      "ru": "Изменить пожелания",
+      "kg": null,
+      "en": null,
+      "source": "src/components/OrderComposer.jsx:176"
+    },
+    "public.LeadCapture.001": {
+      "ru": "Введите имя — минимум 2 символа.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:34"
+    },
+    "public.LeadCapture.002": {
+      "ru": "Введите телефон с кодом страны.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:39"
+    },
+    "public.LeadCapture.003": {
+      "ru": "Проверьте email.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:41"
+    },
+    "public.LeadCapture.004": {
+      "ru": "Описание слишком длинное. Сократите комментарий или подборку.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:45"
+    },
+    "public.LeadCapture.005": {
+      "ru": "Не удалось подтвердить сохранение заявки. Проверьте соединение и повторите попытку или напишите в WhatsApp.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:75"
+    },
+    "public.LeadCapture.006": {
+      "ru": "Заявка сохранена",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:85"
+    },
+    "public.LeadCapture.007": {
+      "ru": "Ваша идея уже у нас.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:86"
+    },
+    "public.LeadCapture.008": {
+      "ru": "Выбранные параметры и контакты переданы мастеру. Можно продолжить разговор в WhatsApp — сообщение уже собрано.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:87"
+    },
+    "public.LeadCapture.009": {
+      "ru": "Продолжить в WhatsApp ↗",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:96"
+    },
+    "public.LeadCapture.010": {
+      "ru": "Закрыть",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:100"
+    },
+    "public.LeadCapture.011": {
+      "ru": "Закрыть форму",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:112"
+    },
+    "public.LeadCapture.012": {
+      "ru": "Как с вами связаться?",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:117"
+    },
+    "public.LeadCapture.013": {
+      "ru": "Ваше имя",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:121"
+    },
+    "public.LeadCapture.014": {
+      "ru": "Телефон с кодом страны",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:122"
+    },
+    "public.LeadCapture.015": {
+      "ru": "Email · необязательно",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:123"
+    },
+    "public.LeadCapture.016": {
+      "ru": "Комментарий · необязательно",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:147"
+    },
+    "public.LeadCapture.017": {
+      "ru": "Сайт",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:158"
+    },
+    "public.LeadCapture.018": {
+      "ru": "Отправляя заявку, вы соглашаетесь на обработку контактов для ответа по вашему обращению.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:168"
+    },
+    "public.LeadCapture.019": {
+      "ru": "Политика конфиденциальности",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:171"
+    },
+    "public.LeadCapture.020": {
+      "ru": "Сохраняем заявку…",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:179"
+    },
+    "public.LeadCapture.021": {
+      "ru": "Передать идею мастеру",
+      "kg": null,
+      "en": null,
+      "source": "src/components/LeadCapture.jsx:179"
+    },
+    "public.Header.001": {
+      "ru": "Язык / Тил / Language",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Header.jsx:44"
+    },
+    "public.Header.002": {
+      "ru": "Salt Ordo — главная",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Header.jsx:60"
+    },
+    "public.Header.003": {
+      "ru": "текстильное ателье · Бишкек",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Header.jsx:62"
+    },
+    "public.Header.004": {
+      "ru": "Основная навигация",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Header.jsx:64"
+    },
+    "public.Header.005": {
+      "ru": "Открыть меню",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Header.jsx:92"
+    },
+    "public.Header.006": {
+      "ru": "Меню Salt Ordo",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Header.jsx:105"
+    },
+    "public.Header.007": {
+      "ru": "Закрыть меню",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Header.jsx:114"
+    },
+    "public.Header.008": {
+      "ru": "Мобильная навигация",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Header.jsx:118"
+    },
+    "public.Header.009": {
+      "ru": "Ткань. Ремесло. Семейная история.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Header.jsx:134"
+    },
+    "public.Footer.001": {
+      "ru": "Ткань. Ремесло. Семейная история.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:10"
+    },
+    "public.Footer.002": {
+      "ru": "Готовые изделия и индивидуальный пошив.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:12"
+    },
+    "public.Footer.003": {
+      "ru": "Бишкек, ул. Мукаша Абдраева, 198/1.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:14"
+    },
+    "public.Footer.004": {
+      "ru": "Посещение по предварительной договорённости.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:16"
+    },
+    "public.Footer.005": {
+      "ru": "Здравствуйте! Хочу обсудить изделие Salt Ordo.",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:23"
+    },
+    "public.Footer.006": {
+      "ru": "Полезные страницы",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:38"
+    },
+    "public.Footer.007": {
+      "ru": "Коллекции",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:39"
+    },
+    "public.Footer.008": {
+      "ru": "Материалы",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:40"
+    },
+    "public.Footer.009": {
+      "ru": "Уход",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:41"
+    },
+    "public.Footer.010": {
+      "ru": "Моя подборка",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:42"
+    },
+    "public.Footer.011": {
+      "ru": "Корзина заявок",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:43"
+    },
+    "public.Footer.012": {
+      "ru": "Конфиденциальность",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:44"
+    },
+    "public.Footer.013": {
+      "ru": "Настройки cookies",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:50"
+    },
+    "public.Footer.014": {
+      "ru": "Бишкек · Кыргызстан",
+      "kg": null,
+      "en": null,
+      "source": "src/components/Footer.jsx:56"
+    },
+    "public.atelierContent.001": {
+      "ru": "Коллекции",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:4"
+    },
+    "public.atelierContent.002": {
+      "ru": "Материалы",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:5"
+    },
+    "public.atelierContent.003": {
+      "ru": "Индивидуальный заказ",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:6"
+    },
+    "public.atelierContent.004": {
+      "ru": "Ателье",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:7"
+    },
+    "public.atelierContent.005": {
+      "ru": "Выполненные работы",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:8"
+    },
+    "public.atelierContent.006": {
+      "ru": "Моя подборка",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:9"
+    },
+    "public.atelierContent.007": {
+      "ru": "Уход за изделиями",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:10"
+    },
+    "public.atelierContent.008": {
+      "ru": "Ткань, цвет и детали будущего изделия. Подбор материала с мастером Salt Ordo в Бишкеке.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:19"
+    },
+    "public.atelierContent.009": {
+      "ru": "Создать свой комплект",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:22"
+    },
+    "public.atelierContent.010": {
+      "ru": "Индивидуальный заказ Salt Ordo: изделие, палитра, материал, орнамент и размеры. Передайте референс и обсудите идею с мастером.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:24"
+    },
+    "public.atelierContent.011": {
+      "ru": "Ателье Salt Ordo",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:27"
+    },
+    "public.atelierContent.012": {
+      "ru": "Готовые изделия и индивидуальный пошив в Бишкеке. Кыргызские традиции, работа с тканью и ваше представление о доме.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:29"
+    },
+    "public.atelierContent.013": {
+      "ru": "Истории индивидуальных заказов Salt Ordo: от идеи и выбора ткани до готового комплекта.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:34"
+    },
+    "public.atelierContent.014": {
+      "ru": "Рекомендации для конкретного изделия Salt Ordo с учётом ткани, декора и наполнителя.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:39"
+    },
+    "public.atelierContent.015": {
+      "ru": "Кызга сеп",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:45"
+    },
+    "public.atelierContent.016": {
+      "ru": "Комплект для новой семейной истории",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:46"
+    },
+    "public.atelierContent.017": {
+      "ru": "Жер төшөк",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:51"
+    },
+    "public.atelierContent.018": {
+      "ru": "Текстиль для дома и тёплых встреч",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:52"
+    },
+    "public.atelierContent.019": {
+      "ru": "Сандыки",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:57"
+    },
+    "public.atelierContent.020": {
+      "ru": "Сандык и текстиль в одной композиции",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:58"
+    },
+    "public.atelierContent.021": {
+      "ru": "Жаздыки",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:63"
+    },
+    "public.atelierContent.022": {
+      "ru": "Размер, оттенок и детали на ваш выбор",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:64"
+    },
+    "public.atelierContent.023": {
+      "ru": "Традиционные комплекты",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:69"
+    },
+    "public.atelierContent.024": {
+      "ru": "Цвет и орнамент в едином ритме",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:70"
+    },
+    "public.atelierContent.025": {
+      "ru": "Индивидуальные работы",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:76"
+    },
+    "public.atelierContent.026": {
+      "ru": "Начните с идеи или любимого референса",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:77"
+    },
+    "public.atelierContent.027": {
+      "ru": "Бордовый",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:83"
+    },
+    "public.atelierContent.028": {
+      "ru": "Молочный",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:84"
+    },
+    "public.atelierContent.029": {
+      "ru": "Шалфейный",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:85"
+    },
+    "public.atelierContent.030": {
+      "ru": "Пудровый",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:86"
+    },
+    "public.atelierContent.031": {
+      "ru": "Шоколадный",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:87"
+    },
+    "public.atelierContent.032": {
+      "ru": "Глубокий синий",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:88"
+    },
+    "public.atelierContent.033": {
+      "ru": "Кыргызское наследие",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:91"
+    },
+    "public.atelierContent.034": {
+      "ru": "Современный национальный стиль",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:92"
+    },
+    "public.atelierContent.035": {
+      "ru": "Минимализм",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:93"
+    },
+    "public.atelierContent.036": {
+      "ru": "Восточная композиция",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:94"
+    },
+    "public.atelierContent.037": {
+      "ru": "Классический интерьер",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:95"
+    },
+    "public.atelierContent.038": {
+      "ru": "Дизайн по референсу",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:96"
+    },
+    "public.atelierContent.039": {
+      "ru": "Идея",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:99"
+    },
+    "public.atelierContent.040": {
+      "ru": "Расскажите о доме, событии или комплекте, который представляете.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:99"
+    },
+    "public.atelierContent.041": {
+      "ru": "Ткань и палитра",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:100"
+    },
+    "public.atelierContent.042": {
+      "ru": "Обсудим образцы, оттенки и сочетания.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:100"
+    },
+    "public.atelierContent.043": {
+      "ru": "Композиция",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:101"
+    },
+    "public.atelierContent.044": {
+      "ru": "Согласуем орнамент, размеры и состав комплекта.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:101"
+    },
+    "public.atelierContent.045": {
+      "ru": "Раскрой",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:102"
+    },
+    "public.atelierContent.046": {
+      "ru": "От согласованных размеров — к деталям изделия.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:102"
+    },
+    "public.atelierContent.047": {
+      "ru": "Пошив и декор",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:103"
+    },
+    "public.atelierContent.048": {
+      "ru": "Соединяем ткань, отделку и выбранный рисунок.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:103"
+    },
+    "public.atelierContent.049": {
+      "ru": "Проверка",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:104"
+    },
+    "public.atelierContent.050": {
+      "ru": "Сверяем готовое изделие с согласованным заказом.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:104"
+    },
+    "public.atelierContent.051": {
+      "ru": "Передача",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:105"
+    },
+    "public.atelierContent.052": {
+      "ru": "Обсуждаем упаковку, получение и уход.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:105"
+    },
+    "public.atelierContent.053": {
+      "ru": "Стриженный бархат",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:121"
+    },
+    "public.atelierContent.054": {
+      "ru": "Указан в существующих карточках Salt Ordo. Состав и особенности конкретного образца уточняются при подборе.",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:123"
+    },
+    "public.atelierContent.055": {
+      "ru": "Велюр",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:135"
+    },
+    "public.atelierContent.056": {
+      "ru": "Жаккард",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:136"
+    },
+    "public.atelierContent.057": {
+      "ru": "Атлас",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:137"
+    },
+    "public.atelierContent.058": {
+      "ru": "Шёлк",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:138"
+    },
+    "public.atelierContent.059": {
+      "ru": "Парча",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:139"
+    },
+    "public.atelierContent.060": {
+      "ru": "Хлопковый сатин",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:140"
+    },
+    "public.atelierContent.061": {
+      "ru": "Ткань с вышивкой",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/atelierContent.js:141"
+    },
+    "public.selection.001": {
+      "ru": "Изделие",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:4"
+    },
+    "public.selection.002": {
+      "ru": "Коллекция",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:5"
+    },
+    "public.selection.003": {
+      "ru": "Материал",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:6"
+    },
+    "public.selection.004": {
+      "ru": "Цвет",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:7"
+    },
+    "public.selection.005": {
+      "ru": "Орнамент",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:8"
+    },
+    "public.selection.006": {
+      "ru": "Работа",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:9"
+    },
+    "public.selection.007": {
+      "ru": "Стиль",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:10"
+    },
+    "public.selection.008": {
+      "ru": "Состав комплекта",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:67"
+    },
+    "public.selection.009": {
+      "ru": "Назначение",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:68"
+    },
+    "public.selection.010": {
+      "ru": "Палитра",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:70"
+    },
+    "public.selection.011": {
+      "ru": "Размеры",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:73"
+    },
+    "public.selection.012": {
+      "ru": "Бюджет",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:74"
+    },
+    "public.selection.013": {
+      "ru": "Желаемая дата",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:75"
+    },
+    "public.selection.014": {
+      "ru": "Референс",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:76"
+    },
+    "public.selection.015": {
+      "ru": "Цель обращения",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:77"
+    },
+    "public.selection.016": {
+      "ru": "Комментарий",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:78"
+    },
+    "public.selection.017": {
+      "ru": "Индивидуальная идея Salt Ordo",
+      "kg": null,
+      "en": null,
+      "source": "src/lib/selection.mjs:81"
+    }
+  }
+}

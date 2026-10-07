@@ -6,7 +6,7 @@ import { PageIntro, TextLink } from '../components/AtelierUI'
 import { useCatalog } from '../lib/atelierHooks'
 import LeadCapture from '../components/LeadCapture'
 export default function Favorites() {
-  const { items, remove, notice } = useFavorites()
+  const { items, remove } = useFavorites()
   const { products } = useCatalog()
   const [comment, setComment] = useState('')
   const list = useMemo(
@@ -81,9 +81,6 @@ export default function Favorites() {
           <TextLink to="/materials">Начать с материалов</TextLink>
         </section>
       )}
-      <p role="status" className="sr-only">
-        {notice}
-      </p>
     </div>
   )
 }

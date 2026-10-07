@@ -102,6 +102,7 @@ export default function Header() {
       <dialog
         ref={dialog}
         id="atelier-menu"
+        aria-label="Меню Salt Ordo"
         className="atelier-menu"
         onCancel={() => setOpen(false)}
         onClick={(e) => {
