@@ -4,7 +4,7 @@ export const categoryLandingPages = [
   {
     slug: 'kyzga-sep-bishkek',
     categorySlug: 'sep',
-    heroImage: '/hero-sep.webp',
+    heroImage: '/atelier/chiy-kurak-960.webp',
     copy: {
       ru: {
         eyebrow: 'Кызга сеп · Бишкек',
@@ -35,7 +35,7 @@ export const categoryLandingPages = [
   {
     slug: 'zher-toshok-bishkek',
     categorySlug: 'jer-toshok',
-    heroImage: '/hero-toshok.webp',
+    heroImage: '/atelier/zher-toshok-960.webp',
     copy: {
       ru: {
         eyebrow: 'Жер төшөк · Бишкек',
@@ -66,7 +66,7 @@ export const categoryLandingPages = [
   {
     slug: 'zhazdyk-bishkek',
     categorySlug: 'jastyk',
-    heroImage: '/hero-sage-modern.webp',
+    heroImage: '/atelier/tambur-960.webp',
     copy: {
       ru: {
         eyebrow: 'Жаздык · Бишкек',
@@ -97,7 +97,7 @@ export const categoryLandingPages = [
   {
     slug: 'sandyk-kyzga-sep',
     categorySlug: 'sandyk',
-    heroImage: '/hero-chest-heirloom.webp',
+    heroImage: '/atelier/sandyk-komplekt-960.webp',
     copy: {
       ru: {
         eyebrow: 'Сандык · Кызга сеп',
@@ -128,7 +128,7 @@ export const categoryLandingPages = [
   {
     slug: 'individualnyy-poshiv-bishkek',
     categorySlug: 'custom',
-    heroImage: '/hero-blush-handmade.webp',
+    heroImage: '/atelier/mamalak-toshok-960.webp',
     copy: {
       ru: {
         eyebrow: 'Индивидуальный пошив · Бишкек',

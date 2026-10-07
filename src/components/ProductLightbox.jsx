@@ -5,11 +5,14 @@ const SWIPE_THRESHOLD = 48
 
 export default function ProductLightbox({ images, activeIndex, name, labels, onChange, onClose }) {
   const closeRef = useRef(null)
+  const dialogRef = useRef(null)
   const pointerStart = useRef(null)
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow
     const previouslyFocused = document.activeElement
+    const dialog = dialogRef.current
+    dialog.showModal()
     document.body.style.overflow = 'hidden'
     closeRef.current?.focus()
 
@@ -21,6 +24,7 @@ export default function ProductLightbox({ images, activeIndex, name, labels, onC
 
     window.addEventListener('keydown', onKeyDown)
     return () => {
+      dialog.close()
       document.body.style.overflow = previousOverflow
       window.removeEventListener('keydown', onKeyDown)
       previouslyFocused?.focus?.()
@@ -38,7 +42,7 @@ export default function ProductLightbox({ images, activeIndex, name, labels, onC
   }
 
   return (
-    <div className="product-lightbox" role="dialog" aria-modal="true" aria-label={labels.gallery} onClick={onClose}>
+    <dialog ref={dialogRef} className="product-lightbox" aria-label={labels.gallery} onCancel={onClose} onClick={onClose}>
       <div
         className="product-lightbox__stage"
         onClick={(event) => event.stopPropagation()}
@@ -62,6 +66,6 @@ export default function ProductLightbox({ images, activeIndex, name, labels, onC
         </button>
         <span className="product-lightbox__counter" aria-live="polite">{activeIndex + 1} / {images.length}</span>
       </>}
-    </div>
+    </dialog>
   )
 }

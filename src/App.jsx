@@ -6,6 +6,7 @@ import AdminLayout from './components/AdminLayout'
 import RequireAdminRole from './components/RequireAdminRole'
 import { AdminPwaProvider } from './state/AdminPwaContext'
 
+const AtelierPages = lazy(() => import('./pages/AtelierPages'))
 const Home = lazy(() => import('./pages/Home'))
 const Catalog = lazy(() => import('./pages/Catalog'))
 const Product = lazy(() => import('./pages/Product'))
@@ -40,6 +41,9 @@ export default function App() {
       <Route element={<PublicLayout/>}>
         <Route path="/" element={<Home/>}/>
         <Route path="/catalog" element={<Catalog/>}/>
+        <Route path="/collections" element={<Catalog/>}/>
+        <Route path="/selection" element={<Favorites/>}/>
+        {["materials","individual-order","atelier","works","care"].map(path => <Route key={path} path={`/${path}`} element={<AtelierPages/>}/>)}
         <Route path="/product/:slug" element={<Product/>}/>
         <Route path="/favorites" element={<Favorites/>}/>
         <Route path="/cart" element={<Cart/>}/>

@@ -12,6 +12,16 @@ import './styles.css'
 import './storefront.css'
 import './approved-design.css'
 import './admin-pwa.css'
+import '@fontsource/cormorant-garamond/latin-400.css'
+import '@fontsource/cormorant-garamond/cyrillic-400.css'
+import '@fontsource/cormorant-garamond/latin-400-italic.css'
+import '@fontsource/cormorant-garamond/cyrillic-400-italic.css'
+import '@fontsource/cormorant-garamond/cyrillic-500.css'
+import '@fontsource/manrope/latin-400.css'
+import '@fontsource/manrope/cyrillic-400.css'
+import '@fontsource/manrope/cyrillic-ext-400.css'
+import '@fontsource/manrope/cyrillic-500.css'
+import './atelier.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

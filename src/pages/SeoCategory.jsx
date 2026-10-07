@@ -65,7 +65,7 @@ export default function SeoCategory() {
               <Link className="btn btn--ghost" to={`/catalog?category=${landing.categorySlug}`}>{t.nav.catalog}</Link>
             </div>
           </div>
-          <img src={landing.heroImage} alt={copy.eyebrow} fetchPriority="high"/>
+          <img src={landing.heroImage} alt={copy.eyebrow} fetchpriority="high"/>
         </div>
 
         <div className="seo-category-benefits" aria-label={copy.title}>

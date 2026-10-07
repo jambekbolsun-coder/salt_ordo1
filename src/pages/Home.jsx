@@ -1,113 +1,236 @@
-import { Image as ImageIcon, PackageCheck } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import HeroSlider from '../components/HeroSlider'
-import ProductCard from '../components/ProductCard'
-import { listCategories, listProducts } from '../lib/api'
-import { categoryName } from '../lib/productText'
-import { useLanguage } from '../state/LanguageContext'
 import SeoHead from '../components/SeoHead'
-import { SITE_ORIGIN, categoryLandingPages, categoryPathBySlug } from '../lib/seoContent'
-
-const homeSchema = [
-  {
-    '@context': 'https://schema.org',
-    '@type': ['LocalBusiness', 'Store'],
-    name: 'Salt Ordo',
-    url: SITE_ORIGIN,
-    image: `${SITE_ORIGIN}/og.webp`,
-    telephone: '+996998992996',
-    priceRange: '3 500–22 200 KGS',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: 'ул. Мукаша Абдраева, 198/1',
-      addressLocality: 'Бишкек',
-      addressCountry: 'KG',
-    },
-    areaServed: { '@type': 'Country', name: 'Кыргызстан' },
-    sameAs: ['https://www.instagram.com/salt_ordo/'],
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'Salt Ordo',
-    url: SITE_ORIGIN,
-    inLanguage: ['ru', 'ky', 'en'],
-  },
-]
-
+import {
+  EditorialPhoto,
+  HeroMedia,
+  TextLink,
+  SaveIdea,
+  PhotoPending,
+  Process,
+  Invitation,
+} from '../components/AtelierUI'
+import { directions, styles, palettes } from '../lib/atelierContent'
 export default function Home() {
-  const [products, setProducts] = useState([])
-  const [categories, setCategories] = useState([])
-  const [error, setError] = useState('')
-  const { lang, t } = useLanguage()
-
-  useEffect(() => {
-    let active = true
-    Promise.all([listProducts(), listCategories()])
-      .then(([productRows, categoryRows]) => {
-        if (!active) return
-        setProducts(productRows)
-        setCategories(categoryRows)
-      })
-      .catch((err) => active && setError(err.message || t.common.error))
-    return () => { active = false }
-  }, [t.common.error])
-
-  const featured = products.filter((product) => product.is_featured || product.is_new || product.is_on_sale).slice(0, 4)
-  const visibleProducts = featured.length ? featured : products.slice(0, 4)
-
   return (
-    <>
+    <div className="atelier-home" lang="ru">
       <SeoHead
-        title="Кызга сеп и жер төшөк в Бишкеке | Salt Ordo"
-        description="Salt Ordo — кызга сеп, жер төшөк, жууркан, жаздык и сандык ручной работы в Бишкеке. Готовые изделия, индивидуальный пошив и доставка по Кыргызстану."
+        title="Salt Ordo — ателье кыргызского текстиля в Бишкеке"
+        description="Готовые изделия и индивидуальные комплекты Salt Ordo. Выберите ткань, цвет, орнамент и размеры — создадим текстиль для вашей семейной истории."
         path="/"
-        image="/og.webp"
-        schema={homeSchema}
+        image="/atelier/ming-kurak-960.webp"
       />
-      <HeroSlider/>
-      <section className="home-seo-intro">
-        <div className="container">
-          <span className="eyebrow">Salt Ordo · Бишкек</span>
-          <h2>{lang === 'kg' ? 'Кызга сеп, жер төшөк жана үй текстили' : lang === 'en' ? 'Bridal dowry sets and handmade home textiles' : 'Кызга сеп, жер төшөк и домашний текстиль ручной работы'}</h2>
-          <p>{lang === 'kg'
-            ? 'Даяр буюмдарды тандаңыз же сүрөтүңүз боюнча жеке комплектке буйрутма бериңиз. Кездеме, түс, өлчөм жана жасалгалоо сиздин каалооңузга ылайык тандалат.'
-            : lang === 'en'
-              ? 'Choose an available piece or order a coordinated set from your reference. Fabric, palette, dimensions and finishing are tailored to you.'
-              : 'Выберите готовое изделие или закажите комплект по своему референсу. Подберём ткань, цвет, размер и оформление под вашу традицию и интерьер.'}</p>
-          <nav className="home-seo-links" aria-label="Популярные категории">
-            {categoryLandingPages.map((item) => <Link key={item.slug} to={`/${item.slug}`}>{(item.copy[lang] || item.copy.ru).eyebrow}</Link>)}
-          </nav>
-        </div>
-      </section>
-      <section className="home-catalog" id="categories">
-        <div className="container home-catalog__inner">
-          <div className="home-catalog__heading">
-            <h2>{t.catalog.eyebrow}</h2>
-            <Link to="/catalog">{t.category.all}</Link>
+      <section className="atelier-hero">
+        <div className="atelier-hero__copy">
+          <span className="atelier-kicker">Salt Ordo · Текстильное ателье</span>
+          <h1>
+            Традиция,
+            <br />
+            сотканная
+            <br />
+            <em>по-вашему.</em>
+          </h1>
+          <p>
+            Кыргызский текстиль для вашего дома
+            <br />и новой семейной истории.
+          </p>
+          <div className="atelier-hero__actions">
+            <Link className="btn btn--primary" to="/collections">
+              Смотреть коллекции ↗
+            </Link>
+            <TextLink to="/individual-order">Создать свой комплект</TextLink>
           </div>
-          {categories.length > 0 ? (
-            <nav className="home-category-pills" aria-label={t.catalog.category}>
-              {categories.slice(0, 6).map((category, index) => (
-                <Link className={index === 0 ? 'is-active' : ''} key={category.id} to={categoryPathBySlug[category.slug] || `/catalog?category=${category.slug}`}>
-                  {categoryName(category, lang)}
-                </Link>
-              ))}
-            </nav>
-          ) : (
-            <div className="soft-empty-row"><ImageIcon/><span>{t.category.empty}</span></div>
-          )}
-          {error && <div className="notice notice--error">{error}</div>}
-          {visibleProducts.length ? (
-            <div className="product-grid home-product-grid">
-              {visibleProducts.map((product) => <ProductCard key={product.id} product={product}/>)}
+          <span className="atelier-hero__foot">
+            Бишкек, Кыргызстан <span>Готовые изделия и на заказ</span>
+          </span>
+        </div>
+        <figure className="atelier-hero__image">
+          <HeroMedia
+            slug="ming-kurak"
+            alt="Миң курак — комплект Salt Ordo из существующего каталога"
+            priority
+          />
+          <figcaption>
+            <span>Из коллекции Salt Ordo</span>
+            <Link to="/product/ming-kurak">Миң курак ↗</Link>
+          </figcaption>
+        </figure>
+      </section>
+      <div className="atelier-container">
+        <section className="atelier-introduction">
+          <span className="atelier-kicker">Дом начинается с близкого</span>
+          <div>
+            <h2>
+              Вещи, в которых
+              <br />
+              есть <em>ваша история.</em>
+            </h2>
+            <p>
+              Salt Ordo — мастерская текстиля в Бишкеке. Мы создаём готовые
+              изделия и комплекты на заказ: от жер төшөк и жаздыков до кызга
+              сеп. Ткань, палитра, рисунок и размеры складываются в вещь,
+              близкую именно вам.
+            </p>
+            <TextLink to="/atelier">Познакомиться с ателье</TextLink>
+          </div>
+        </section>
+        <section className="atelier-section">
+          <div className="atelier-section-head">
+            <div>
+              <span className="atelier-kicker">01 / Коллекции</span>
+              <h2>
+                Для дома.
+                <br />
+                <em>Для особенного.</em>
+              </h2>
             </div>
-          ) : (
-            <div className="catalog-empty-inline"><PackageCheck/><div><strong>{t.featured.emptyTitle}</strong><span>{t.featured.emptyText}</span></div></div>
-          )}
+            <TextLink to="/collections">Все коллекции</TextLink>
+          </div>
+          <div className="collection-editorial-grid">
+            {directions.map((d, i) => (
+              <article key={d.id}>
+                <Link
+                  to={d.path || `/collections?${d.query || `category=${d.id}`}`}
+                >
+                  {d.image ? (
+                    <EditorialPhoto slug={d.image} alt={d.name} />
+                  ) : (
+                    <PhotoPending label={d.name} />
+                  )}
+                </Link>
+                <div className="collection-caption">
+                  <span>0{i + 1}</span>
+                  <div>
+                    <h3>
+                      <Link
+                        to={
+                          d.path ||
+                          `/collections?${d.query || `category=${d.id}`}`
+                        }
+                      >
+                        {d.name}
+                      </Link>
+                    </h3>
+                    <p>{d.description}</p>
+                  </div>
+                  <SaveIdea
+                    compact
+                    item={{
+                      type: 'collection',
+                      id: d.id,
+                      label: d.name,
+                      url:
+                        d.path ||
+                        `/collections?${d.query || `category=${d.id}`}`,
+                    }}
+                  />
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
+      <section className="atelier-style-section">
+        <div className="atelier-container">
+          <span className="atelier-kicker">02 / Ваше видение</span>
+          <div className="atelier-style-intro">
+            <h2>
+              Один дом.
+              <br />
+              <em>Тысячи сочетаний.</em>
+            </h2>
+            <p>
+              Национальный орнамент или спокойная однотонная ткань.
+              Выразительная композиция или лаконичные детали. Эти направления —
+              начало разговора, а не границы выбора.
+            </p>
+          </div>
+          <div className="style-list">
+            {styles.map((s, i) => (
+              <div key={s}>
+                <span>0{i + 1}</span>
+                <h3>{s}</h3>
+                <SaveIdea
+                  compact
+                  item={{
+                    type: 'style',
+                    id: String(i),
+                    label: s,
+                    url: '/individual-order',
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+          <TextLink to="/individual-order">Рассказать о своей идее</TextLink>
         </div>
       </section>
-    </>
+      <div className="atelier-container">
+        <section className="atelier-material-teaser">
+          <div>
+            <span className="atelier-kicker">03 / Материалы и цвет</span>
+            <h2>
+              Начните
+              <br />
+              <em>с ощущения.</em>
+            </h2>
+            <p>
+              Посмотрите ткань вблизи, сравните оттенки, обсудите наполнение.
+              Окончательный выбор лучше делать по образцу — экран передаёт цвет
+              приблизительно.
+            </p>
+            <div className="palette-row">
+              {palettes.map((p) => (
+                <div key={p.id}>
+                  <span style={{ background: p.hex }} aria-hidden="true" />
+                  <SaveIdea
+                    compact
+                    item={{
+                      type: 'color',
+                      id: p.id,
+                      label: p.name,
+                      url: '/materials#palette',
+                    }}
+                  />
+                  <small>{p.name}</small>
+                </div>
+              ))}
+            </div>
+            <TextLink to="/materials">Выбрать материалы</TextLink>
+          </div>
+          <PhotoPending label="Фактура ткани крупным планом" format="4:3" />
+        </section>
+        <Process compact />
+        <section className="reference-story">
+          <span className="atelier-kicker">04 / От идеи до готовой вещи</span>
+          <h2>
+            Ваш референс —<br />
+            <em>начало новой работы.</em>
+          </h2>
+          <div className="reference-stages">
+            <div>
+              <span>01</span>
+              <h3>Идея</h3>
+              <p>Фотография, эскиз или несколько слов о будущем комплекте.</p>
+            </div>
+            <div>
+              <span>02</span>
+              <h3>Подбор</h3>
+              <p>Материалы, палитра и собственная композиция Salt Ordo.</p>
+            </div>
+            <div>
+              <span>03</span>
+              <h3>Результат</h3>
+              <p>Изделие по согласованным размерам и деталям.</p>
+            </div>
+          </div>
+          <p className="atelier-note">
+            Истории реальных заказов появятся после согласования фотографий с их
+            владельцами.
+          </p>
+          <TextLink to="/works">Выполненные работы</TextLink>
+        </section>
+        <Invitation />
+      </div>
+    </div>
   )
 }

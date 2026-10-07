@@ -1,60 +1,60 @@
-import { Instagram, MessageCircle, Phone, Truck } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import Logo from './Logo'
-import { useLanguage } from '../state/LanguageContext'
 import { useSiteSettings } from '../state/SiteSettingsContext'
 import { whatsappUrl } from '../lib/whatsapp'
-import LeadCapture from './LeadCapture'
-
 export default function Footer() {
-  const { lang, t } = useLanguage()
   const { settings } = useSiteSettings()
-  const phoneHref = `tel:+${String(settings.whatsapp).replace(/\D/g,'')}`
-  const delivery = settings[`delivery_note_${lang}`] || t.delivery.title
-
   return (
-    <footer className="site-footer">
-      <div className="container">
-        <div className="footer-shell">
-          <div className="footer-top">
-            <div className="footer-brand">
-              <Logo/>
-              <p>{t.footer.text}</p>
-            </div>
-            <div className="footer-top__action">
-              <div><strong>{t.cta.title}</strong><small>{t.cta.text}</small></div>
-              <a className="btn btn--primary" href={whatsappUrl(settings.whatsapp, t.common.customWhatsappText)} target="_blank" rel="noreferrer"><MessageCircle size={18}/>{t.cta.button}</a>
-            </div>
-            <LeadCapture compact source="contact" message={t.common.whatsappText}/>
-          </div>
-
-          <div className="footer-row">
-            <nav className="footer-links" aria-label={t.footer.navigation}>
-              <span>{t.footer.navigation}</span>
-              <Link to="/">{t.nav.home}</Link>
-              <Link to="/catalog">{t.nav.catalog}</Link>
-              <Link to="/kyzga-sep-bishkek">Кызга сеп</Link>
-              <Link to="/zher-toshok-bishkek">Жер төшөк</Link>
-              <Link to="/sandyk-kyzga-sep">Сандык</Link>
-              <Link to="/contacts">{t.nav.contacts}</Link>
-              <Link to="/privacy">Конфиденциальность</Link>
-              <Link to="/cookies">Политика cookies</Link>
-              <button className="footer-cookie-link" onClick={openCookieSettings}>Настройки cookies</button>
-            </nav>
-
-            <div className="footer-contact">
-              <span>{t.footer.contact}</span>
-              <a href={phoneHref}><Phone size={16}/>{settings.whatsapp}</a>
-              <a href={whatsappUrl(settings.whatsapp, t.common.whatsappText)} target="_blank" rel="noreferrer"><MessageCircle size={16}/> WhatsApp</a>
-              <a href={settings.instagram} target="_blank" rel="noreferrer"><Instagram size={16}/> Instagram</a>
-            </div>
-
-            <div className="footer-delivery"><Truck size={17}/><span>{delivery}</span></div>
-          </div>
+    <footer className="atelier-footer">
+      <div className="atelier-footer__top">
+        <Link to="/" className="atelier-wordmark">
+          SALT ORDO<span>Ткань. Ремесло. Семейная история.</span>
+        </Link>
+        <p>
+          Готовые изделия и индивидуальный пошив.
+          <br />
+          Бишкек, ул. Мукаша Абдраева, 198/1.
+          <br />
+          Посещение по предварительной договорённости.
+        </p>
+        <div>
+          <a
+            href={whatsappUrl(
+              settings.whatsapp,
+              'Здравствуйте! Хочу обсудить изделие Salt Ordo.',
+            )}
+            target="_blank"
+            rel="noreferrer"
+          >
+            WhatsApp ↗
+          </a>
+          <a href={`tel:+${String(settings.whatsapp).replace(/[^0-9]/g, '')}`}>
+            {settings.whatsapp}
+          </a>
+          <a href={settings.instagram} target="_blank" rel="noreferrer">
+            Instagram ↗
+          </a>
         </div>
-        <div className="footer-bottom"><span>© {new Date().getFullYear()} Salt Ordo</span><span>{t.footer.rights}</span></div>
+      </div>
+      <nav aria-label="Полезные страницы">
+        <Link to="/collections">Коллекции</Link>
+        <Link to="/materials">Материалы</Link>
+        <Link to="/care">Уход</Link>
+        <Link to="/selection">Моя подборка</Link>
+        <Link to="/cart">Корзина заявок</Link>
+        <Link to="/privacy">Конфиденциальность</Link>
+        <Link to="/cookies">Cookies</Link>
+        <button
+          onClick={() =>
+            window.dispatchEvent(new Event('salt-cookie-settings'))
+          }
+        >
+          Настройки cookies
+        </button>
+      </nav>
+      <div className="atelier-footer__bottom">
+        <span>© {new Date().getFullYear()} Salt Ordo</span>
+        <span>Бишкек · Кыргызстан</span>
       </div>
     </footer>
   )
 }
-import { openCookieSettings } from '../lib/consent'

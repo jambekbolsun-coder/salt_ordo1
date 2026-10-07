@@ -6,14 +6,14 @@ const supported = ['ru', 'kg', 'en']
 
 export function LanguageProvider({ children }) {
   const [lang, setLangState] = useState(() => {
-    const saved = localStorage.getItem('salt-ordo-language')
+    let saved; try { saved = localStorage.getItem('salt-ordo-language') } catch { /* Use Russian when storage is unavailable. */ }
     return supported.includes(saved) ? saved : 'ru'
   })
 
   const setLang = (next) => {
     if (!supported.includes(next)) return
     setLangState(next)
-    localStorage.setItem('salt-ordo-language', next)
+    try { localStorage.setItem('salt-ordo-language', next) } catch { /* Language still works in memory. */ }
   }
 
   useEffect(() => {
