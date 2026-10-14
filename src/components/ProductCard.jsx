@@ -1,4 +1,4 @@
-import { Bookmark } from 'lucide-react'
+import { Heart } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ProductVisual from './ProductVisual'
@@ -43,7 +43,7 @@ export default function ProductCard({ product }) {
           {!promo && showNew && <span className="product-badge">NEW</span>}
         </div>
         <button className={`favorite-btn ${favorite ? 'is-active' : ''} ${favoriteFlash ? 'is-animating' : ''}`} onClick={toggleFavorite} aria-pressed={favorite} aria-label={`${favorite?'Убрать из подборки':'В подборку'}: ${name}`}>
-          <Bookmark size={19} fill={favorite ? 'currentColor' : 'none'}/>
+          <Heart size={19} fill={favorite ? 'currentColor' : 'none'}/>
         </button>
       </div>
       <div className="product-card__body">

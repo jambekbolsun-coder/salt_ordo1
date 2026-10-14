@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import PublicLayout from './components/PublicLayout'
 import ProtectedAdmin from './components/ProtectedAdmin'
 import AdminLayout from './components/AdminLayout'
@@ -43,7 +43,9 @@ export default function App() {
         <Route path="/catalog" element={<Catalog/>}/>
         <Route path="/collections" element={<Catalog/>}/>
         <Route path="/selection" element={<Favorites/>}/>
-        {["materials","individual-order","atelier","works","care"].map(path => <Route key={path} path={`/${path}`} element={<AtelierPages/>}/>)}
+        {["materials","individual-order","care"].map(path => <Route key={path} path={`/${path}`} element={<AtelierPages/>}/>)}
+        <Route path="/atelier" element={<Navigate to="/" replace/>}/>
+        <Route path="/works" element={<Navigate to="/collections" replace/>}/>
         <Route path="/product/:slug" element={<Product/>}/>
         <Route path="/favorites" element={<Favorites/>}/>
         <Route path="/cart" element={<Cart/>}/>

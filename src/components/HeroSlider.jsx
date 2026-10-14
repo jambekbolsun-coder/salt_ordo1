@@ -71,7 +71,7 @@ export default function HeroSlider() {
   }
 
   const actions = [
-    { to:'/catalog' },
+    { to:'/collections' },
     { to:'/contacts' },
     { href:whatsappUrl(settings.whatsapp, slides[2].text), external:true },
     { to:'/kyzga-sep-bishkek' },
@@ -88,7 +88,7 @@ export default function HeroSlider() {
           const action = actions[index]
           return (
             <article className={`hero-slide ${active === index ? 'is-active' : ''}`} key={slide.title} aria-hidden={active !== index}>
-              <img src={image} alt="" fetchPriority={index === 0 ? 'high' : 'auto'} loading={index === 0 ? 'eager' : 'lazy'} decoding="async"/>
+              <img src={image} alt="" fetchpriority={index === 0 ? 'high' : 'auto'} loading={index === 0 ? 'eager' : 'lazy'} decoding="async"/>
               <div className="hero-slide__veil" aria-hidden="true"/>
               <div className="container hero-slide__content">
                 <span className="hero-slide__eyebrow"><Icon aria-hidden="true"/>{slide.eyebrow}</span>

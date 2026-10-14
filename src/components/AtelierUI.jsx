@@ -1,4 +1,4 @@
-import { ArrowUpRight, Bookmark, Check } from 'lucide-react'
+import { ArrowUpRight, Heart, Check } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useFavorites } from '../state/FavoritesContext'
 import { processSteps } from '../lib/atelierContent'
@@ -39,7 +39,7 @@ export function HeroMedia({ video = null, ...photo }) {
   )
 }
 export function PhotoSlot({ src, label, format = '4:5' }) {
-  if (!src) return <PhotoPending label={label} format={format} />
+  if (!src) return null
   const [width, height] = format.split(':').map(Number)
   return (
     <img
@@ -76,7 +76,7 @@ export function SaveIdea({ item, compact = false }) {
       {selected ? (
         <Check size={18} aria-hidden="true" />
       ) : (
-        <Bookmark size={18} aria-hidden="true" />
+        <Heart size={18} aria-hidden="true" />
       )}
       {!compact && (selected ? 'В подборке' : 'В подборку')}
     </button>
@@ -96,17 +96,6 @@ export function PageIntro({ eyebrow, title, children }) {
     </header>
   )
 }
-export function PhotoPending({ label, format = '4:5' }) {
-  return (
-    <div className="photo-pending">
-      <span className="photo-pending__mark" aria-hidden="true">
-        SO
-      </span>
-      <p>{label}</p>
-      <small>Фотография появится здесь · {format}</small>
-    </div>
-  )
-}
 export function Process({ compact = false }) {
   return (
     <section className="atelier-section">
@@ -114,7 +103,7 @@ export function Process({ compact = false }) {
         <span className="atelier-kicker">От разговора к изделию</span>
         <h2>
           У каждой вещи
-          <br />
+          {' '}
           <em>свой путь.</em>
         </h2>
       </div>
@@ -138,7 +127,7 @@ export function Invitation() {
       <span className="atelier-kicker">Начнём с вашей идеи</span>
       <h2>
         Каким будет
-        <br />
+        {' '}
         <em>ваш комплект?</em>
       </h2>
       <p>

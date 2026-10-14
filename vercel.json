@@ -28,14 +28,6 @@
       "destination": "/seo/individual-order.html"
     },
     {
-      "source": "/atelier",
-      "destination": "/seo/atelier.html"
-    },
-    {
-      "source": "/works",
-      "destination": "/seo/works.html"
-    },
-    {
       "source": "/care",
       "destination": "/seo/care.html"
     },
@@ -111,6 +103,16 @@
       "source": "/favorites",
       "destination": "/selection",
       "permanent": true
+    },
+    {
+      "source": "/atelier",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/works",
+      "destination": "/collections",
+      "permanent": false
     }
   ],
   "headers": [

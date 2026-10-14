@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, Bookmark, Instagram, Maximize2, MessageCircle, Minus, Phone, Plus, Share2, ShoppingBag, Truck } from 'lucide-react'
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, Heart, Instagram, Maximize2, MessageCircle, Minus, Phone, Plus, Share2, ShoppingBag, Truck } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import { useCatalog } from '../lib/atelierHooks'
@@ -240,7 +240,7 @@ export default function Product() {
             <div className="detail-actions">
               <div className="qty-control"><button type="button" onClick={()=>setQty(Math.max(1,qty-1))} aria-label="Minus"><Minus/></button><span>{qty}</span><button type="button" onClick={()=>setQty(Math.min(99,qty+1))} aria-label="Plus"><Plus/></button></div>
               <button className={`btn btn--primary ${added ? 'is-success' : ''}`} type="button" onClick={addToCart}>{added ? <Check size={18}/> : <ShoppingBag size={18}/>} {added ? (t.catalog.added || t.product.add) : t.product.add}</button>
-              <button className={`icon-btn favorite-large ${has(product.id)?'is-active':''}`} type="button" onClick={()=>toggle(product.id, product)} aria-label="Добавить изделие в подборку" aria-pressed={has(product.id)}><Bookmark fill={has(product.id)?'currentColor':'none'}/></button>
+              <button className={`icon-btn favorite-large ${has(product.id)?'is-active':''}`} type="button" onClick={()=>toggle(product.id, product)} aria-label="Добавить изделие в подборку" aria-pressed={has(product.id)}><Heart fill={has(product.id)?'currentColor':'none'}/></button>
               <button className="icon-btn share-product-btn" type="button" onClick={shareProduct} aria-label={t.product.share} title={t.product.share}><Share2/></button>
             </div>
             <div className={`product-share-feedback ${shareStatus ? 'is-visible' : ''}`} role="status" aria-live="polite">{shareStatus}</div>
