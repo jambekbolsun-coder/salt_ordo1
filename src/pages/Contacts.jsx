@@ -92,14 +92,14 @@ export default function Contacts() {
         title="Контакты Salt Ordo — шоурум домашнего текстиля в Бишкеке"
         description="Шоурум Salt Ordo в Бишкеке: ул. Мукаша Абдраева, 198/1. Кызга сеп, жер төшөк, сандык и индивидуальный пошив. WhatsApp: +996 998 992 996."
         path="/contacts"
-        image="/atelier/sayma-toshok-960.webp"
+        image="/hero-blush-handmade.webp"
         schema={{
           '@context': 'https://schema.org',
           '@type': ['LocalBusiness', 'Store'],
           name: 'Salt Ordo',
           url: `${SITE_ORIGIN}/contacts`,
           telephone: '+996998992996',
-          image: `${SITE_ORIGIN}/atelier/sayma-toshok-960.webp`,
+          image: `${SITE_ORIGIN}/hero-blush-handmade.webp`,
           address: { '@type': 'PostalAddress', streetAddress: 'ул. Мукаша Абдраева, 198/1', addressLocality: 'Бишкек', addressCountry: 'KG' },
           areaServed: { '@type': 'Country', name: 'Кыргызстан' },
           sameAs: ['https://www.instagram.com/salt_ordo/'],
@@ -119,7 +119,7 @@ export default function Contacts() {
 
           <article className="contact-profile-card">
             <div className="contact-profile-card__visual">
-              <img src="/atelier/sayma-toshok-960.webp" alt="Salt Ordo handmade textile set"/>
+              <img src="/hero-blush-handmade.webp" alt="Salt Ordo handmade textile set"/>
               <span><Scissors/> Salt Ordo</span>
             </div>
             <div className="contact-profile-card__body">

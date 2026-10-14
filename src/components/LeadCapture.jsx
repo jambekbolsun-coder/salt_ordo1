@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react'
+import { MessageCircle, UserRound, Phone, Mail, X } from 'lucide-react'
+import { useId, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { createLead } from '../lib/api'
 import { getTrackingIds, track } from '../lib/analytics'
@@ -11,6 +12,7 @@ export default function LeadCapture({
   onClose = null,
   compact = false,
 }) {
+  const formId = useId()
   const { settings } = useSiteSettings()
   const [form, setForm] = useState({
     name: '',
@@ -104,27 +106,29 @@ export default function LeadCapture({
       </section>
     )
   return (
-    <section className="atelier-lead" lang="ru">
+    <section className={`lead-capture atelier-lead ${compact ? 'is-compact' : ''}`} lang="ru">
       {onClose && (
         <button
-          className="atelier-modal-close"
+          className="lead-capture__close icon-btn"
           onClick={onClose}
           aria-label="Закрыть форму"
         >
-          ×
+          <X />
         </button>
       )}
-      <h3>Как с вами связаться?</h3>
+      <div className="lead-capture__heading"><span><MessageCircle /></span><div><h3>Оставьте контакты</h3><p>Передадим мастеру ваши пожелания и контакты.</p></div></div>
       <form noValidate onSubmit={submit} aria-busy={busy}>
-        <div className="atelier-form-grid">
           {[
             ['name', 'Ваше имя', 'text', 'name', 100],
             ['phone', 'Телефон с кодом страны', 'tel', 'tel', 20],
             ['email', 'Email · необязательно', 'email', 'email', 160],
           ].map(([key, label, type, auto, max]) => (
             <label key={key}>
-              {label}
+              {key === 'name' ? <UserRound aria-hidden="true"/> : key === 'phone' ? <Phone aria-hidden="true"/> : <Mail aria-hidden="true"/>}
+              <span className="sr-only">{label}</span>
               <input
+                aria-label={label}
+                placeholder={label}
                 name={key}
                 type={type}
                 autoComplete={auto}
@@ -133,27 +137,25 @@ export default function LeadCapture({
                 value={form[key]}
                 onChange={change(key)}
                 aria-invalid={Boolean(errors[key])}
-                aria-describedby={errors[key] ? `lead-${key}-error` : undefined}
+                aria-describedby={errors[key] ? `${formId}-${key}-error` : undefined}
               />
               {errors[key] && (
-                <span className="field-error" id={`lead-${key}-error`}>
+                <span className="field-error" id={`${formId}-${key}-error`}>
                   {errors[key]}
                 </span>
               )}
             </label>
           ))}
-        </div>
         {!compact && (
-          <label>
-            Комментарий · необязательно
-            <textarea
+          <textarea
+              aria-label="Комментарий · необязательно"
+              placeholder="Комментарий · необязательно"
               name="note"
               rows="3"
               maxLength={500}
               value={form.note}
               onChange={change('note')}
             />
-          </label>
         )}
         <label className="form-honeypot" aria-hidden="true">
           Сайт

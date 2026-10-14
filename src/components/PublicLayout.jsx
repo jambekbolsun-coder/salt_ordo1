@@ -1,3 +1,4 @@
+import MobileBottomNav from './MobileBottomNav'
 import { useEffect, useRef } from 'react'
 import { useFavorites } from '../state/FavoritesContext'
 import { useLanguage } from '../state/LanguageContext'
@@ -111,8 +112,6 @@ export default function PublicLayout() {
         [
           '/',
           '/materials',
-          '/atelier',
-          '/works',
           '/care',
           '/individual-order',
           '/selection',
@@ -128,6 +127,7 @@ export default function PublicLayout() {
         {notice}
       </p>
       <Footer />
+      <MobileBottomNav />
       <CookieConsent />
     </div>
   )

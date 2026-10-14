@@ -5,7 +5,6 @@ import {
   EditorialPhoto,
   Invitation,
   PageIntro,
-  PhotoPending,
   PhotoSlot,
   Process,
   SaveIdea,
@@ -14,10 +13,8 @@ import {
 import OrderComposer from '../components/OrderComposer'
 import {
   atelierPages,
-  atelierHistory,
   materials,
   materialCandidates,
-  orderStories,
   palettes,
 } from '../lib/atelierContent'
 import { SITE_ORIGIN } from '../lib/seoContent'
@@ -42,7 +39,7 @@ function Materials() {
           <span className="atelier-kicker">01 / Из существующего каталога</span>
           <h2>
             Стриженный
-            <br />
+            {' '}
             <em>бархат.</em>
           </h2>
           <p>{materials[0].note}</p>
@@ -95,7 +92,7 @@ function Materials() {
             <span className="atelier-kicker">Другие направления подбора</span>
             <h2>
               Какая ткань
-              <br />
+              {' '}
               <em>вам близка?</em>
             </h2>
           </div>
@@ -126,7 +123,7 @@ function Materials() {
         <span className="atelier-kicker">Палитра будущего комплекта</span>
         <h2>
           Сохраните
-          <br />
+          {' '}
           <em>любимый оттенок.</em>
         </h2>
         <p>
@@ -219,7 +216,7 @@ function Materials() {
           <span className="atelier-kicker">Что находится внутри</span>
           <h2>
             Форма начинается
-            <br />
+            {' '}
             <em>с наполнения.</em>
           </h2>
           <p>
@@ -233,7 +230,7 @@ function Materials() {
           <span className="atelier-kicker">Рисунок и смысл</span>
           <h2>
             Место для
-            <br />
+            {' '}
             <em>вашего орнамента.</em>
           </h2>
           <p>
@@ -293,7 +290,6 @@ function IndividualOrder() {
             Передайте ссылку на фотографию или отправьте изображение в WhatsApp.
             Рисунок, ткань и пропорции обсудим перед работой.
           </p>
-          <TextLink to="/works">Будущие истории заказов</TextLink>
         </div>
         <div>
           <h2>Ткань выбираем вместе.</h2>
@@ -334,154 +330,6 @@ function IndividualOrder() {
     </>
   )
 }
-function Atelier() {
-  return (
-    <>
-      <PageIntro title="Текстиль, который становится частью семьи.">
-        Salt Ordo — ателье домашнего текстиля в Бишкеке. Готовые вещи и
-        индивидуальные комплекты, связанные с домом, традицией и вашим вкусом.
-      </PageIntro>
-      <section className="atelier-two-columns">
-        <div>
-          <PhotoSlot
-            src={atelierHistory.portrait}
-            label={atelierHistory.founder || 'Портрет основателя'}
-          />
-          <p className="atelier-note">
-            {atelierHistory.founder ||
-              'История основателя готовится к публикации.'}
-          </p>
-        </div>
-        <div className="atelier-story-copy">
-          <span className="atelier-kicker">О мастерской</span>
-          <h2>
-            Традиция
-            <br />
-            <em>в вашем прочтении.</em>
-          </h2>
-          <p>
-            Кызга сеп, жер төшөк, сандык и жаздыки — вещи, которые собираются
-            вокруг семейной жизни. Их можно выбрать из готового ассортимента или
-            создать в собственной палитре.
-          </p>
-          <p>
-            Национальные мотивы могут стать основой композиции, а могут уступить
-            место простому цвету и фактуре. Важен ваш замысел.
-          </p>
-          <TextLink to="/contacts">Встретиться в Бишкеке</TextLink>
-        </div>
-      </section>
-      <Process />
-      <div className="process-photo-grid">
-        {[
-          'Подбор ткани и раскрой',
-          'Пошив и детали шва',
-          'Сборка и проверка комплекта',
-        ].map((label, index) => (
-          <PhotoSlot
-            src={atelierHistory.processPhotos[index]}
-            key={label}
-            label={label}
-            format="3:2"
-          />
-        ))}
-      </div>
-      <section className="atelier-section atelier-two-columns">
-        <div>
-          <h2>Люди и история</h2>
-          <p>
-            {atelierHistory.story ||
-              'Здесь появятся рассказ основателя, знакомство с мастерами и этапы развития Salt Ordo — после согласования текста и фотографий.'}
-          </p>
-          {atelierHistory.timeline.map((event) => (
-            <article key={event.year}>
-              <h3>{event.year}</h3>
-              <p>{event.text}</p>
-            </article>
-          ))}
-        </div>
-        <PhotoSlot
-          src={atelierHistory.workshopPhoto}
-          label="Мастерская Salt Ordo"
-          format="16:9"
-        />
-      </section>
-      <Invitation />
-    </>
-  )
-}
-function Works() {
-  const [filter, setFilter] = useState('Все')
-  const filters = [
-    'Все',
-    'Традиционный стиль',
-    'Современный стиль',
-    'Минимализм',
-    'По референсу',
-    'Кызга сеп',
-    'Жер төшөк',
-    'Сандык',
-    'Другие изделия',
-  ]
-  const stories = orderStories.filter(
-    (w) => filter === 'Все' || w.tags.includes(filter),
-  )
-  return (
-    <>
-      <PageIntro title="У каждой работы — свой замысел.">
-        Истории индивидуальных комплектов: пожелания, палитра, подбор ткани и
-        готовый результат.
-      </PageIntro>
-      <div className="work-filters" aria-label="Фильтр работ">
-        {filters.map((f) => (
-          <button
-            key={f}
-            aria-pressed={filter === f}
-            onClick={() => setFilter(f)}
-          >
-            {f}
-          </button>
-        ))}
-      </div>
-      {stories.length ? (
-        stories.map((w) => (
-          <article className="work-story" key={w.id}>
-            <h2>{w.title}</h2>
-            <p>{w.task}</p>
-            <img src={w.image} alt={w.title} loading="lazy" />
-            <p>{w.result}</p>
-            <SaveIdea
-              item={{ type: 'work', id: w.id, label: w.title, url: '/works' }}
-            />
-          </article>
-        ))
-      ) : (
-        <section className="atelier-empty">
-          <PhotoPending
-            label="От референса до готового комплекта"
-            format="3:2"
-          />
-          <div>
-            <span className="atelier-kicker">Истории готовятся</span>
-            <h2>
-              Настоящие вещи.
-              <br />
-              <em>Настоящие истории.</em>
-            </h2>
-            <p>
-              Мы добавим индивидуальные работы после согласования фотографий и
-              описаний. Пока можно посмотреть реальные изделия в коллекциях или
-              рассказать нам о своей идее.
-            </p>
-            <TextLink to="/collections">Посмотреть изделия</TextLink>
-            <TextLink to="/individual-order">Обсудить свою идею</TextLink>
-          </div>
-        </section>
-      )}
-      <Invitation />
-    </>
-  )
-}
 function Care() {
   return (
     <>
@@ -518,7 +366,7 @@ function Care() {
       <section className="atelier-invitation">
         <h2>
           Уточним уход
-          <br />
+          {' '}
           <em>за вашей вещью.</em>
         </h2>
         <p>
@@ -538,8 +386,6 @@ export default function AtelierPages() {
     {
       materials: Materials,
       'individual-order': IndividualOrder,
-      atelier: Atelier,
-      works: Works,
       care: Care,
     }[key] || IndividualOrder
   return (
